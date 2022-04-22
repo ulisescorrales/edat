@@ -30,10 +30,14 @@ public class TestingLista {
         prueba.insertar(2,1,true);
         prueba.insertar(4, 5, false);
         prueba.insertar(6,4,false);
+        /*
         ArbolBin prueba2=prueba.clone();
         prueba.insertar(6,1,false);
         System.out.println(prueba.toString());
         System.out.println(prueba2.toString());
+        */
+        System.out.println(prueba.listarPreOrden());
+        
     }
 
     public static Lista concatenar(Lista lista1, Lista lista2) {

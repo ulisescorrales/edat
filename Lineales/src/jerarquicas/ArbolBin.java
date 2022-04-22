@@ -35,16 +35,7 @@ public class ArbolBin {
         }
         return exito;
     }
-    public void vaciar(){
-        this.raiz=null;
-    }
-    public boolean esVacio() {
-        boolean vacio = false;
-        if (this.raiz == null) {
-            vacio = true;
-        }
-        return vacio;
-    }
+    
     public int altura(){
         return altura(this.raiz);
     }
@@ -133,22 +124,28 @@ public class ArbolBin {
     public Lista listarPreOrden() {
         Lista aux = new Lista();
         listarPreOrden(this.raiz, aux);
-        aux.invertir();
+        //aux.invertir();
         return aux;
     }
 
-    private void listarPreOrden(NodoArbol padre, Lista lista) {
-        if (padre.getDerecho() == null && padre.getIzquierdo() == null) {//si es una hoja
-            lista.insertar(padre.getElem(), 1);
+    private void listarPreOrden(NodoArbol auxNodo, Lista lista) {
+        if (auxNodo.getDerecho() == null && auxNodo.getIzquierdo() == null) {//si es una hoja
+            lista.insertar(auxNodo.getElem(), 1);
         } else {
-            lista.insertar(padre.getElem(), 1);//Inserta al padre
-            if (padre.getIzquierdo() != null) {
-                listarPreOrden(padre.getIzquierdo(), lista);//Listar hi izquierdo
+            lista.insertar(auxNodo.getElem(), 1);//Inserta al auxNodo
+            if (auxNodo.getIzquierdo() != null) {
+                listarPreOrden(auxNodo.getIzquierdo(), lista);//Listar hijo izquierdo
             }            
-            if (padre.getDerecho() != null) {
-                listarPreOrden(padre.getDerecho(), lista);//Listar al hijo derecho
+            if (auxNodo.getDerecho() != null) {
+                listarPreOrden(auxNodo.getDerecho(), lista);//Listar al hijo derecho
             }            
         }
+        
+        /*if(auxNodo!=null){
+            lista.insertar(auxNodo.getElem(),lista.longitud()+1);
+            listarPreOrden(auxNodo.getIzquierdo(),lista);
+            listarPreOrden(auxNodo.getDerecho(),lista);
+        }*/
     }
 
     public Lista listarPosOrden() {
@@ -217,6 +214,16 @@ public class ArbolBin {
             }                          
     }
     
+    public void vaciar(){
+        this.raiz=null;
+    }
+    public boolean esVacio() {
+        boolean vacio = false;
+        if (this.raiz == null) {
+            vacio = true;
+        }
+        return vacio;
+    }    
 
     public String toString() {
         Lista aux = this.listarPosOrden();
