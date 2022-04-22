@@ -28,15 +28,14 @@ public class TestingLista {
         prueba.insertar(1, 3, false); //hijo izquierdo
         prueba.insertar(5, 3, true); //hijo izquierdo
         prueba.insertar(2,1,true);
-        prueba.insertar(4, 5, false);
-        prueba.insertar(6,4,false);
+        prueba.insertar(4, 5, false);        
         /*
         ArbolBin prueba2=prueba.clone();
         prueba.insertar(6,1,false);
         System.out.println(prueba.toString());
         System.out.println(prueba2.toString());
         */
-        System.out.println(prueba.listarPreOrden());
+        System.out.println(prueba.toString());
         
     }
 
@@ -48,7 +47,7 @@ public class TestingLista {
         for (i = 0; i < long2; i++) {
             aux.insertar(lista2.recuperar(i + 1), long1 + i);
         }
-
+        
         return aux;
     }
 
