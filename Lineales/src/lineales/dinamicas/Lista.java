@@ -142,6 +142,21 @@ public class Lista {
 
         return listaNueva;
     }
+    public void invertir(){
+        invertir(this.cabecera);
+    }
+    private Nodo invertir(Nodo nodoAnt){
+        
+        if(nodoAnt.getEnlace().getEnlace()==null){
+            this.cabecera.setEnlace(null);
+            this.cabecera=nodoAnt.getEnlace();
+            nodoAnt.getEnlace().setEnlace(nodoAnt);            
+        }else{
+            invertir(nodoAnt.getEnlace()).setEnlace(nodoAnt);            
+        }
+        return nodoAnt;
+        
+    }
 
     @Override
     public String toString() {
