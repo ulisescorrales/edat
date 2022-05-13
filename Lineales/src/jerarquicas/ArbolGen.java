@@ -374,7 +374,7 @@ public class ArbolGen {
         if (n != null) {
             NodoGen hijo = n.getHijoIzquierdo();
             if (hijo == null) {//Si n es hoja (no tiene HI)
-                int pos = lis.localizar(n.getElem());//posición en la lista                
+                int pos = lis.localizar(n.getElem());//Buscar posición en la lista
                 if (pos > 0) {
                     lis.eliminar(pos);
                 }

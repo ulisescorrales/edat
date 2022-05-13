@@ -32,7 +32,7 @@ public class testJerarquica {
         lis.insertar('E',1);
         lis.insertar('A',1);
         
-        //System.out.println(arbol.sonFrontera(lis));
+        System.out.println(arbol.sonFrontera(lis));
         
     }
     
