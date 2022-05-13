@@ -25,9 +25,10 @@ public class testJerarquica {
         arbol.insertar('G', 'B'); 
         arbol.insertar('H', 'D'); 
         arbol.insertar('I', 'D'); 
+        arbol.insertar('S', 'G'); 
         
         
-        System.out.println(arbol.listarInorden().toString());
+        System.out.println(arbol.porNivel().toString());
         
     }
     

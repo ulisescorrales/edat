@@ -5,6 +5,7 @@
 package jerarquicas;
 
 import lineales.dinamicas.Lista;
+import lineales.dinamicas.Cola;
 
 /**
  *
@@ -87,7 +88,11 @@ public class ArbolGen {
 
     public Lista listarPosorden() {
         Lista lista = new Lista();
-        listarPosorden(lista, this.raiz);
+
+        if (this.raiz != null) {
+            listarPosorden(lista, this.raiz);
+            lista.insertar(this.raiz.getElem(), lista.longitud() + 1);
+        }
         return lista;
     }
 
@@ -116,7 +121,6 @@ public class ArbolGen {
             }
         }
     }*/
-
     private String toStringAux(NodoGen n) {
         String s = "";
         if (n != null) {
@@ -156,4 +160,210 @@ public class ArbolGen {
         }
         return resultado;
     }
+
+    //------------------------------------------------------
+    /*public Lista listarPosorrden() {
+        Lista lista = new Lista();
+        listarPosorden(lista, this.raiz);
+        return lista;
+    }
+     */
+ /*private void listarPosorden(Lista lis, NodoGen n) {
+        if (n != null) {
+            NodoGen aux = this.getHijoIzquierdo();
+            while (aux != null) {
+                listarPosorden(aux = aux.getHermanoDerecho();
+            }
+            lis.listar(n.getElem(), lis.longitud() + 1);
+        }
+    }
+     */
+    public Lista porNivel() {
+        Lista lista = new Lista();
+        Cola cola = new Cola();
+        cola.poner(this.raiz);
+        porNivel(lista, cola, this.raiz);
+        return lista;
+    }
+
+    private void porNivel(Lista lis, Cola q, NodoGen n) {
+        if (n != null) {
+            NodoGen aux2;
+            NodoGen aux;
+            while (q.esVacia() == false) {
+                aux2 = (NodoGen) q.obtenerFrente();
+                q.sacar();
+                lis.insertar(q.obtenerFrente(), lis.longitud() + 1);
+                aux = n.getHijoIzquierdo();
+                while (aux != null) {
+                    q.poner(aux.getElem());
+                    aux = aux.getHermanoDerecho();
+                }
+            }
+        }
+    }
+
+    public boolean pertenece(Object elemento) {
+        boolean devolver;
+        devolver = pertenece(elemento, this.raiz);
+        return devolver;
+    }
+
+    private boolean pertenece(Object elemento, NodoGen n) {
+        boolean encontrado = false;
+        if (n != null) {
+            encontrado = n.getElem().equals(elemento);
+            NodoGen aux = n.getHijoIzquierdo();
+            while (aux != null && !encontrado) {
+                encontrado = pertenece(elemento, aux);
+                aux = aux.getHermanoDerecho();
+            }
+        }
+        return encontrado;
+    }
+
+    public boolean esVacio() {
+        return this.raiz == null;
+    }
+
+    public void vaciar() {
+        this.raiz = null;
+    }
+
+    @Override
+    public ArbolGen clone() {
+        ArbolGen nuevo = new ArbolGen();
+        nuevo.raiz = new NodoGen(this.raiz.getElem(), null, null);
+
+        clone(nuevo.raiz, this.raiz);
+        return nuevo;
+    }
+
+    private void clone(NodoGen aux, NodoGen n) {
+        if (n != null) {
+            NodoGen hijo = n.getHijoIzquierdo();
+            if (hijo != null) {
+                aux.setHijoIzquierdo(new NodoGen(hijo.getElem(), null, null));
+                aux = aux.getHijoIzquierdo();
+            }
+            while (hijo != null) {
+                clone(aux, hijo);
+                hijo = hijo.getHermanoDerecho();
+                if (hijo != null) {// HD
+                    aux.setHermanoDerecho(new NodoGen(hijo.getElem(), null, null));
+                    aux = aux.getHermanoDerecho();
+                }
+            }
+        }
+    }
+
+    public int altura() {
+        int altura = -1;
+        altura = altura + altura(this.raiz);
+        return altura;
+    }
+
+    private int altura(NodoGen n) {
+        int retornar = 0;//
+        int maximo;
+        if (n != null) {
+            retornar = 1;
+            maximo = 1;
+            NodoGen aux = n.getHijoIzquierdo();
+            while (aux != null) {
+                retornar = 1 + altura(aux);
+                maximo = Math.max(retornar, maximo);
+                aux = aux.getHermanoDerecho();
+            }
+            retornar = maximo;
+        }
+        return retornar;
+    }
+
+    public int nivel(Object elemento) {
+        int retornar = -1;
+        retornar = retornar + nivel(elemento, this.raiz);
+        return retornar;
+    }
+
+    private int nivel(Object elemento, NodoGen n) {
+        int retornar = 0;
+        if (n != null) {
+            if (n.getElem().equals(elemento)) {
+                retornar = 1;
+            } else {
+                NodoGen aux = n.getHijoIzquierdo();
+                while (aux != null && retornar == 0) {
+                    retornar = retornar + nivel(elemento, aux);
+                    if (retornar != 0) {
+                        retornar++;
+                    }
+                    aux = aux.getHermanoDerecho();
+                }
+            }
+        }
+        return retornar;
+    }
+
+    public Lista ancestros(Object elemento) {
+        Lista lista = new Lista();
+        if (elemento != null) {
+            ancestros(lista, elemento, this.raiz);
+        }
+        return lista;
+
+    }
+
+    private boolean ancestros(Lista lis, Object elemento, NodoGen n) {
+        boolean encontrado = false;
+        if (n != null) {
+            if (n.getElem().equals(elemento)) {
+                encontrado = true;
+            } else {
+                NodoGen aux = n.getHijoIzquierdo();
+                while (aux != null && !encontrado) {
+                    encontrado = ancestros(lis, elemento, aux);
+                    if (encontrado) {
+                        lis.insertar(n.getElem(), 1);
+                    }
+                    aux = aux.getHermanoDerecho();
+                }
+            }
+        }
+        return encontrado;
+    }
+
+    public NodoGen padre(Object elem) {
+        NodoGen padre = null;
+        if (!this.raiz.getElem().equals(elem)) {//Si la raíz no es el elemento
+            padre = padre(elem, this.raiz);
+        }
+        return padre;
+    }
+
+    private NodoGen padre(Object elem, NodoGen n) {
+        NodoGen padre = null;
+        if (n.getHijoIzquierdo() != null) {
+            NodoGen hijo = n.getHijoIzquierdo();
+            if (hijo.equals(elem)) {
+                padre = n;
+            } else {
+                while(hijo!=null && padre==null){
+                    padre=padre(elem,hijo);
+                    if(hijo.getElem().equals(elem)){
+                        padre=n;
+                    }
+                    hijo=hijo.getHermanoDerecho();                    
+                }
+            }
+        }
+        return padre;
+    }
+    
+    public boolean sonFrontera(Lista unaLista){
+        boolean esFrontera=false;
+            
+        return esFrontera;
+    }
+    
 }
