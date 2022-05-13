@@ -343,17 +343,19 @@ public class ArbolGen {
 
     private NodoGen padre(Object elem, NodoGen n) {
         NodoGen padre = null;
-        if (n.getHijoIzquierdo() != null) {
-            NodoGen hijo = n.getHijoIzquierdo();
-            if (hijo.equals(elem)) {
-                padre = n;
-            } else {
-                while (hijo != null && padre == null) {
-                    padre = padre(elem, hijo);
-                    if (hijo.getElem().equals(elem)) {
-                        padre = n;
+        if (n != null) {
+            if (n.getHijoIzquierdo() != null) {//Si no es hoja
+                NodoGen hijo = n.getHijoIzquierdo();
+                if (hijo.equals(elem)) {
+                    padre = n;
+                } else {
+                    while (hijo != null && padre == null) {
+                        padre = padre(elem, hijo);
+                        if (hijo.getElem().equals(elem)) {
+                            padre = n;
+                        }
+                        hijo = hijo.getHermanoDerecho();
                     }
-                    hijo = hijo.getHermanoDerecho();
                 }
             }
         }
@@ -379,7 +381,8 @@ public class ArbolGen {
                     lis.eliminar(pos);
                 }
             } else {
-                while (hijo != null && !lis.esVacia()) {
+                while (hijo != null && !lis.esVacia()) {/*Preguntarle a sus hijos si es
+                    hoja y si es hoja, verificar en la lista y eliminarlo*/
                     sonFrontera(lis, hijo);
                     hijo = hijo.getHermanoDerecho();
                 }
