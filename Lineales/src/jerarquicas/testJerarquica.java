@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package jerarquicas;
-
+import lineales.dinamicas.Lista;
 /**
  *
  * @author ulise
@@ -27,8 +27,12 @@ public class testJerarquica {
         arbol.insertar('I', 'D'); 
         arbol.insertar('S', 'G'); 
         
+        Lista lis=new Lista();
+        lis.insertar('S',1);
+        lis.insertar('E',1);
+        lis.insertar('A',1);
         
-        System.out.println(arbol.porNivel().toString());
+        //System.out.println(arbol.sonFrontera(lis));
         
     }
     

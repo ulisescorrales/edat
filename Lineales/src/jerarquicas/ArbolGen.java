@@ -348,22 +348,42 @@ public class ArbolGen {
             if (hijo.equals(elem)) {
                 padre = n;
             } else {
-                while(hijo!=null && padre==null){
-                    padre=padre(elem,hijo);
-                    if(hijo.getElem().equals(elem)){
-                        padre=n;
+                while (hijo != null && padre == null) {
+                    padre = padre(elem, hijo);
+                    if (hijo.getElem().equals(elem)) {
+                        padre = n;
                     }
-                    hijo=hijo.getHermanoDerecho();                    
+                    hijo = hijo.getHermanoDerecho();
                 }
             }
         }
         return padre;
     }
-    
-    public boolean sonFrontera(Lista unaLista){
-        boolean esFrontera=false;
-            
-        return esFrontera;
+
+    public boolean sonFrontera(Lista unaLista) {
+        //Precondición: unaLista no puede contener elementos repetidos
+        //ArbolBin puede tener elementos repetidos
+
+        if (!unaLista.esVacia()) {
+            sonFrontera(unaLista, this.raiz);
+        }
+        return unaLista.esVacia();
     }
-    
+
+    private void sonFrontera(Lista lis, NodoGen n) {
+        if (n != null) {
+            NodoGen hijo = n.getHijoIzquierdo();
+            if (hijo == null) {//Si n es hoja (no tiene HI)
+                int pos = lis.localizar(n.getElem());//posición en la lista                
+                if (pos > 0) {
+                    lis.eliminar(pos);
+                }
+            } else {
+                while (hijo != null && !lis.esVacia()) {
+                    sonFrontera(lis, hijo);
+                    hijo = hijo.getHermanoDerecho();
+                }
+            }
+        }
+    }
 }
