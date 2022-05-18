@@ -16,76 +16,85 @@ public class Cola {
     private static final int TAMANIO = 10;
 
     public Cola() {
-        this.arreglo = new Object[TAMANIO];
+        //Constructor
+        this.arreglo = new Object[TAMANIO];//El tamaño real del objeto es TAMANIO-1
         this.frente = 0;
         this.fin = 0;
     }
 
     public boolean poner(Object elElemento) {
-        boolean exito = false;                
-        
-        if ((this.fin+1)%TAMANIO !=this.frente) {//Si no está lleno
+        //Método que coloca un elemento en la última posición, de forma circular en el arreglo       
+        boolean exito = false;
+
+        if ((this.fin + 1) % TAMANIO != this.frente) {//Si no está lleno (se reserva un espacio vacío si está lleno)
             this.arreglo[this.fin] = elElemento;
-            this.fin= (this.fin+1)%TAMANIO;
-            exito = true;            
+            this.fin = (this.fin + 1) % TAMANIO;//Si se acaba el espacio, comienza al principio del arreglo
+            exito = true;
         }
         return exito;
     }
 
     public boolean sacar() {
+        //Método que quita el frente de la Cola
         boolean exito = false;
 
         if (this.fin != this.frente) {//Si no está vacía
             this.arreglo[frente] = null;
-            this.frente=(this.frente+1)%TAMANIO;
+            this.frente = (this.frente + 1) % TAMANIO;
             exito = true;
         }
 
         return exito;
     }
-    public Object obtenerFrente(){
-        Object retornar=null;
-        if(this.frente!=this.fin){//Si no está vacía
-            retornar=this.arreglo[this.frente];
-        }
-            return retornar;
-        }
 
-    public void vaciar(){
-        this.arreglo=new Object[TAMANIO];
-        this.frente=0;
-        this.fin=0;
+    public Object obtenerFrente() {
+        //Método que obtiene el frente de la Cola
+        Object retornar = null;
+        if (this.frente != this.fin) {//Si no está vacía
+            retornar = this.arreglo[this.frente];
+        }
+        return retornar;
+    }
+
+    public void vaciar() {
+        //Método que vacia la Cola
+        this.arreglo = new Object[TAMANIO];
+        /*El objeto que ya no se apunta
+        lo elimina el recolector de basura de la memoria*/
+        this.frente = 0;
+        this.fin = 0;
     }
 
     public boolean esVacia() {
+        //Método que comprueba si la Cola es vacía
         boolean vacio = true;
-        if (this.frente != this.fin) {
+        if (this.frente != this.fin) {//Si fin y frente coinciden
             vacio = false;
         }
         return vacio;
     }
+
     @Override
-    public Cola clone(){
-        Cola colaNueva= new Cola();
-        colaNueva.arreglo=this.arreglo.clone();
-        colaNueva.fin=this.fin;
-        colaNueva.frente=this.frente;        
-        
+    public Cola clone() {
+        //Método que clona y crea un objeto nuevo con el contenido del arreglo
+        Cola colaNueva = new Cola();
+        colaNueva.arreglo = this.arreglo.clone();
+        colaNueva.fin = this.fin;
+        colaNueva.frente = this.frente;
+
         return colaNueva;
     }
-    
+
     @Override
-    public String toString(){
-        String cadena="[";
-        int auxFrente=this.frente;        
-        while(auxFrente!=this.fin){//Si no está vacía
-            cadena= cadena+this.arreglo[auxFrente]+" ";
-            auxFrente++;
-            if(auxFrente==TAMANIO){
-                auxFrente=0;
-            }
+    public String toString() {
+        //Método para testear, devuelve un String con el contenido desde el frente hasta el final
+        String cadena = "[";
+        int auxFrente = this.frente;
+        while (auxFrente % TAMANIO != this.fin) {//Si no está vacía            
+            cadena = cadena + this.arreglo[auxFrente] + " ";
+            auxFrente = (auxFrente + 1) % TAMANIO;
         }
-        cadena=cadena.trim()+"]";
+        cadena = cadena.trim() + "]";
         return cadena;
     }
 }

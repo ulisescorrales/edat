@@ -2,7 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package jerarquicas;
+package jerarquicas.dinamicas;
+import jerarquicas.dinamicas.ArbolGen;
 import lineales.dinamicas.Lista;
 /**
  *
@@ -15,11 +16,11 @@ public class testJerarquica {
      */
     public static void main(String[] args) {
         ArbolGen arbol=new ArbolGen();
-        
-        llenarArbol(arbol);
-        
-        
         Lista lis=new Lista();
+        
+        llenarArbol(arbol); 
+        System.out.println("Árbol a testear: ");
+        System.out.println(arbol.toString());
         
         //Dos elementos hermanos
         System.out.println("Dos elementos hermanos:");
@@ -95,31 +96,49 @@ public class testJerarquica {
         System.out.println("Se espera true: "+arbol.sonFrontera(lis));
         System.out.println("--------");
         
+        //Arbol con un solo elemento igual a lista
+        System.out.println("Arbol con un solo elemento:");
+        arbol.vaciar();
+        arbol.insertar('A', 0);
+        lis.vaciar();
+        lis.insertar('A', 1);
+        System.out.println(lis.toString());
+        System.out.println("Se espera true: "+arbol.sonFrontera(lis));        
+        
+        arbol.vaciar();
+        llenarArbol(arbol);                
+        
+        
         //Una lista con todos las hojas del arbol
         System.out.println("Una lista con todos las hojas del arbol:");
         lis.vaciar();
         lis.insertar('E', 1);
         lis.insertar('F', 1);
-        lis.insertar('S', 1);
-        lis.insertar('H', 1);
-        lis.insertar('I', 1);
+        lis.insertar('S', 1);        
+        lis.insertar('J', 1);
         lis.insertar('C', 1);
-        lis.insertar('Z', 1);
+        lis.insertar('I', 1);
+        lis.insertar('K', 1);
         System.out.println(lis.toString());        
         System.out.println("Se espera true: "+arbol.sonFrontera(lis));
         System.out.println("--------");
     }
     public static void llenarArbol(ArbolGen arb){
+        //Método para llenar el arbol con elementos de prueba
         arb.insertar('A', 0);
         arb.insertar('B', 'A');
-        arb.insertar('C', 'A');
+        arb.insertar('C', 'A');//Hoja que posee hermanos con hijos
         arb.insertar('D', 'A');
-        arb.insertar('E', 'B');        
+        arb.insertar('E', 'B');//Hijo Izquierdo sin hijos
         arb.insertar('F', 'B');        
         arb.insertar('G', 'B'); 
         arb.insertar('H', 'D'); 
         arb.insertar('I', 'D'); 
         arb.insertar('S', 'G'); 
+        arb.insertar('S', 'G'); //Elemento repetido
+        arb.insertar('J', 'H'); //Hijo único
+        arb.insertar('K', 'D'); //Hermano final sin hijo
+        
     }
     
 }
