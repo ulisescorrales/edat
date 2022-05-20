@@ -103,11 +103,12 @@ public class testJerarquica {
         lis.insertar('S', 1);
         lis.insertar('H', 1);
         lis.insertar('I', 1);
-        lis.insertar('C', 1);
-        lis.insertar('Z', 1);
+        lis.insertar('C', 1);        
         System.out.println(lis.toString());        
         System.out.println("Se espera true: "+arbol.sonFrontera(lis));
         System.out.println("--------");
+        
+        //La lista anterior pero con un elemento añadido que no pertenece a la lista
     }
     public static void llenarArbol(ArbolGen arb){
         arb.insertar('A', 0);
