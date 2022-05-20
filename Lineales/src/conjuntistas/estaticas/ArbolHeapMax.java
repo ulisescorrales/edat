@@ -8,7 +8,7 @@ package conjuntistas.estaticas;
  *
  * @author ulise
  */
-public class ArbolHeapMax implements Comparable {
+public class ArbolHeapMax {
 
     private static final int TAMANIO = 20;
     Comparable[] heap;
@@ -22,7 +22,7 @@ public class ArbolHeapMax implements Comparable {
         boolean exito = false;
 
         if (this.ultimo == 0) {
-            this.heap[1] = (Comparable) elem;//Setear la raíz
+            this.heap[1] =  elem;//Setear la raíz
             this.ultimo++;
             exito = true;
         } else {
@@ -96,8 +96,14 @@ public class ArbolHeapMax implements Comparable {
     public Object recuperarCima(){
         return this.heap[ultimo];
     }
-    public int compareTo(Object elem) {
-        int i = 0;
-        return i;
+    
+    public String toString(){
+        String cadena="";
+        int i;
+        for(i=1;i<TAMANIO;i++){
+            cadena=cadena+ heap[i]+"-->"+ heap[2*i]+" "+heap[(2*i)+1]+"/n";
+        }
+        return cadena;
     }
+    
 }
