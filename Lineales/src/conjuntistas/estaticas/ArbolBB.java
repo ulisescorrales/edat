@@ -138,6 +138,14 @@ public class ArbolBB {
     }
 
     public Lista listarRango(Comparable elemMinimo, Comparable elemMaximo) {
+        //Casos a tener en cuenta a partir de la raiz:
+        //min y max pueden estar en el subarbol izquierdo y derecho respectivamente
+        //min y max pueden estar en el subarbol izquierdo
+        //min y max pueden estar en el subarbol derecho
+        //min y max pueden no estar en el arbol (existen elementos mayores a min y menores a max)
+        //min y max coinciden
+        //
+
         Lista lis = new Lista();
         listarRango(lis, elemMinimo, elemMaximo, this.raiz);
         return lis;
@@ -147,17 +155,30 @@ public class ArbolBB {
         if (n != null) {
             if (min.compareTo(n.getElem()) == 0) {//Recorrer hasta encontrar el min o encontrar un nodo nulo (min no se encuentra en el arbol
                 lista.insertar(n.getElem(), lista.longitud() + 1);
-            } else if (min.compareTo(n.getElem()) < 0) {
+                listarSubDerechoMin(lista, min, max, n.getDerecho());//Listar subarbolDerecho, puede contener el elemento máximo
+            } else if (min.compareTo(n.getElem()) < 0) {//Si el nodo es mayor a min, ir por el izquierdo
                 listarRango(lista, min, max, n.getIzquierdo());
                 lista.insertar(n.getElem(), lista.longitud() + 1);//Listar los nodos que sean mayores a min
 
                 listarSubDerecho(lista, max, n.getDerecho());/*Comenzar recorrido inorden 
                 en el subarbol derecho hasta que n >= maximo (=inserta, > no inserta)*/
 
-            } else if (min.compareTo(n.getElem()) > 0) {
-                if (n.getDerecho() != null) {//Los nodos menores a min no se listan
-                    listarRango(lista, min, max, n.getDerecho());
-                }
+            } else if (min.compareTo(n.getElem()) > 0) {//Si el nodo es menor a min, ir por el derecho
+                //Los nodos menores a min no se listan
+                listarRango(lista, min, max, n.getDerecho());
+            }
+        }
+    }
+
+    private void listarRango2(Lista lista, Comparable min, Comparable max, NodoArbol n) {
+        if (n != null) {
+            if (min.compareTo(n.getElem()) <= 0 && max.compareTo(n.getElem()) >= 0) {//Si el elemento se encuentra en el rango(mayor o igual a minimo)
+                lista.insertar(n.getElem(), 1);//Insertar desde el principio de la lista
+                listarRango2(lista, min, max, n.getIzquierdo());
+            } else if (min.compareTo(n.getElem()) > 0) {//Si el elemento es menor al mínimo, ir por la derecha
+                listarRango2(lista, min, max, n.getDerecho());
+            } else if (min.compareTo(n.getElem()) < 0) {//Si el elemento es mayor al mínimo, ir por la izquierda(no se lista ya que es mayor al máximo)
+                listarRango2(lista, min, max, n.getIzquierdo());
             }
         }
     }
@@ -167,6 +188,13 @@ public class ArbolBB {
             listarSubDerecho(lis, maximo, n.getIzquierdo());
             lis.insertar(n.getElem(), lis.longitud() + 1);
             listarSubDerecho(lis, maximo, n.getDerecho());
+        }
+    }
+
+    private void listarSubDerechoMin(Lista lis, Comparable minimo, Comparable maximo, NodoArbol n) {
+        //Recorrer subarbol derecho, si en este subarbol se encuentra el maximo elemento, debe terminar el recorrido
+        if (n != null) {
+
         }
     }
 
@@ -205,4 +233,26 @@ public class ArbolBB {
         return cadena;
     }
 
+    public boolean eliminar(Comparable elem) {
+        //Enviar el padre como parámetro, no volver a buscarlo
+        boolean exito = false;
+        exito = eliminar(elem, this.raiz, null);
+        return exito;
+    }
+
+    private boolean eliminar(Comparable elem, NodoArbol n, NodoArbol padre) {
+        boolean exito = false;
+        if (n != null) {
+            if (n.getElem().equals(elem)) {
+                exito = true;
+                //se reemplaza por el candidato A
+                
+            } else if (elem.compareTo(n.getElem()) < 0) {//Si elem es mayor a elem
+                exito = eliminar(elem, n.getIzquierdo(), n);                                                    
+            } else {//Si elem es menor a elem
+                exito = eliminar(elem, n.getDerecho(), n);
+            }
+        }
+        return false;
+    }
 }
