@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jerarquicas;
+package jerarquicas.dinamicas;
 
 import lineales.dinamicas.Lista;
 
@@ -227,35 +227,34 @@ public class ArbolBin {
 
     public String toString() {
         String cadena = "";
-        cadena = toString(this.raiz, cadena).toString();
+        cadena = toString(this.raiz, cadena);
         return cadena;
     }
 
-    private Object toString(NodoArbol auxNodo, String cadena) {
+    private String toString(NodoArbol auxNodo, String cadena) {
         if (auxNodo != null) {
-                        
-            if(auxNodo.getIzquierdo()==null || auxNodo.getDerecho().getDerecho()==null){
-                cadena = "Hoja: " + auxNodo.getElem().toString();                
-            }else{
+
+            if (auxNodo.getIzquierdo() == null && auxNodo.getDerecho() == null) {
+                cadena = "Hoja: " + auxNodo.getElem().toString() + "\n";
+            } else {
                 cadena = "Padre: " + auxNodo.getElem().toString();
+
+                if (auxNodo.getIzquierdo() != null) {
+                    cadena = cadena + ", hijo Izquierdo: " + auxNodo.getIzquierdo().getElem();
+                }
+                if (auxNodo.getDerecho() != null) {
+                    cadena = cadena + ", hijo derecho: " + auxNodo.getDerecho().getElem() + "\n";
+                } else {
+                    cadena = cadena + "\n";
+                }
+                if (auxNodo.getIzquierdo() != null) {
+                    cadena = cadena + toString(auxNodo.getIzquierdo(), cadena);
+                }
+                if (auxNodo.getDerecho() != null) {
+                    cadena = cadena + toString(auxNodo.getDerecho(), cadena);
+                }
             }
-            if (auxNodo.getIzquierdo() != null) {
-                cadena = cadena + ", hijo Izquierdo: " + auxNodo.getIzquierdo().getElem();
-            }
-            if (auxNodo.getDerecho() != null) {
-                cadena = cadena + ", hijo derecho: " + auxNodo.getDerecho().getElem() + "|| ";
-            }else{
-                cadena=cadena+"||";
-            }
-            if (auxNodo.getIzquierdo() != null) {
-                cadena = cadena + toString(auxNodo.getIzquierdo(), cadena);
-            }
-            if (auxNodo.getDerecho() != null) {
-                cadena = cadena + toString(auxNodo.getDerecho(), cadena);
-            }else{
-               
-            }
-            
+
         }
         return cadena;
     }

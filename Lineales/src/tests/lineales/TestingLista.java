@@ -2,7 +2,8 @@ package tests.lineales;
 
 import lineales.dinamicas.Lista;
 import lineales.dinamicas.Pila;
-import jerarquicas.ArbolBin;
+import jerarquicas.dinamicas.ArbolBin;
+import lineales.estaticas.Cola;
 
 public class TestingLista {
 
@@ -23,19 +24,23 @@ public class TestingLista {
         System.out.println(listaPr.toString());
         */
         
-        ArbolBin prueba= new ArbolBin();
-        prueba.insertar(3, null, true);//raíz
-        prueba.insertar(1, 3, false); //hijo izquierdo
-        prueba.insertar(5, 3, true); //hijo izquierdo
-        prueba.insertar(2,1,true);
-        prueba.insertar(4, 5, false);        
-        /*
-        ArbolBin prueba2=prueba.clone();
-        prueba.insertar(6,1,false);
-        System.out.println(prueba.toString());
-        System.out.println(prueba2.toString());
-        */
-        System.out.println(prueba.toString());
+     
+        
+        
+        Cola q= new Cola();
+        q.poner(1);
+        q.poner(2);
+        q.poner(3);
+        q.poner(4);
+        q.poner(5);
+        q.poner(6);
+        q.poner(7);
+        q.poner(8);
+        q.poner(9);
+        q.sacar();
+        System.out.println(q.poner(10));
+        
+        System.out.println(q.toString());
         
     }
 
