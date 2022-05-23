@@ -27,6 +27,7 @@ public class testABB {
         arbol.insertar(5);
         arbol.insertar(9);
         
+        
         //Mostrar el arbol
         System.out.println(arbol.toString());
         
@@ -50,7 +51,7 @@ public class testABB {
         llenarArbol(arbol);
         System.out.println(arbol.listar().toString());
         
-        System.out.println(arbol.listarRango(2, 10).toString());
+        System.out.println(arbol.listarRango(2,8).toString());
     }
     
     public static void llenarArbol(ArbolBB arb){
@@ -63,6 +64,7 @@ public class testABB {
         //Insertar elemento repetido
         arb.insertar(5);
         arb.insertar(9);
+        arb.insertar(11);
     }
     
 }
