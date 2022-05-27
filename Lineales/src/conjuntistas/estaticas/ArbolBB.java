@@ -148,93 +148,27 @@ public class ArbolBB {
 
         Lista lis = new Lista();
         if (elemMinimo.compareTo(elemMaximo) <= 0) {
-            listarRango3(lis, elemMinimo, elemMaximo, this.raiz);
+            listarRango(lis, elemMinimo, elemMaximo, this.raiz);
         }
         return lis;
-    }
-
+    }   
     private void listarRango(Lista lista, Comparable min, Comparable max, NodoArbol n) {
-        if (n != null) {
-            if (min.compareTo(n.getElem()) == 0) {//Recorrer hasta encontrar el min o encontrar un nodo nulo (min no se encuentra en el arbol
-                lista.insertar(n.getElem(), lista.longitud() + 1);
-                listarSubDerecho(lista, max, n.getDerecho());//Listar subarbolDerecho, puede contener el elemento máximo
-            } else if (min.compareTo(n.getElem()) < 0) {//Si el nodo es mayor a min, ir por el izquierdo
-                listarRango(lista, min, max, n.getIzquierdo());
-                if (max.compareTo(n.getElem()) >= 0) {
-                    lista.insertar(n.getElem(), lista.longitud() + 1);//Listar los nodos que sean mayores a min
-
-                    listarSubDerecho(lista, max, n.getDerecho());/*Comenzar recorrido inorden 
-                en el subarbol derecho hasta que n >= maximo (=inserta, > no inserta)*/
-                }
-            } else if (min.compareTo(n.getElem()) > 0) {//Si el nodo es menor a min, ir por el derecho
-                //Los nodos menores a min no se listan
-                listarRango2(lista, min, max, n.getDerecho());
-            }
-        }
-    }
-
-    /*private void listarRango2(Lista lista, Comparable min, Comparable max, NodoArbol n) {
-        if (n != null) {
-            NodoArbol izq = n.getIzquierdo();//HI
-            if (min.compareTo(n.getElem()) <= 0 && max.compareTo(n.getElem()) >= 0) {//Si el elemento se encuentra en el rango(mayor o igual a minimo)
-                lista.insertar(n.getElem(), 1);//Insertar desde el principio de la lista                
-                if (izq != null) {
-                    preordenDerecho(lista, max, izq);
-                    if (min.compareTo(n.getElem()) != 0) {
-                        listarRango2(lista, min, max, izq.getIzquierdo());
-                    }
-                }
-            } else if (min.compareTo(n.getElem()) < 0) {//Si el elemento es mayor al mínimo, ir por la izquierda
-                listarRango2(lista, min, max, izq);
-            } else {//Si el elemento es menor al mínimo, ir por la derecha
-                listarRango2(lista, min, max, n.getDerecho());
-
-            }
-        }
-    }
-    */
-    private void listarRango3(Lista lista, Comparable min, Comparable max, NodoArbol n) {
         //Preorden inverso, se evitar el orden n de insertar en lista
         if (n != null) {
             if (max.compareTo(n.getElem()) == 0) {
                 //No seguir a la derecha
                 lista.insertar(n.getElem(), 1);
             } else if (max.compareTo(n.getElem()) > 0) {
-                listarRango3(lista, min, max, n.getDerecho());
+                listarRango(lista, min, max, n.getDerecho());
                 if (min.compareTo(n.getElem()) <= 0) {
                     lista.insertar(n.getElem(), 1);
                 }
             }
             if (min.compareTo(n.getElem()) < 0) {
-                listarRango3(lista, min, max, n.getIzquierdo());
+                listarRango(lista, min, max, n.getIzquierdo());
             }
         }
-    }
-
-   /* private void preordenDerecho(Lista lista, Comparable max, NodoArbol n) {
-        if (n != null) {
-            if (max.compareTo(n.getElem()) > 0) {//Si es menor al máximo
-                preordenDerecho(lista, max, n.getDerecho());
-                lista.insertar(n.getElem(), 1);
-            }
-            preordenDerecho(lista, max, n.getIzquierdo());
-        }
-    }
-    */
-    private void listarSubDerecho(Lista lis, Comparable maximo, NodoArbol n) {
-        if (n != null && maximo.compareTo(n.getElem()) >= 0) {
-            listarSubDerecho(lis, maximo, n.getIzquierdo());
-            lis.insertar(n.getElem(), lis.longitud() + 1);
-            listarSubDerecho(lis, maximo, n.getDerecho());
-        }
-    }
-
-    private void listarSubDerechoMin(Lista lis, Comparable minimo, Comparable maximo, NodoArbol n) {
-        //Recorrer subarbol derecho, si en este subarbol se encuentra el maximo elemento, debe terminar el recorrido
-        if (n != null) {
-
-        }
-    }
+    }      
 
     @Override
     public String toString() {
@@ -285,17 +219,17 @@ public class ArbolBB {
 
                 if (n.getIzquierdo() != null && n.getDerecho() != null) {//Si tiene ambos hijos
                     //Usar el candidato A: el mayor del subárbol izquierdo
-                    NodoArbol aux = n.getIzquierdo();//Se va a ubicar en el candidato A
-                    NodoArbol padreAux = n.getIzquierdo();
+                    NodoArbol aux = n.getIzquierdo();//Aux se va a ubicar en el candidato A
+                    NodoArbol padreAux = n.getIzquierdo();//Padre de aux para setear su HD en null
 
-                    while (aux.getDerecho() != null) {
+                    while (aux.getDerecho() != null) {//Buscar el candidato A(máximo del subárbol izquierdo)
                         if (padreAux != aux) {
                             padreAux = padreAux.getDerecho();
                         }
                         aux = aux.getDerecho();
                     }
                     //Setear los hijos del nuevo padre
-                    if (n.getIzquierdo() != aux) {//Si aux itera aunque sea una vez hacia la derecha                        
+                    if (n.getIzquierdo() != aux) {//Si aux itera aunque sea una vez hacia la derecha se setea el HD                
                         aux.setIzquierdo(n.getIzquierdo());
                     }
                     aux.setDerecho(n.getDerecho());

@@ -51,7 +51,11 @@ public class testABB {
         llenarArbol(arbol);
         System.out.println(arbol.listar().toString());
         
-        System.out.println(arbol.listarRango(2,8).toString());
+        
+        
+        arbol.eliminar(5);
+        System.out.println(arbol.listar().toString());
+        
     }
     
     public static void llenarArbol(ArbolBB arb){
