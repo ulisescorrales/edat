@@ -13,7 +13,7 @@ import lineales.dinamicas.Lista;
  */
 public class ArbolBB {
 
-    protected NodoArbol raiz;
+    private NodoArbol raiz;
 
     public ArbolBB() {
         raiz = null;
@@ -151,14 +151,16 @@ public class ArbolBB {
             listarRango(lis, elemMinimo, elemMaximo, this.raiz);
         }
         return lis;
-    }   
+    }
+
     private void listarRango(Lista lista, Comparable min, Comparable max, NodoArbol n) {
         //Método que lista los elementos contenidos en el árbol entre los valores min y max de forma creciente
         //Se recorre el árbol en inorden inverso (Hijo Derecho - Padre - Hijo Izquerdo)
         if (n != null) {
             if (max.compareTo(n.getElem()) == 0) {//Se recorre hasta encontrar max o un elemento mayor a max
                 //Si se encuentra, no seguir recorriendo
-                lista.insertar(n.getElem(), 1); /*Con el preorden inverso se evita el orden O(n) de insertar de lista y 
+                lista.insertar(n.getElem(), 1);
+                /*Con el preorden inverso se evita el orden O(n) de insertar de lista y 
                 se usa el orden O(1)*/
             } else if (max.compareTo(n.getElem()) > 0) {//Sino ir por la derecha 
                 listarRango(lista, min, max, n.getDerecho());
@@ -170,7 +172,7 @@ public class ArbolBB {
                 listarRango(lista, min, max, n.getIzquierdo());
             }
         }
-    }      
+    }
 
     @Override
     public String toString() {
@@ -221,7 +223,7 @@ public class ArbolBB {
                 exito = true;//Si elemento existe, la operación será exitosa
                 if (n.getIzquierdo() != null && n.getDerecho() != null) {//CASO: Si posee ambos hijos
                     //Usar el candidato A: el elemento mayor del subárbol izquierdo 
-                    
+
                     NodoArbol aux = n.getIzquierdo();//aux se ubicará en el candidato A
                     NodoArbol padreAux = n.getIzquierdo();//Padre de aux para setear su HD en null
 
@@ -249,7 +251,7 @@ public class ArbolBB {
                 } else {//CASO: Es hoja entonces se elimina directamente      
                     setPadre(n, null, padre);
                 }
-            //Si el elemento no se encontró entonces, buscar por la derecha o la izquierda según corresponda
+                //Si el elemento no se encontró entonces, buscar por la derecha o la izquierda según corresponda
             } else if (elem.compareTo(n.getElem()) < 0) {//Si elemento del nodo es mayor al elemento a eliminar
                 exito = eliminar(elem, n.getIzquierdo(), n);//Ir por la izquierda
             } else {//Si elem es menor a elem

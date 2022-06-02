@@ -4,20 +4,28 @@
  * and open the template in the editor.
  */
 package conjuntistas.dinamicas;
+
 /**
  *
  * @author ulises.corrales
  */
-public class NodoAVL{
+public class NodoAVL {
+
     private Object elem;
-    private NodoArbol izq;
-    private NodoArbol der;
+    private NodoAVL izq;
+    private NodoAVL der;
     private int altura;
 
-    public NodoAVL(Object elem, NodoArbol izq, NodoArbol der) {
+    public NodoAVL(Object elem, NodoAVL izq, NodoAVL der,int alt) {
         this.elem = elem;
         this.izq = izq;
         this.der = der;
+        this.altura=alt;
+    }
+    public NodoAVL(Object elem, NodoAVL izq, NodoAVL der) {
+        this.elem = elem;
+        this.izq = izq;
+        this.der = der;        
     }
 
     public Object getElem() {
@@ -28,21 +36,28 @@ public class NodoAVL{
         this.elem = elem;
     }
 
-    public NodoArbol getIzquierdo() {
+    public NodoAVL getIzquierdo() {
         return izq;
     }
 
-    public void setIzquierdo(NodoArbol izq) {
+    public void setIzquierdo(NodoAVL izq) {
         this.izq = izq;
     }
 
-    public NodoArbol getDerecho() {
+    public NodoAVL getDerecho() {
         return der;
     }
 
-    public void setDerecho(NodoArbol der) {
+    public void setDerecho(NodoAVL der) {
         this.der = der;
     }
-    
-    
+
+    public int getAltura() {
+        return altura;
+    }
+
+    public void setAltura(int altura) {
+        this.altura = altura;
+    }
+
 }

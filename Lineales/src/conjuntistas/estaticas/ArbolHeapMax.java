@@ -22,26 +22,22 @@ public class ArbolHeapMax {
         boolean exito = false;
 
         if (this.ultimo == 0) {
-            this.heap[1] =  elem;//Setear la raíz
+            this.heap[1] = elem;//Setear la raíz
             this.ultimo++;
             exito = true;
         } else {
             if (this.ultimo + 1 < TAMANIO) {//Si no sobrepasa el TAMANIO del arreglo
                 exito = true;
-                this.ultimo++;
-                int aux = ultimo / 2;//Posición del padre del último elemento insertado
-                int temp=ultimo;
-                this.heap[ultimo]=elem;
-                if (this.heap[ultimo].compareTo(elem) > 0) {
-                    this.heap[ultimo] = elem;
-                } else {
-                    Comparable temp2;
-                    while (this.heap[aux / 2].compareTo(elem) < 0 && aux != 0) {//Mientras que el padre sea menor
-                        temp2=heap[temp];
-                        heap[temp] = heap[aux];
-                        heap[aux] = temp2;
-                        aux = aux / 2;
-                        temp=temp/2;
+                this.ultimo++;//
+                int auxPadre = ultimo / 2;//Posición del padre del último elem
+                int temp = ultimo;//Posición de elem
+                this.heap[ultimo] = elem;
+                if (this.heap[auxPadre].compareTo(elem) < 0) {//Si el primer padre es menor al insertado                    
+                    while (auxPadre != 0 && this.heap[auxPadre].compareTo(elem) < 0) {//Mientras que el padre sea menor y no sea la posición 0                        
+                        heap[temp] = heap[auxPadre];
+                        heap[auxPadre] = elem;
+                        auxPadre = auxPadre / 2;
+                        temp = temp / 2;
                     }
                 }
             }
@@ -51,10 +47,11 @@ public class ArbolHeapMax {
 
     public boolean eliminarCima() {
         boolean exito = false;
-        if (this.ultimo > 0) {            
+        if (this.ultimo > 0) {
             this.heap[1] = this.heap[ultimo];
+            this.ultimo--;
             hacerBajar(1);
-            exito=true;
+            exito = true;
         }
         return exito;
     }
@@ -68,11 +65,11 @@ public class ArbolHeapMax {
             posH = posPadre * 2;
             if (posH <= this.ultimo) {
                 if (posH < this.ultimo) {
-                    if (this.heap[posH + 1].compareTo(this.heap[posH]) < 0) {
+                    if (this.heap[posH + 1].compareTo(this.heap[posH]) > 0) {
                         posH++;
                     }
                 }
-                if (this.heap[posH].compareTo(temp) < 0) {
+                if (this.heap[posH].compareTo(temp) > 0) {
                     this.heap[posPadre] = this.heap[posH];
                     this.heap[posH] = temp;
                     posPadre = posH;
@@ -84,26 +81,36 @@ public class ArbolHeapMax {
             }
         }
     }
-    
-    public boolean esVacio(){
-        boolean vacio=false;
-        if(ultimo==0){
-            vacio=true;
+
+    public boolean esVacio() {
+        boolean vacio = false;
+        if (ultimo == 0) {
+            vacio = true;
         }
         return vacio;
     }
-    
-    public Object recuperarCima(){
+
+    public Object recuperarCima() {
         return this.heap[ultimo];
     }
-    
-    public String toString(){
-        String cadena="";
-        int i;
-        for(i=1;i<TAMANIO;i++){
-            cadena=cadena+ heap[i]+"-->"+ heap[2*i]+" "+heap[(2*i)+1]+"/n";
+
+    public String toString() {
+        String cadena = "";
+        int i = 1;
+        for (i = 1; i <= ultimo; i++) {
+            cadena = cadena + heap[i] + "-->";
+            if (2 * i <= ultimo) {
+                cadena = cadena + heap[2 * i] + " ";
+                if (2 * i + 1 <= ultimo) {
+                    cadena = cadena + heap[(2 * i) + 1] + "\n";
+                } else {
+                    cadena = cadena + "\n";
+                }
+            } else {
+                cadena = cadena + "\n";
+            }
         }
         return cadena;
     }
-    
+
 }

@@ -37,13 +37,17 @@ public class ArbolBin {
     }
 
     public int altura() {
-        return altura(this.raiz);
+        int altura=-1;
+        if(this.raiz!=null){
+            altura=altura(this.raiz);
+        }
+        return altura;
     }
 
     private int altura(NodoArbol aux) {
-        int alt = 1, izquierda = 0, derecha = 0;
+        int alt, izquierda = -1, derecha = -1;
         if (aux.getDerecho() == null && aux.getIzquierdo() == null) {//Si es una hoja
-            alt = 1;
+            alt = 0;
         } else {
             if (aux.getIzquierdo() != null) {
                 izquierda = altura(aux.getIzquierdo());
@@ -51,7 +55,7 @@ public class ArbolBin {
             if (aux.getDerecho() != null) {
                 derecha = altura(aux.getDerecho());
             }
-            alt = Math.max(izquierda, derecha) + alt;
+            alt = Math.max(izquierda, derecha) + 1;//Incrementar altura
         }
         return alt;
     }

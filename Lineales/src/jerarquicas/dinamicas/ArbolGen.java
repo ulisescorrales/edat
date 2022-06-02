@@ -45,7 +45,7 @@ public class ArbolGen {
         }
         return exito;
     }
-    
+
     private NodoGen obtenerNodo(Object buscado, NodoGen n) {
         NodoGen resultado = null;
         NodoGen hijo;
@@ -63,7 +63,7 @@ public class ArbolGen {
         }
         return resultado;
     }
-    
+
     public boolean pertenece(Object elemento) {
         //Método que se invoca de manera recursiva
         boolean devolver;
@@ -82,8 +82,8 @@ public class ArbolGen {
             }
         }
         return encontrado;
-    }    
-    
+    }
+
     public Lista listarPreorden() {
         Lista resultado = new Lista();
         listarPreorden(resultado, this.raiz);
@@ -140,30 +140,28 @@ public class ArbolGen {
                 aux = aux.getHermanoDerecho();
             }
         }
-    }              
-   
-    public Lista listarPorNiveles() {    
+    }
+
+    public Lista listarPorNiveles() {
         //Método que solo se ejecuta de manera iterativa
-        Cola q=new Cola();
+        Cola q = new Cola();
         NodoGen n;
-        Lista lis=new Lista();
-        
+        Lista lis = new Lista();
+
         q.poner(this.raiz);
-        while(!q.esVacia()){
-            n=(NodoGen) q.obtenerFrente();
+        while (!q.esVacia()) {
+            n = (NodoGen) q.obtenerFrente();
             q.sacar();
-            lis.insertar(n.getElem(),lis.longitud()+1);
-            
-            NodoGen hijo=n.getHijoIzquierdo();
-            while(hijo!=null){
+            lis.insertar(n.getElem(), lis.longitud() + 1);
+
+            NodoGen hijo = n.getHijoIzquierdo();
+            while (hijo != null) {
                 q.poner(hijo);
-                hijo=hijo.getHermanoDerecho();
+                hijo = hijo.getHermanoDerecho();
             }
         }
         return lis;
-    }   
-
-    
+    }
 
     @Override
     public ArbolGen clone() {
@@ -268,29 +266,30 @@ public class ArbolGen {
         return encontrado;
     }
 
-    public Object padre(Object elem){
-        return padreAux(this.raiz, elem, null);			   
+    public Object padre(Object elem) {
+        return padreAux(this.raiz, elem, null);
     }
 
-    private Object padreAux(NodoGen n, Object hijo, Object padre){
+    private Object padreAux(NodoGen n, Object hijo, Object padre) {
         Object ret = null;
 
-        if (n != null){
-            if (n.getElem().equals(hijo)){
+        if (n != null) {
+            if (n.getElem().equals(hijo)) {
                 ret = padre;
             } else {
                 NodoGen hijoAux = n.getHijoIzquierdo();
 
-                while (ret==null && hijoAux != null){
+                while (ret == null && hijoAux != null) {
                     ret = padreAux(hijoAux, hijo, n.getElem());
-                    if (ret == null)
+                    if (ret == null) {
                         hijoAux = hijoAux.getHermanoDerecho();
                     }
                 }
             }
+        }
         return ret;
-        }          
-        
+    }
+
     public boolean esVacio() {
         return this.raiz == null;
     }
@@ -302,13 +301,13 @@ public class ArbolGen {
     public boolean sonFrontera(Lista unaLista) {
         //Precondición: unaLista no puede contener elementos repetidos
         //ArbolBin puede tener elementos repetidos
-        Lista lis=unaLista.clone();
-        boolean frontera=false;
-        if (!lis.esVacia() && this.raiz!=null) {
+        Lista lis = unaLista.clone();
+        boolean frontera = false;
+        if (!lis.esVacia() && this.raiz != null) {
             sonFrontera(unaLista, this.raiz);
-            frontera=lis.esVacia();
-        }else if(lis.esVacia() && this.raiz==null){
-            frontera=true;
+            frontera = lis.esVacia();
+        } else if (lis.esVacia() && this.raiz == null) {
+            frontera = true;
         }
         return frontera;
     }
@@ -331,11 +330,12 @@ public class ArbolGen {
             }
         }
     }
-    
+
     public String toString() {
         return toStringAux(this.raiz);
     }
-     private String toStringAux(NodoGen n) {
+
+    private String toStringAux(NodoGen n) {
         String s = "";
         if (n != null) {
             //visita del nodo n
@@ -355,5 +355,49 @@ public class ArbolGen {
 
         }
         return s;
+    }
+
+    public boolean verificarPatron(Lista lis) {
+        boolean patron;
+        patron = verificarPatron(lis, this.raiz);
+        return patron;
+    }
+
+    private boolean verificarPatron(Lista lista, NodoGen n) {
+        boolean patron = false;
+        if (n != null) {
+            if (n.getElem().equals(lista.recuperar(1))) {
+                lista.eliminar(1);
+
+                NodoGen aux = n.getHijoIzquierdo();
+                if (aux != null) {
+                    while (aux != null && !patron) {
+                        patron = verificarPatron(lista, aux);
+                        aux = aux.getHermanoDerecho();
+                    }
+                } else if (lista.esVacia()) {
+                    patron = true;
+                }
+            }
+        }
+        return patron;
+    }
+
+    private boolean verificarPatron2(Lista lista, NodoGen n) {
+        boolean patron = false;
+        if (lista.esVacia() && n == null) {
+            patron = true;
+        } else {
+            if (n.getElem().equals(lista.recuperar(1))) {
+                lista.eliminar(1);
+
+                NodoGen aux = n.getHijoIzquierdo();
+                while (aux != null && !patron) {
+                    patron = verificarPatron(lista, aux);
+                    aux = aux.getHermanoDerecho();
+                }
+            }
+        }
+        return patron;
     }
 }
