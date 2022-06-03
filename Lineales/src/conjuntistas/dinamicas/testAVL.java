@@ -24,6 +24,10 @@ public class testAVL {
         arbol.insertar(90);
         arbol.insertar(95);
         arbol.insertar(80);
+        
+        System.out.println(arbol.toString());
+        
+        arbol.eliminar(105);
         System.out.println(arbol.toString());
     }
     

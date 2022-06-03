@@ -253,20 +253,21 @@ public class ArbolAVL {
                     NodoAVL aux = buscarCandidatoA(n.getIzquierdo());
 
                     //Setear los hijos del nuevo padre
+                    aux.setDerecho(n.getDerecho());
                     if (n.getIzquierdo() != aux) {//Si aux itera aunque sea una vez hacia la derecha, se setea el HI
                         aux.setIzquierdo(n.getIzquierdo());
-                    }
-                    aux.setDerecho(n.getDerecho());
+                    }                   
                     //Setear la altura del candidato A en su posición nueva
-                    aux.setAltura(Math.max(aux.getIzquierdo().getAltura(), aux.getDerecho().getAltura()) + 1);//Ya se sabe de antemano que tiene ambos hijos
+                    actualizarAltura(aux);
                     //setear el padre del padre
                     setPadre(n, aux, padre);
                     //Setear la nueva altura del padre
-                    padre.setAltura(Math.max(padre.getIzquierdo().getAltura(), padre.getDerecho().getAltura()) + 1);
-                    padre.setAltura(Math.max(aux.getIzquierdo().getAltura(), aux.getDerecho().getAltura()) + 1);
+                    if (padre != null) {
+                        actualizarAltura(n);
+                    }
                 } else if (n.getIzquierdo() == null && n.getDerecho() != null) {//CASO: HD no es nulo, HI es nulo
                     setPadre(n, n.getDerecho(), padre);
-                    
+
                 } else if (n.getDerecho() == null && n.getIzquierdo() != null) {//CASO: HD es nulo, HI no es nulo
                     setPadre(n, n.getIzquierdo(), padre);
                 } else {//CASO: Es hoja entonces se elimina directamente      
@@ -275,11 +276,45 @@ public class ArbolAVL {
                 //Si el elemento no se encontró entonces, buscar por la derecha o la izquierda según corresponda
             } else if (elem.compareTo(n.getElem()) < 0) {//Si elemento del nodo es mayor al elemento a eliminar
                 exito = eliminar(elem, n.getIzquierdo(), n);//Ir por la izquierda
+                if (exito) {
+                    actualizarAltura(n);
+                }
             } else {//Si elem es menor a elem
                 exito = eliminar(elem, n.getDerecho(), n);//Ir por la derecha
+                if (exito) {
+                    actualizarAltura(n);
+                }
             }
         }
         return exito;
+    }
+    private void actualizarAltura(NodoAVL nodo){
+        //Módulo que actualiza la altura de un nodo recorrido por una inserción o eliminación
+        if (nodo.getIzquierdo() != null && nodo.getDerecho() != null) {
+                        nodo.setAltura(Math.max(nodo.getIzquierdo().getAltura(), nodo.getDerecho().getAltura()) + 1);
+                    } else if (nodo.getIzquierdo() != null) {
+                        nodo.setAltura(nodo.getIzquierdo().getAltura() + 1);
+                    } else if (nodo.getDerecho() != null) {
+                        nodo.setAltura(nodo.getDerecho().getAltura() + 1);
+                    } else {
+                        nodo.setAltura(0);
+                    }
+    }
+
+    private void setPadre(NodoAVL eliminar, NodoAVL nuevoHijo, NodoAVL padreSetear) {
+        //Método que vincula el padre del padre a eliminar con su nuevo hijo
+        //Caso 3: hoja o nodo interno con ambos hijos
+        if (this.raiz != eliminar) {
+            //Elemento a eliminar queda sin ser apuntado y se elimina
+            if (padreSetear.getIzquierdo() == eliminar) {//Si el hijo es el izquierdo
+                padreSetear.setIzquierdo(nuevoHijo);
+            } else {//sino es el derecho
+                padreSetear.setDerecho(nuevoHijo);
+            }
+            actualizarAltura(padreSetear);
+        } else {//Si el eliminar a borrar es una raíz                       
+            this.raiz = nuevoHijo;//Setear la nueva raíz
+        }
     }
 
     private NodoAVL buscarCandidatoA(NodoAVL n) {
@@ -305,44 +340,52 @@ public class ArbolAVL {
         }
         return retornar;
     }
+
     private void caso1(NodoAVL eliminar, NodoAVL nuevoHijo, NodoAVL padreSetear) {
         if (this.raiz != eliminar) {
             padreSetear.setDerecho(nuevoHijo);
-            padreSetear.setAltura(nuevoHijo.getAltura()+1);
+            padreSetear.setAltura(nuevoHijo.getAltura() + 1);
         }
     }
+
     private void caso2(NodoAVL eliminar, NodoAVL nuevoHijo, NodoAVL padreSetear) {
         if (this.raiz != eliminar) {
             padreSetear.setIzquierdo(nuevoHijo);
-            padreSetear.setAltura(nuevoHijo.getAltura()+1);
+            padreSetear.setAltura(nuevoHijo.getAltura() + 1);
         }
     }
-    private void setPadre(NodoAVL eliminar, NodoAVL nuevoHijo, NodoAVL padreSetear) {
-        //Método que vincula el padre del padre a eliminar con su nuevo hijo
-        if (this.raiz != eliminar) {
-            //Elemento a eliminar queda sin ser apuntado y se elimina
-            if (padreSetear.getIzquierdo() == eliminar) {//Si el hijo es el izquierdo
-                padreSetear.setIzquierdo(nuevoHijo);               
-            } else {//sino es el derecho
-                padreSetear.setDerecho(nuevoHijo);
-            }
-            padreSetear.setAltura(nuevoHijo.getAltura()+1);
-        } else {//Si el eliminar a borrar es una raíz                       
-            this.raiz = nuevoHijo;//Setear la nueva raíz
-        }
-    }
-    private void setearAltura(NodoAVL n){
-        if(n.getDerecho()!=null && n.getIzquierdo()!=null){
-            n.setAltura(Math.max(n.getDerecho().getAltura(),n.getIzquierdo().getAltura())+1);
-        }else if(n.getDerecho()!=null){
-            n.setAltura(n.getDerecho().getAltura()+1);
-        }else if(n.getIzquierdo()!=null){
-            n.setAltura(n.getIzquierdo().getAltura()+1);
-        }else{//Es hoja
+
+    private void setearAltura(NodoAVL n) {
+        if (n.getDerecho() != null && n.getIzquierdo() != null) {
+            n.setAltura(Math.max(n.getDerecho().getAltura(), n.getIzquierdo().getAltura()) + 1);
+        } else if (n.getDerecho() != null) {
+            n.setAltura(n.getDerecho().getAltura() + 1);
+        } else if (n.getIzquierdo() != null) {
+            n.setAltura(n.getIzquierdo().getAltura() + 1);
+        } else {//Es hoja
             n.setAltura(0);
         }
     }
-    private void rotarIzquierda(NodoAVL r) {
 
+    private void rotarIzquierda(NodoAVL r) {
+        NodoAVL h=r.getDerecho();
+        NodoAVL temp=r.getDerecho().getIzquierdo();
+                
+        h.setIzquierdo(r);
+        r.setDerecho(temp);
+        if(this.raiz==r){
+            this.raiz=h;
+        }
+    }
+    
+    private void rotarDerecha(NodoAVL r) {
+        NodoAVL h=r.getIzquierdo();
+        NodoAVL temp=r.getIzquierdo().getDerecho();
+                
+        h.setDerecho(r);
+        r.setIzquierdo(temp);
+        if(this.raiz==r){
+            this.raiz=h;
+        }
     }
 }
