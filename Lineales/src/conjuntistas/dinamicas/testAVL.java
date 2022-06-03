@@ -17,12 +17,12 @@ public class testAVL {
     public static void main(String[] args) {
         ArbolAVL arbol=new ArbolAVL();
         
-        arbol.insertar(80);
-        arbol.insertar(90);
-        arbol.insertar(70);
-        arbol.insertar(60);
-        arbol.insertar(75);
-        arbol.insertar(76);
+        arbol.insertar(12);
+        arbol.insertar(5);
+        arbol.insertar(23);
+        arbol.insertar(3);
+        arbol.insertar(8);
+        arbol.insertar(10);
         
         System.out.println(arbol.toString());
         

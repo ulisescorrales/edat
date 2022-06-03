@@ -343,7 +343,7 @@ public class ArbolAVL {
 
     //----------------Métodos de rotación-----------------------
     public void reacomodar(NodoAVL pivote) {
-        int balanceRaiz = calcularBalance(pivote);
+        int balanceRaiz = calcularBalance(pivote);        
         int balanceHI;
         int balanceHD;
 
@@ -357,10 +357,11 @@ public class ArbolAVL {
             } else {
                 balanceHI = 0;
             }
+            //Realizr rotaciones
             if (balanceHI == 0 || balanceHI == 1) {//Mismo signo
                 rotarDerecha(pivote);
-            } else if (balanceHI == -1) {//Distinto signo
-                rotarIzquierda(pivote.getIzquierdo());
+            } else if (balanceHI == -1) {//Distinto signo                
+                pivote.setIzquierdo(rotarIzquierda(pivote.getIzquierdo()));
                 rotarDerecha(pivote);
             }
         } else if (balanceRaiz == -2) {
@@ -394,8 +395,7 @@ public class ArbolAVL {
             altD = -1;
         } else {
             altD = raiz.getDerecho().getAltura();
-        }
-
+        }        
         return altI - altD;
     }
 
