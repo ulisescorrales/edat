@@ -163,6 +163,32 @@ public class ArbolGen {
         return lis;
     }
 
+    public Lista listarEntreNiveles(int niv1, int niv2) {
+        Lista lista = new Lista();
+        listarEntreNiveles(lista, niv1, niv2, this.raiz, 0);
+        return lista;
+    }
+
+    private void listarEntreNiveles(Lista lis, int min, int max, NodoGen n, int nivel) {
+        if (n != null) {
+            if(nivel==max){
+                lis.insertar(n.getElem(), lis.longitud() + 1);//Solo insertar
+            }else if (nivel >= min && nivel<max) {//Si está en el rago
+                listarEntreNiveles(lis, min, max, n.getHijoIzquierdo(), nivel + 1);//Visitar HI                        
+                lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre
+            }else if(nivel<min){//Solo visitar HI
+                listarEntreNiveles(lis, min, max, n.getHijoIzquierdo(), nivel + 1);
+            }
+            NodoGen aux = n.getHijoIzquierdo();//Preguntar a hermanos derechos si tiene HI
+            if (aux != null) {
+                while (aux.getHermanoDerecho() != null) {
+                    listarEntreNiveles(lis,min,max, aux.getHermanoDerecho(),nivel+1);
+                    aux = aux.getHermanoDerecho();
+                }
+            }
+        }
+    }
+
     @Override
     public ArbolGen clone() {
         ArbolGen nuevo = new ArbolGen();
@@ -399,5 +425,58 @@ public class ArbolGen {
             }
         }
         return patron;
+    }
+
+    public boolean insertarPorAncestros(Lista lis) {
+        boolean exito;
+        exito = insertarPorAncestros(lis, this.raiz);
+        return exito;
+    }
+
+    private boolean insertarPorAncestros(Lista lista, NodoGen n) {
+        boolean exito = false;
+        if (lista.esVacia()) {
+
+        } else {
+            if (n.getElem().equals(lista.recuperar(1))) {
+                lista.eliminar(1);
+
+            }
+        }
+        return exito;
+    }
+
+    public boolean verificarCamino(Lista lis) {
+        boolean verificado;
+        verificado = verificarCamino(lis, this.raiz);
+        return verificado;
+    }
+
+    private boolean verificarCamino(Lista lista, NodoGen n) {
+        boolean exito = false;//Será true si la lista queda vacía y no existen más elementos a verificar(el último fue una hoja
+        if (lista.esVacia()) {
+            exito = true;
+        } else {
+            if (n != null) {
+                if (n.getElem().equals(lista.recuperar(1))) {//Si el elemento coincide con el primero de la lista
+                    Object eliminado = lista.recuperar(1);
+                    lista.eliminar(1);
+
+                    NodoGen aux = n.getHijoIzquierdo();
+                    if (aux == null && lista.esVacia()) {//Caso especial
+                        exito = true;
+                    } else {
+                        while (aux != null && !exito) {
+                            exito = verificarCamino(lista, aux);
+                            aux = aux.getHermanoDerecho();
+                        }
+                    }
+                    if (!exito) {
+                        lista.insertar(eliminado, 1);
+                    }
+                }
+            }
+        }
+        return exito;
     }
 }
