@@ -22,14 +22,14 @@ public class testABB {
         arbol.insertar(5);
         arbol.insertar(2);
         arbol.insertar(3);
-        arbol.insertar(1);
+        arbol.insertar(4);
         arbol.insertar(10);
         arbol.insertar(7);
         //Insertar elemento repetido
         arbol.insertar(5);
         arbol.insertar(9);
         
-        
+        /*
         //Mostrar el arbol
         System.out.println(arbol.toString());
         
@@ -57,7 +57,9 @@ public class testABB {
         
         arbol.eliminar(5);
         System.out.println(arbol.listar().toString());
-        
+        */
+        arbol.eliminarMinimo();
+        System.out.println(arbol.toString());
     }
     
     public static void llenarArbol(ArbolBB arb){

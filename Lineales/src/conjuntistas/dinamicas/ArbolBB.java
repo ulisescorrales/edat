@@ -273,4 +273,20 @@ public class ArbolBB {
             this.raiz = nuevo;//Setear la nueva raíz
         }
     }
+    
+    public void eliminarMinimo(){
+        eliminarMinimo(this.raiz,null);        
+    }
+    
+    private void eliminarMinimo(NodoArbol n,NodoArbol padre){
+        if(n.getIzquierdo()==null){
+            if(n.getDerecho()==null){//Si es hoja
+                padre.setIzquierdo(null);
+            }else{//Si el elemento a eliminar tiene HD
+                padre.setIzquierdo(n.getDerecho());
+            }            
+        }else{//Seguir bajando por la izquierda
+            eliminarMinimo(n.getIzquierdo(),n);
+        }
+    }
 }
