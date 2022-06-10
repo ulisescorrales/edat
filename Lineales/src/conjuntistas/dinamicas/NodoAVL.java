@@ -11,28 +11,28 @@ package conjuntistas.dinamicas;
  */
 public class NodoAVL {
 
-    private Object elem;
+    private Comparable elem;
     private NodoAVL izq;
     private NodoAVL der;
     private int altura;
 
-    public NodoAVL(Object elem, NodoAVL izq, NodoAVL der,int alt) {
+    public NodoAVL(Comparable elem, NodoAVL izq, NodoAVL der,int alt) {
         this.elem = elem;
         this.izq = izq;
         this.der = der;
         this.altura=alt;
     }
-    public NodoAVL(Object elem, NodoAVL izq, NodoAVL der) {
+    public NodoAVL(Comparable elem, NodoAVL izq, NodoAVL der) {
         this.elem = elem;
         this.izq = izq;
         this.der = der;        
     }
 
-    public Object getElem() {
+    public Comparable getElem() {
         return elem;
     }
 
-    public void setElem(Object elem) {
+    public void setElem(Comparable elem) {
         this.elem = elem;
     }
 
