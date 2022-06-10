@@ -18,14 +18,11 @@ public class testArbolGen {
         ArbolGen arbol=new ArbolGen();
         Lista lis=new Lista();
         
-        lis.insertar('A',lis.longitud()+1);
-        lis.insertar('B',lis.longitud()+1);
-        lis.insertar('G',lis.longitud()+1); 
-       lis.insertar('H',lis.longitud()+1); 
+        
         
         llenarArbol(arbol);
-        
-        System.out.println(arbol.verificarCamino(lis));
+        arbol.eliminar2('F');
+        System.out.println(arbol.toString());
         
     }
     public static void llenarArbol(ArbolGen arb){

@@ -109,12 +109,14 @@ public class ArbolGen {
 
     public void listarInorden(Lista lis, NodoGen n) {
         if (n != null) {
-            listarInorden(lis, n.getHijoIzquierdo());//Visitar HI
-            lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre
             NodoGen aux = n.getHijoIzquierdo();//Preguntar a hermanos derechos si tiene HI
+            listarInorden(lis, aux);//Visitar HI
+            lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre
+            
             if (aux != null) {
-                while (aux.getHermanoDerecho() != null) {
-                    listarInorden(lis, aux.getHermanoDerecho());
+                aux=aux.getHermanoDerecho();
+                while (aux!= null) {
+                    listarInorden(lis, aux);
                     aux = aux.getHermanoDerecho();
                 }
             }
@@ -171,22 +173,55 @@ public class ArbolGen {
 
     private void listarEntreNiveles(Lista lis, int min, int max, NodoGen n, int nivel) {
         if (n != null) {
-            if(nivel==max){
-                lis.insertar(n.getElem(), lis.longitud() + 1);//Solo insertar
-            }else if (nivel >= min && nivel<max) {//Si está en el rago
-                listarEntreNiveles(lis, min, max, n.getHijoIzquierdo(), nivel + 1);//Visitar HI                        
-                lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre
-            }else if(nivel<min){//Solo visitar HI
-                listarEntreNiveles(lis, min, max, n.getHijoIzquierdo(), nivel + 1);
-            }
             NodoGen aux = n.getHijoIzquierdo();//Preguntar a hermanos derechos si tiene HI
+            if (nivel == max) {
+                lis.insertar(n.getElem(), lis.longitud() + 1);//Solo insertar
+            } else if (nivel >= min && nivel < max) {//Si está en el rago
+                listarEntreNiveles(lis, min, max, aux, nivel + 1);//Visitar HI                        
+                lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre
+            } else if (nivel < min) {//Solo visitar HI
+                listarEntreNiveles(lis, min, max, aux, nivel + 1);
+            }
+
             if (aux != null) {
-                while (aux.getHermanoDerecho() != null) {
-                    listarEntreNiveles(lis,min,max, aux.getHermanoDerecho(),nivel+1);
+                aux = aux.getHermanoDerecho();
+                while (aux != null) {
+                    listarEntreNiveles(lis, min, max, aux, nivel + 1);
                     aux = aux.getHermanoDerecho();
                 }
             }
         }
+    }
+
+    public boolean eliminar2(Object elem) {
+        boolean exito;
+        exito = eliminar2(elem, this.raiz);
+        return exito;
+    }
+
+    private boolean eliminar2(Object elem, NodoGen n) {
+        boolean exito = false;
+        NodoGen aux = n.getHijoIzquierdo();
+        if (aux != null) {
+            if (aux.getElem().equals(elem)) {
+                n.setHijoIzquierdo(aux.getHermanoDerecho());
+                exito = true;
+            } else {
+                while (aux != null && !exito) {
+                    exito = eliminar2(elem, aux);
+                    System.out.println(aux.getElem());                    
+                    if (aux.getHermanoDerecho() != null) {
+                        if (!exito && aux.getHermanoDerecho().getElem().equals(elem)) {
+                            aux.setHermanoDerecho(aux.getHermanoDerecho().getHermanoDerecho());
+                            exito = true;
+
+                        }
+                    }
+                    aux = aux.getHermanoDerecho();
+                }
+            }
+        }
+        return exito;
     }
 
     @Override
