@@ -109,13 +109,14 @@ public class ArbolGen {
 
     public void listarInorden(Lista lis, NodoGen n) {
         if (n != null) {
-            listarInorden(lis, n.getHijoIzquierdo());//Visitar HI
-            lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre
-            NodoGen aux = n.getHijoIzquierdo();//Preguntar a hermanos derechos si tiene HI
-            if (aux != null) {
-                while (aux.getHermanoDerecho() != null) {
-                    listarInorden(lis, aux.getHermanoDerecho());
-                    aux = aux.getHermanoDerecho();
+            
+            NodoGen hijo=n.getHijoIzquierdo();
+            listarInorden(lis, hijo);//Visitar HI
+            lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre            
+            if (hijo != null) {
+                while (hijo.getHermanoDerecho() != null) {
+                    listarInorden(lis, hijo.getHermanoDerecho());
+                    hijo = hijo.getHermanoDerecho();
                 }
             }
         }
@@ -181,8 +182,9 @@ public class ArbolGen {
             }
             NodoGen aux = n.getHijoIzquierdo();//Preguntar a hermanos derechos si tiene HI
             if (aux != null) {
-                while (aux.getHermanoDerecho() != null) {
-                    listarEntreNiveles(lis,min,max, aux.getHermanoDerecho(),nivel+1);
+                aux=aux.getHermanoDerecho();
+                while (aux != null) {
+                    listarEntreNiveles(lis,min,max, aux,nivel+1);
                     aux = aux.getHermanoDerecho();
                 }
             }
