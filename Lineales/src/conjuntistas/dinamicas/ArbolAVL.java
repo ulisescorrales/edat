@@ -36,7 +36,7 @@ public class ArbolAVL {
                 if (elemento.compareTo(n.getElem()) > 0) {
                     pertenece = pertenece(elemento, n.getDerecho());
                 } else {
-                    pertenece = pertenece(elemento, n.getIzquierdo());
+                    pertenece = pertenece(elemento, n.getIzquierdo());                    
                 }
             }
         }

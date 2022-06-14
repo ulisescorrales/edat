@@ -4,7 +4,6 @@
  */
 package conjuntistas.dinamicas;
 
-import jerarquicas.dinamicas.NodoArbol;
 import lineales.dinamicas.Lista;
 
 /**
@@ -13,7 +12,7 @@ import lineales.dinamicas.Lista;
  */
 public class ArbolBB {
 
-    private NodoArbol raiz;
+    private NodoBB raiz;
 
     public ArbolBB() {
         raiz = null;
@@ -27,48 +26,48 @@ public class ArbolBB {
         return pertenece;
     }
 
-    private boolean pertenece(Comparable elemento, NodoArbol n) {
+    private boolean pertenece(Comparable minimo, NodoBB n) {
         boolean pertenece = false;
         if (n != null) {
-            if (n.getElem().equals(elemento)) {
+            if (n.getElem().equals(minimo)) {
                 pertenece = true;
             } else {
-                if (elemento.compareTo(n.getElem()) > 0) {
-                    pertenece = pertenece(elemento, n.getDerecho());
+                if (minimo.compareTo(n.getElem()) > 0) {
+                    pertenece = pertenece(minimo, n.getDerecho());
                 } else {
-                    pertenece = pertenece(elemento, n.getIzquierdo());
+                    pertenece = pertenece(minimo, n.getIzquierdo());
                 }
             }
         }
         return pertenece;
     }
 
-    public boolean insertar(Comparable elemento) {
-        //Método que inserta un elemento en el ABB, no acepta elementos repetidos
+    public boolean insertar(Comparable minimo) {
+        //Método que inserta un minimo en el ABB, no acepta minimos repetidos
         boolean exito = true;
         if (this.raiz == null) {//Si el árbol es vacío
-            this.raiz = new NodoArbol(elemento, null, null); //Setear la raíz
+            this.raiz = new NodoBB(minimo, null, null); //Setear la raíz
         } else {
-            exito = insertarAux(this.raiz, elemento);//Recorrer recursivamente
+            exito = insertarAux(this.raiz, minimo);//Recorrer recursivamente
         }
         return exito;
     }
 
-    private boolean insertarAux(NodoArbol n, Comparable elemento) {
+    private boolean insertarAux(NodoBB n, Comparable minimo) {
         boolean exito = true;
 
-        if ((elemento.compareTo(n.getElem()) == 0)) {//Si ya existe el elemento entonces
+        if ((minimo.compareTo(n.getElem()) == 0)) {//Si ya existe el minimo entonces
             exito = false;
-        } else if (elemento.compareTo(n.getElem()) < 0) {
+        } else if (minimo.compareTo(n.getElem()) < 0) {
             if (n.getIzquierdo() != null) {
-                exito = insertarAux(n.getIzquierdo(), elemento);
+                exito = insertarAux(n.getIzquierdo(), minimo);
             } else {
-                n.setIzquierdo(new NodoArbol(elemento, null, null));
+                n.setIzquierdo(new NodoBB(minimo, null, null));
             }
         } else if (n.getDerecho() != null) {
-            exito = insertarAux(n.getDerecho(), elemento);
+            exito = insertarAux(n.getDerecho(), minimo);
         } else {
-            n.setDerecho(new NodoArbol(elemento, null, null));
+            n.setDerecho(new NodoBB(minimo, null, null));
         }
         return exito;
     }
@@ -81,7 +80,7 @@ public class ArbolBB {
         return lis;
     }
 
-    private void listar(Lista lista, NodoArbol n) {
+    private void listar(Lista lista, NodoBB n) {
         //Recorrido Inorden
         if (n != null) {
             listar(lista, n.getIzquierdo());
@@ -99,7 +98,7 @@ public class ArbolBB {
         return elem;
     }
 
-    private Comparable minimoElem(NodoArbol n) {
+    private Comparable minimoElem(NodoBB n) {
         Comparable elem = null;
         if (n != null) {
             if (n.getIzquierdo() == null) {
@@ -119,8 +118,8 @@ public class ArbolBB {
         return elem;
     }
 
-    private Comparable maximoElem(NodoArbol n) {
-        /*Método que busca el máximo elemento recorriendo por la derecha
+    private Comparable maximoElem(NodoBB n) {
+        /*Método que busca el máximo minimo recorriendo por la derecha
         el árbol hasta antes de llegar a null*/
         Comparable elem = null;
         if (n != null) {
@@ -142,7 +141,7 @@ public class ArbolBB {
         //min y max pueden estar en el subarbol izquierdo y derecho respectivamente
         //min y max pueden estar en el subarbol izquierdo
         //min y max pueden estar en el subarbol derecho
-        //min y max pueden no estar en el arbol (existen elementos mayores a min y menores a max)
+        //min y max pueden no estar en el arbol (existen minimos mayores a min y menores a max)
         //min y max coinciden
         //
 
@@ -153,11 +152,11 @@ public class ArbolBB {
         return lis;
     }
 
-    private void listarRango(Lista lista, Comparable min, Comparable max, NodoArbol n) {
-        //Método que lista los elementos contenidos en el árbol entre los valores min y max de forma creciente
+    private void listarRango(Lista lista, Comparable min, Comparable max, NodoBB n) {
+        //Método que lista los minimos contenidos en el árbol entre los valores min y max de forma creciente
         //Se recorre el árbol en inorden inverso (Hijo Derecho - Padre - Hijo Izquerdo)
         if (n != null) {
-            if (max.compareTo(n.getElem()) == 0) {//Se recorre hasta encontrar max o un elemento mayor a max
+            if (max.compareTo(n.getElem()) == 0) {//Se recorre hasta encontrar max o un minimo mayor a max
                 //Si se encuentra, no seguir recorriendo
                 lista.insertar(n.getElem(), 1);
                 /*Con el preorden inverso se evita el orden O(n) de insertar de lista y 
@@ -176,13 +175,13 @@ public class ArbolBB {
 
     @Override
     public String toString() {
-        //Método para testeo, retorna la cadena con los elementos en el árbol.
+        //Método para testeo, retorna la cadena con los minimos en el árbol.
         String cadena = "";
         cadena = toString(this.raiz, cadena);
         return cadena;
     }
 
-    private String toString(NodoArbol auxNodo, String cadena) {
+    private String toString(NodoBB auxNodo, String cadena) {
         //Método auxiliar para la recursión de toString()
         if (auxNodo != null) {
 
@@ -211,24 +210,24 @@ public class ArbolBB {
     }
 
     public boolean eliminar(Comparable elem) {
-        //Método que busca el elimento a eliminar y reacomoda los nodos según el orden, retorna éxito si el elemento existe        
+        //Método que busca el elimento a eliminar y reacomoda los nodos según el orden, retorna éxito si el minimo existe        
         return eliminar(elem, this.raiz, null);
     }
 
-    private boolean eliminar(Comparable elem, NodoArbol n, NodoArbol padre) {
+    private boolean eliminar(Comparable elem, NodoBB n, NodoBB padre) {
         //Método auxiliar de eliminar que se invoca de forma recursiva
         boolean exito = false;
-        if (n != null) {//Si el elemento no es nulo
+        if (n != null) {//Si el minimo no es nulo
             if (n.getElem().equals(elem)) {
-                exito = true;//Si elemento existe, la operación será exitosa
+                exito = true;//Si minimo existe, la operación será exitosa
                 if (n.getIzquierdo() != null && n.getDerecho() != null) {//CASO: Si posee ambos hijos
-                    //Usar el candidato A: el elemento mayor del subárbol izquierdo 
+                    //Usar el candidato A: el minimo mayor del subárbol izquierdo 
 
-                    NodoArbol aux = n.getIzquierdo();//aux se ubicará en el candidato A
-                    NodoArbol padreAux = n.getIzquierdo();//Padre de aux para setear su HD en null
+                    NodoBB aux = n.getIzquierdo();//aux se ubicará en el candidato A
+                    NodoBB padreAux = n.getIzquierdo();//Padre de aux para setear su HD en null
 
                     while (aux.getDerecho() != null) {//Buscar el candidato A(máximo del subárbol izquierdo)
-                        if (padreAux != aux) {//Retrasa el recorrido del padre en un elemento
+                        if (padreAux != aux) {//Retrasa el recorrido del padre en un minimo
                             padreAux = padreAux.getDerecho();
                         }
                         aux = aux.getDerecho();
@@ -251,8 +250,8 @@ public class ArbolBB {
                 } else {//CASO: Es hoja entonces se elimina directamente      
                     setPadre(n, null, padre);
                 }
-                //Si el elemento no se encontró entonces, buscar por la derecha o la izquierda según corresponda
-            } else if (elem.compareTo(n.getElem()) < 0) {//Si elemento del nodo es mayor al elemento a eliminar
+                //Si el minimo no se encontró entonces, buscar por la derecha o la izquierda según corresponda
+            } else if (elem.compareTo(n.getElem()) < 0) {//Si minimo del nodo es mayor al minimo a eliminar
                 exito = eliminar(elem, n.getIzquierdo(), n);//Ir por la izquierda
             } else {//Si elem es menor a elem
                 exito = eliminar(elem, n.getDerecho(), n);//Ir por la derecha
@@ -261,16 +260,60 @@ public class ArbolBB {
         return exito;
     }
 
-    private void setPadre(NodoArbol elemento, NodoArbol nuevo, NodoArbol p) {
-        if (this.raiz != elemento) {
-            //elemento queda sin ser apuntado y se elimina
-            if (p.getIzquierdo() == elemento) {//Si el hijo es el izquierdo
+    private void setPadre(NodoBB minimo, NodoBB nuevo, NodoBB p) {
+        if (this.raiz != minimo) {
+            //minimo queda sin ser apuntado y se elimina
+            if (p.getIzquierdo() == minimo) {//Si el hijo es el izquierdo
                 p.setIzquierdo(nuevo);
             } else {//sino es el derecho
                 p.setDerecho(nuevo);
             }
-        } else {//Si el elemento a borrar es una raíz                       
+        } else {//Si el minimo a borrar es una raíz                       
             this.raiz = nuevo;//Setear la nueva raíz
+        }
+    }
+
+    public void eliminarMinimo() {
+        eliminarMinimo(this.raiz, null);
+    }
+
+    private void eliminarMinimo(NodoBB n, NodoBB padre) {
+        if (n.getIzquierdo() == null) {
+            if (n.getDerecho() == null) {//Si es hoja
+                padre.setIzquierdo(null);
+            } else {//Si el minimo a eliminar tiene HD
+                padre.setIzquierdo(n.getDerecho());
+            }
+        } else {//Seguir bajando por la izquierda
+            eliminarMinimo(n.getIzquierdo(), n);
+        }
+    }
+    
+    public Lista listarMayorIgual(Comparable elem){
+        Lista lis=new Lista();
+        listarMayorIgual(lis,elem,this.raiz);
+        return lis;
+    }
+    private void listarMayorIgual(Lista lista,Comparable minimo,NodoBB n){
+        if(n!=null){
+            if(n.getElem().equals(minimo)){
+                lista.insertar(minimo, 1);
+                listarSubDerecho(lista,n.getDerecho());
+            }else if(n.getElem().compareTo(minimo)>0){
+                listarMayorIgual(lista,minimo,n.getIzquierdo());
+                lista.insertar(n.getElem(), 1);
+                listarSubDerecho(lista,n.getDerecho());
+            }else{
+                listarMayorIgual(lista,minimo,n.getDerecho());
+            }
+        }
+    }
+    private void listarSubDerecho(Lista lis, NodoBB n){
+        //recorrer en inorden e ir insertando en la lista
+        if(n!=null){
+            listarSubDerecho(lis,n.getIzquierdo());
+            lis.insertar(n.getElem(), 1);
+            listarSubDerecho(lis,n.getDerecho());
         }
     }
 }
