@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/export/home/ulises.corrales/Documentos/edat/edat/Lineales/src/jerarquicas/dinamicas/ArbolBin.java</file>
             <file>file:/export/home/ulises.corrales/Documentos/edat/edat/Lineales/src/conjuntistas/dinamicas/NodoAVL.java</file>
             <file>file:/export/home/ulises.corrales/Documentos/edat/edat/Lineales/src/conjuntistas/dinamicas/NodoBB.java</file>
@@ -11,6 +12,19 @@
             <file>file:/export/home/ulises.corrales/Documentos/edat/edat/Lineales/src/conjuntistas/dinamicas/testABB.java</file>
             <file>file:/export/home/ulises.corrales/Documentos/edat/edat/Lineales/src/conjuntistas/dinamicas/testAVL.java</file>
             <file>file:/export/home/ulises.corrales/Documentos/edat/edat/Lineales/src/conjuntistas/dinamicas/ArbolBB.java</file>
+=======
+<<<<<<< HEAD
+            <file>file:/C:/Users/ulise/Documents/Git/edat/edat/Lineales/src/jerarquicas/dinamicas/ArbolGen.java</file>
+            <file>file:/C:/Users/ulise/Documents/Git/edat/edat/Lineales/src/conjuntistas/dinamicas/ArbolBB.java</file>
+            <file>file:/C:/Users/ulise/Documents/Git/edat/edat/Lineales/src/jerarquicas/dinamicas/NodoArbol.java</file>
+=======
+            <file>file:/home/uliseslinux/Documentos/Git/EDAT/edat/Lineales/src/conjuntistas/dinamicas/ArbolBB.java</file>
+            <file>file:/home/uliseslinux/Documentos/Git/EDAT/edat/Lineales/src/jerarquicas/dinamicas/testArbolGen.java</file>
+            <file>file:/home/uliseslinux/Documentos/Git/EDAT/edat/Lineales/src/conjuntistas/dinamicas/testABB.java</file>
+            <file>file:/home/uliseslinux/Documentos/Git/EDAT/edat/Lineales/src/jerarquicas/dinamicas/testJerarquica.java</file>
+            <file>file:/home/uliseslinux/Documentos/Git/EDAT/edat/Lineales/src/jerarquicas/dinamicas/test2.java</file>
+>>>>>>> fa7f04378ab432a4d4393a2960b50db94fd67238
+>>>>>>> 8762795b2042a3458eaadd7c3bc99e593fe18c53
         </group>
     </open-files>
 </project-private>

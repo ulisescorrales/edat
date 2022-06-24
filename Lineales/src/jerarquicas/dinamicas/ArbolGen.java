@@ -109,19 +109,30 @@ public class ArbolGen {
 
     public void listarInorden(Lista lis, NodoGen n) {
         if (n != null) {
-            NodoGen aux = n.getHijoIzquierdo();//Preguntar a hermanos derechos si tiene HI
-            listarInorden(lis, aux);//Visitar HI
-            lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre
-            
-            if (aux != null) {
-                aux=aux.getHermanoDerecho();
-                while (aux!= null) {
-                    listarInorden(lis, aux);
-                    aux = aux.getHermanoDerecho();
+
+            NodoGen hijo = n.getHijoIzquierdo();
+            listarInorden(lis, hijo);//Visitar HI
+            lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre            
+            if (hijo != null) {
+                while (hijo.getHermanoDerecho() != null) {
+                    listarInorden(lis, hijo.getHermanoDerecho());
+                    hijo = hijo.getHermanoDerecho();
+                    NodoGen aux = n.getHijoIzquierdo();//Preguntar a hermanos derechos si tiene HI
+                    listarInorden(lis, aux);//Visitar HI
+                    lis.insertar(n.getElem(), lis.longitud() + 1);//visitar el Padre
+
+                    if (aux != null) {
+                        aux = aux.getHermanoDerecho();
+                        while (aux != null) {
+                            listarInorden(lis, aux);
+                            aux = aux.getHermanoDerecho();
+                        }
+                    }
                 }
             }
         }
     }
+    
 
     public Lista listarPosorden() {
         Lista lista = new Lista();
@@ -188,6 +199,10 @@ public class ArbolGen {
                 while (aux != null) {
                     listarEntreNiveles(lis, min, max, aux, nivel + 1);
                     aux = aux.getHermanoDerecho();
+                    while (aux != null) {
+                        listarEntreNiveles(lis, min, max, aux, nivel + 1);
+                        aux = aux.getHermanoDerecho();
+                    }
                 }
             }
         }
@@ -209,7 +224,7 @@ public class ArbolGen {
             } else {
                 while (aux != null && !exito) {
                     exito = eliminar2(elem, aux);
-                    System.out.println(aux.getElem());                    
+                    System.out.println(aux.getElem());
                     if (aux.getHermanoDerecho() != null) {
                         if (!exito && aux.getHermanoDerecho().getElem().equals(elem)) {
                             aux.setHermanoDerecho(aux.getHermanoDerecho().getHermanoDerecho());
