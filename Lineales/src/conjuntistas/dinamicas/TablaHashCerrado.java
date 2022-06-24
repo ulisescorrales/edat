@@ -46,15 +46,15 @@ public class TablaHashCerrado {
 
     public boolean eliminar(Object buscado) {
         //calcula posicion inicial e incremento
-        int pos=buscado.hashCode()%this.TAMANIO;
-        int incremento=reHash(buscado)%this.TAMANIO;
+        int pos=buscado.hashCode()%TAMANIO;
+        int incremento=reHash(buscado)%TAMANIO;
         
         boolean encontrado=false;
         int intento=1;
         //busca el elemento hasta encontrarlo o encontrar una celda vacía
         //o para despues de TAM intentos
         
-        while(!encontrado && intento<this.TAMANIO && this.hash[pos].getEstado()!=-1){
+        while(!encontrado && intento<TAMANIO && this.hash[pos].getEstado()!=-1){
             if(this.hash[pos].getEstado()==1){
                 encontrado=this.hash[pos].getElem()==buscado;
                 if(encontrado){
@@ -63,14 +63,27 @@ public class TablaHashCerrado {
                     this.cant--;
                 }
             }
-            pos=(pos+intento*incremento)%this.TAMANIO;
+            pos=(pos+intento*incremento)%TAMANIO;
             intento++;
         }
         return encontrado;
     }
 
     public boolean pertenece(Object elemento) {
-
+        boolean pertenece=false;
+        int intentos=0;
+        int pos;
+        
+        do{
+            pos= hashCode()+(intentos-1)*reHash(elemento);
+            if(hash[pos].getElem()==elemento){
+                pertenece=true;
+            }     
+            intentos++;
+        }while(intentos<TAMANIO && !pertenece);
+        
+        return pertenece;
+        
     }
     //Diccionario: relacion uno a uno y clave -dato- Se puede usar diccionario en AVL o hash
     //Mapeo: relacion uno a varios, un numero con el conjunto del rango. Ej alumno-materia-carrera- Hash map--Has set
