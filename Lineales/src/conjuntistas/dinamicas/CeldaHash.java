@@ -13,7 +13,8 @@ public class CeldaHash {
     private Object elem;
     private int estado;
     
-    public CeldaHash(){        
+    public CeldaHash(){
+        estado=-1;//Vacio
     }
 
     public Object getElem() {
