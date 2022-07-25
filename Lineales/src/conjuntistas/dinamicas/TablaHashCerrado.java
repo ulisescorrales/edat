@@ -26,22 +26,19 @@ public class TablaHashCerrado {
             hash[i]=new CeldaHash();                    
         }
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Arrays.deepHashCode(this.hash);
-        return hash;
-    }
-    public int reHash(Object buscado){
-        int reHash;
-        return reHash;
-    }
-
     
-
     public boolean insertar(Object elemento) {
-
+        boolean exito=true;
+        int pos=elemento.hashCode()%TAMANIO;
+        int intentos=0;
+        
+        while(hash[pos].getEstado()!=1 && intentos<TAMANIO){
+            //recalcular
+            pos=elemento.hashCode()%TAMANIO;
+            intentos++;
+        }
+        
+        return exito;
     }
 
     public boolean eliminar(Object buscado) {
