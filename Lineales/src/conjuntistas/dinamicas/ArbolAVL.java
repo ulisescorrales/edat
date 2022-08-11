@@ -36,7 +36,7 @@ public class ArbolAVL {
                 if (elemento.compareTo(n.getElem()) > 0) {
                     pertenece = pertenece(elemento, n.getDerecho());
                 } else {
-                    pertenece = pertenece(elemento, n.getIzquierdo());                    
+                    pertenece = pertenece(elemento, n.getIzquierdo());
                 }
             }
         }
@@ -51,6 +51,9 @@ public class ArbolAVL {
         } else {
             exito = insertarAux(this.raiz, elemento);//Recorrer recursivamente
         }
+        //        
+        this.raiz = reacomodar(this.raiz);//Comprobar balance
+        //
         return exito;
     }
 
@@ -69,6 +72,10 @@ public class ArbolAVL {
                     } else {
                         n.setAltura(n.getIzquierdo().getAltura() + 1);//Evitar el getDerecho() de null
                     }
+                    //-------------                                         
+                    n.setIzquierdo(reacomodar(n.getIzquierdo()));
+                    n.setAltura(n.getIzquierdo().getAltura() + 1);
+                    //--------------
                 }
             } else {//Si es nulo, crear el hijo izquierdo                
                 n.setIzquierdo(new NodoAVL(elemento, null, null, 0));
@@ -86,7 +93,10 @@ public class ArbolAVL {
                 } else {
                     n.setAltura(n.getDerecho().getAltura() + 1);
                 }
-
+                //-------------                                         
+                n.setDerecho(reacomodar(n.getDerecho()));
+                n.setAltura(n.getDerecho().getAltura() + 1);
+                //--------------
             }
         } else {//Si HD es nulo, crear el hijo derecho nuevo
             n.setDerecho(new NodoAVL(elemento, null, null, 0));
@@ -210,6 +220,8 @@ public class ArbolAVL {
 
     private String toString(NodoAVL auxNodo, String cadena) {
         //Método auxiliar para la recursión de toString()
+        //Formato:
+        //Padre: valor (altura); HI: valor; HD: valor
         if (auxNodo != null) {
 
             if (auxNodo.getIzquierdo() == null && auxNodo.getDerecho() == null) {
@@ -238,7 +250,9 @@ public class ArbolAVL {
 
     public boolean eliminar(Comparable elem) {
         //Método que busca el elimento a eliminar y reacomoda los nodos según el orden, retorna éxito si el elemento existe        
-        return eliminar(elem, this.raiz, null);
+        boolean exito = eliminar(elem, this.raiz, null);
+        this.raiz = reacomodar(this.raiz);//Comprobar balance
+        return exito;
     }
 
     private boolean eliminar(Comparable elem, NodoAVL n, NodoAVL padre) {
@@ -276,11 +290,13 @@ public class ArbolAVL {
             } else if (elem.compareTo(n.getElem()) < 0) {//Si elemento del nodo es mayor al elemento a eliminar
                 exito = eliminar(elem, n.getIzquierdo(), n);//Ir por la izquierda
                 if (exito) {
+                    n.setIzquierdo(reacomodar(n.getIzquierdo()));
                     actualizarAltura(n);
                 }
-            } else {//Si elem es menor a elem
+            } else {//Si elemento del nodo es menor a elem
                 exito = eliminar(elem, n.getDerecho(), n);//Ir por la derecha
                 if (exito) {
+                    n.setDerecho(reacomodar(n.getDerecho()));
                     actualizarAltura(n);
                 }
             }
@@ -325,13 +341,24 @@ public class ArbolAVL {
             retornar = n;
         } else {
             retornar = buscarCandidatoA(n.getDerecho());
-            if (retornar == n.getDerecho()) {//Setear en null al HD del padredel candidato A
-                n.setDerecho(null);
-                if (n.getIzquierdo() == null) {
-                    n.setAltura(0);
+            if (retornar == n.getDerecho()) {//Setear en null al HD del padre del candidato A
+                if (retornar.getIzquierdo() != null) {//Si el máximo del subárbol izquierdo tiene hijo izquierdo, queda como
+                    //hijo derecho del nodo superior
+                    n.setDerecho(retornar.getIzquierdo());
+                    if(n.getIzquierdo()!=null){
+                        n.setAltura(Math.max(n.getIzquierdo().getAltura(), n.getDerecho().getAltura()) + 1);
+                    }else{
+                        n.setAltura(n.getDerecho().getAltura()+1);
+                    }
                 } else {
-                    n.setAltura(n.getIzquierdo().getAltura() + 1);
+                    n.setDerecho(null);
+                    if (n.getIzquierdo() == null) {
+                        n.setAltura(0);
+                    } else {
+                        n.setAltura(n.getIzquierdo().getAltura() + 1);
+                    }
                 }
+
             } else if (n.getIzquierdo() != null) {
                 n.setAltura(Math.max(n.getIzquierdo().getAltura(), n.getDerecho().getAltura()) + 1);
             } else {
@@ -342,14 +369,14 @@ public class ArbolAVL {
     }
 
     //----------------Métodos de rotación-----------------------
-    public void reacomodar(NodoAVL pivote) {
-        int balanceRaiz = calcularBalance(pivote);        
+    public NodoAVL reacomodar(NodoAVL pivote) {
+        int balanceRaiz = calcularBalance(pivote);//Obtener el balance        
         int balanceHI;
         int balanceHD;
+        NodoAVL retornar = pivote;//En caso de rotación, se retorna el nodo superior para enlazarlo en el nivel superior        
 
         //Calcular balances
-        //Rotaciones
-        //
+        //Rotaciones      
         if (balanceRaiz == 2) {
             //Calcular balance HI
             if (pivote.getIzquierdo() != null) {
@@ -357,12 +384,12 @@ public class ArbolAVL {
             } else {
                 balanceHI = 0;
             }
-            //Realizr rotaciones
+            //Realizar rotaciones
             if (balanceHI == 0 || balanceHI == 1) {//Mismo signo
-                rotarDerecha(pivote);
+                retornar = rotarDerecha(pivote);
             } else if (balanceHI == -1) {//Distinto signo                
                 pivote.setIzquierdo(rotarIzquierda(pivote.getIzquierdo()));
-                rotarDerecha(pivote);
+                retornar = rotarDerecha(pivote);
             }
         } else if (balanceRaiz == -2) {
             //Calcular balance HD
@@ -371,31 +398,36 @@ public class ArbolAVL {
             } else {
                 balanceHD = 0;
             }
-            if (balanceHD == 0 || balanceHD == -1) {//Mismo signo
-                rotarIzquierda(pivote);
-            } else if (balanceHD == 1) {//Distinto signo
-                rotarDerecha(pivote.getDerecho());
-                rotarDerecha(pivote);
+            if (balanceHD == -1) {//Mismo signo
+                retornar = rotarIzquierda(pivote);
+            } else if (balanceHD == 0 || balanceHD == 1) {//Distinto signo
+                pivote.setDerecho(rotarDerecha(pivote.getDerecho()));
+                retornar = rotarIzquierda(pivote);
             }
+
         }
 
+        return retornar;
     }
 
     private int calcularBalance(NodoAVL raiz) {
-        int altD;
-        int altI;
+        //Método que calcula el balance de un nodo realizando altura(HI)-altura(HD)
+        int altD = 0;
+        int altI = 0;
+        if (raiz != null) {
+            if (raiz.getIzquierdo() == null) {
+                altI = -1;
+            } else {
+                altI = raiz.getIzquierdo().getAltura();
+            }
 
-        if (raiz.getIzquierdo() == null) {
-            altI = -1;
-        } else {
-            altI = raiz.getIzquierdo().getAltura();
+            if (raiz.getDerecho() == null) {
+                altD = -1;
+            } else {
+                altD = raiz.getDerecho().getAltura();
+            }
         }
 
-        if (raiz.getDerecho() == null) {
-            altD = -1;
-        } else {
-            altD = raiz.getDerecho().getAltura();
-        }        
         return altI - altD;
     }
 
@@ -409,7 +441,19 @@ public class ArbolAVL {
         if (this.raiz == r) {
             this.raiz = h;
         }
-        r.setAltura(0);
+        //actualizar altura de r, el resto queda igual
+        if (r.getDerecho() != null) {//Si el pivote quedó con algún hijo
+            r.setAltura(r.getDerecho().getAltura() + 1);
+        } else if (r.getIzquierdo() != null) {
+            r.setAltura(r.getIzquierdo().getAltura() + 1);
+        } else {
+            r.setAltura(0);
+        }
+
+        h.setAltura(r.getAltura() + 1);
+        if (h.getDerecho() != null || h.getIzquierdo() != null) {
+            h.setAltura(r.getAltura() + 1);
+        }
         return h;
     }
 
@@ -423,7 +467,17 @@ public class ArbolAVL {
         if (this.raiz == r) {
             this.raiz = h;
         }
-        r.setAltura(0);
+        //actualizar alturas            
+        if (r.getDerecho() != null || r.getIzquierdo() != null) {//Si el pivote quedó con algún hijo
+            r.setAltura(r.getDerecho().getAltura() + 1);
+        } else {
+            r.setAltura(0);
+        }
+
+        h.setAltura(r.getAltura() + 1);
+        if (h.getDerecho() != null || h.getIzquierdo() != null) {
+            h.setAltura(r.getAltura() + 1);
+        }
         return h;
     }
 }

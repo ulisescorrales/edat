@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package grafos;
+package TPFinal;
 
+import grafos.*;
 import jerarquicas.dinamicas.ArbolGen;
 import lineales.dinamicas.Cola;
 import lineales.dinamicas.Lista;
@@ -113,7 +114,7 @@ public class Grafo {
         return existe;
     }
 
-    public boolean insertarArco(Object unVertice, Object otroVertice, Object etiqueta) {
+    public boolean insertarArco(Object unVertice, Object otroVertice, int etiqueta) {
         boolean exito = false;
         NodoVert nodo1;
         NodoVert nodo2;
@@ -155,7 +156,7 @@ public class Grafo {
         return exito;
     }
 
-    private void vincularNodos(NodoVert unNodo, NodoVert otroNodo, Object etiq) {
+    private void vincularNodos(NodoVert unNodo, NodoVert otroNodo, int etiq) {
         //Módulo que vincula los nodos en ambos sentidos
         NodoAdy aux = unNodo.getPrimerAdy();
         NodoAdy aux2 = otroNodo.getPrimerAdy();

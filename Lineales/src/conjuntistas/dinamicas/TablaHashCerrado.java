@@ -41,7 +41,7 @@ public class TablaHashCerrado {
         return exito;
     }
 
-    public boolean eliminar(Object buscado) {
+    /*public boolean eliminar(Object buscado) {
         //calcula posicion inicial e incremento
         int pos=buscado.hashCode()%TAMANIO;
         int incremento=reHash(buscado)%TAMANIO;
@@ -107,4 +107,5 @@ public class TablaHashCerrado {
         }
         return vacio;
     }
+*/
 }
