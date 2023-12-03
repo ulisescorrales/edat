@@ -9,6 +9,7 @@ package TPFinal;
  * @author ulise
  */
 public class Estacion {
+    //Identificador 
     private String nombre;
     private String calle;
     private int numCalle;

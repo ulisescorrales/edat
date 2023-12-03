@@ -45,19 +45,24 @@ public class TrenesSA {
         return existe;
     }
 
-    public boolean eliminarEstacion(String id) {
-        boolean existe=false;
-        if(estaciones.existeClave(existe)){
-            estaciones.eliminar(id);
-            existe=true;
+    public Diccionario getEstaciones(){
+        return this.estaciones;
+    }
+    public String eliminarEstacion(String id) {        
+        String retornar="Estación no existe";
+        if(estaciones.existeClave(id)){
+            estaciones.eliminar(id);            
             rieles.eliminarVertice(id);
-        }        
-        return existe;
+            retornar="Estación eliminada correctamente";
+        }
+        return retornar;
     }
 
-    public Tren modificarEstacion(String id) {
-        //Buscar la estacion en el diccionario y devolverlo para acceder a los setters
-        
+    public Estacion modificarEstacion(String idEst) {
+        //Retorna la estación
+        Estacion laEstacion=null;        
+        laEstacion=(Estacion)estaciones.obtenerDato(idEst);
+        return laEstacion;
     }
 
     public boolean agregarLinea(String nombreLinea) {

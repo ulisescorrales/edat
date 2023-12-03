@@ -124,7 +124,6 @@ public class ArbolAVL {
             lista.insertar(n.getElem(), lista.longitud() + 1);
             listar(lista, n.getDerecho());
         }
-
     }
 
     public Comparable minimoElem() {
