@@ -28,10 +28,10 @@ public class TrenesSA {
         return trenes.eliminar(id);
     }
 
-    public Tren modificarTren(int id) {
+    //public Tren modificarTren(int id) {
         //Buscar el tren en el diccionario y devolverlo para acceder a los setters
         
-    }
+   // }
 
     //
     public boolean agregarEstacion(String id, String calle, int numCalle, String ciudad, String cp, int cantVias, int cantPlataformas) {
