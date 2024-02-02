@@ -6,10 +6,12 @@ package TPFinal;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
  *
  * @author ulisescorrales
@@ -20,14 +22,43 @@ public class TPFinal {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+        //Scanner input = new Scanner(System.in);
+        
+        //Leer el archivo DatosTPFinal.txt y realizar la carga inicial del sistema
+        StringBuilder datos = new StringBuilder();
         try {
-            FileReader fr=new FileReader("DatosTPFINAL.txt");
-            
+            FileReader txt=new FileReader("src/TPFinal/DatosTPFINAL.txt");
+            int i;
+            i=txt.read();
+            while(i!=-1){                    
+                datos.append((char)i);
+                i=txt.read();                
+            }            
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        TrenesSA sistema = new TrenesSA();
+        String datosString=datos.toString();        
+        
+        StringTokenizer datosTok=new StringTokenizer(datosString,"\n");
+        StringTokenizer objetoTok;       
+        String temp;
+        
+        LinkedList<Estacion> estaciones=new LinkedList();        
+        while(datosTok.hasMoreTokens()){            
+            objetoTok=new StringTokenizer(datosTok.nextToken(),";");
+            temp=objetoTok.nextToken();
+            switch(temp){
+                case "E":
+                    estaciones.add(crearEstaciones(objetoTok));
+                    break;
+                case "L":
+                    
+            }            
+        }
+        System.out.println(estaciones.size());
+        /*TrenesSA sistema = new TrenesSA();
         byte opcion;
         boolean salir = false;
         
@@ -39,7 +70,19 @@ public class TPFinal {
             opcion = input.nextByte();
             mostrarSubMenu(opcion, sistema);
         } while (opcion != 99);
-        //Guardar cambios
+        //Guardar cambios*/
+    }
+    public static Estacion crearEstaciones(StringTokenizer st){
+        String nombre=st.nextToken();        
+        String calle=st.nextToken();
+        int numCalle=Integer.parseInt(st.nextToken());
+        String ciudad=st.nextToken();
+        String cp=st.nextToken();
+        int cantVias=Integer.parseInt(st.nextToken());
+        int cantPlataformas=Integer.parseInt(st.nextToken());
+        
+        Estacion retornar=new Estacion(nombre,calle,numCalle,ciudad,cp,cantVias,cantPlataformas);
+        return retornar;
     }
 
     public static String mostrarMenuPrincipal() {

@@ -6,7 +6,7 @@ package TPFinal;
 
 /**
  *
- * @author ulise
+ * @author ulises
  */
 public class Estacion {
     //Identificador 
@@ -15,8 +15,8 @@ public class Estacion {
     private int numCalle;
     private String ciudad;
     private String cp;
-    private int cantPlataformas;
     private int cantVias;
+    private int cantPlataformas;    
 
     public Estacion(String nombre,String calle, int numCalle, String ciudad, String cp,int cantVias, int cantPlataformas) {
         this.nombre=nombre;
