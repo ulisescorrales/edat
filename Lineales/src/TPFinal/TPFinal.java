@@ -7,7 +7,9 @@ package TPFinal;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -22,10 +24,13 @@ public class TPFinal {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
         
         //Leer el archivo DatosTPFinal.txt y realizar la carga inicial del sistema
         StringBuilder datos = new StringBuilder();
+        HashMap lineas=new HashMap();
+        Diccionario estacionesDic=new Diccionario();
+        Diccionario trenesDic=new Diccionario();
         try {
             FileReader txt=new FileReader("src/TPFinal/DatosTPFINAL.txt");
             int i;
@@ -43,34 +48,85 @@ public class TPFinal {
         
         StringTokenizer datosTok=new StringTokenizer(datosString,"\n");
         StringTokenizer objetoTok;       
-        String temp;
+        String cabecera;
         
-        LinkedList<Estacion> estaciones=new LinkedList();        
+        LinkedList<Estacion> estacionesList=new LinkedList();
+        LinkedList<Tren> trenesList=new LinkedList();
+        LinkedList<String> recorrido=new LinkedList();
         while(datosTok.hasMoreTokens()){            
             objetoTok=new StringTokenizer(datosTok.nextToken(),";");
-            temp=objetoTok.nextToken();
-            switch(temp){
+            cabecera=objetoTok.nextToken();
+            //La cabecera indica: 'E' para estación, 'L' para línea y 'T' para tren
+            switch(cabecera){
                 case "E":
-                    estaciones.add(crearEstaciones(objetoTok));
+                    estacionesList.add(crearEstaciones(objetoTok));
                     break;
-                case "L":
-                    
+                case "L":                                        
+                    String nombreLinea=objetoTok.nextToken();
+                    //Crear la lista con los recorridos
+                    recorrido.add(nombreLinea);
+                    while(objetoTok.hasMoreTokens()){
+                        recorrido.add(objetoTok.nextToken());
+                    }
+                    //El recorrido está construido como una secuencia de strings, los id de las estaciones
+                    lineas.put(nombreLinea, recorrido);
+                    break;
+                case "T":
+                    trenesList.addFirst(crearTren(objetoTok));
+                    break;
             }            
+        }                
+        
+        /*Primero se cargan las estaciones y trenes en una lista y luego se cargan por orden aleatorio en
+        el diccionario implementado con árbol AVL */
+        cargarEstaciones(estacionesDic,estacionesList);
+        //Luego cargar el recorrido con sus objetos
+        Random ran=new Random();
+        int num;
+        while(!trenesList.isEmpty()){
+            num=ran.nextInt(trenesList.size());
+            Tren trenAInsertar=trenesList.get(num);
+            trenesDic.insertar(trenAInsertar.getIdTren(), trenAInsertar);
+            trenesList.remove(num);
         }
-        System.out.println(estaciones.size());
-        /*TrenesSA sistema = new TrenesSA();
-        byte opcion;
-        boolean salir = false;
         
         
+        //Inicialización del menú
+        TrenesSA sistema = new TrenesSA();
+        byte opcion;                       
         //Recuperar datos guardados        
         //Interactuar con el menú hasta salir
         do {
             mostrarMenuPrincipal();
             opcion = input.nextByte();
-            mostrarSubMenu(opcion, sistema);
+            if(opcion!=99){
+                mostrarSubMenuConsulta(opcion, sistema);
+                opcion=input.nextByte();
+                
+            }
         } while (opcion != 99);
-        //Guardar cambios*/
+        
+    }    
+    public static Tren crearTren(StringTokenizer tk){
+        Tren nuevoTren;        
+        int idTren=Integer.parseInt(tk.nextToken());
+        String propulsion=tk.nextToken();
+        int cantVagonesPasaj=Integer.parseInt(tk.nextToken());
+        int cantVagonesCarga=Integer.parseInt(tk.nextToken());
+        String linea=tk.nextToken();        
+        
+        nuevoTren=new Tren(idTren,propulsion,cantVagonesPasaj,cantVagonesCarga,linea);
+        
+        return nuevoTren;
+    }
+    public static void cargarEstaciones(Diccionario dicEst,LinkedList<Estacion> listEst){        
+        Random ran=new Random();
+        int pos;
+        while(!listEst.isEmpty()){
+            pos=ran.nextInt(listEst.size());
+            dicEst.insertar(listEst.get(pos).getNombre(),listEst.get(pos));
+            listEst.remove(pos);
+        }
     }
     public static Estacion crearEstaciones(StringTokenizer st){
         String nombre=st.nextToken();        
@@ -89,18 +145,21 @@ public class TPFinal {
         String cadena = "Bienvenidos al sistema de TrenesSA\n"
                 + "Eliga que acción desea realizar:\n"
                 + "ESTACIONES:\n"
-                + "1-Agregar estación\n"
-                + "2-Modificar estación\n"
-                + "3-Eliminar estación\n"
-                + "4-Consultar estación"
+                + "1-Consultar información\n"
+                + "2-Agregar información\n"
+                + "3-Eliminar información\n"
+                + "4-Modificar información"
                 + "99-Salir";
         return cadena;
-    }
+    }    
 
-    public static void mostrarSubMenu(byte opcionElegida, TrenesSA unSistema) {
+    public static void mostrarSubMenuConsulta(byte opcionElegida, TrenesSA unSistema) {
         switch (opcionElegida) {
             case 1:
-                agregarEstacion(unSistema);
+                System.out.println("Eliga qué quiere consultar");
+                System.out.println("1-Estaciones");
+                System.out.println("2-Líneas");
+                System.out.println("3-Trenes");                
                 break;
             case 99:
 

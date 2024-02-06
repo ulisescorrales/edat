@@ -28,3 +28,11 @@ E;Trelew;Pehuajó;456;Trelew;3928;3;2
 E;Río Gallegos;Mitre;32;Río Gallegos; M2949;1;2
 E;Rawson;Av. Las Heras;1265;Rawson;DD31;2;2
 E;Misiones;San Martín;55;Misiones Cap.;W3942;1;1
+L;Retiro;Roca;Mitre;Gral. Guido;Pinamar
+L;Cordoba;Villa María;Armstrong;Rosario Norte;Retiro;
+L;Rio Gallegos;Trelew;Bariloche;Neuquen;Allen;Santa Rosa;Musters;SUD;Marl Del Plata;Gral. Guido;Pinamar
+L;SUD;Pigue;Trenque Lauquén;Cañuelas;Mitre;Las Heras;
+T;1;electricidad;5;5;Retiro
+T;2;fuel oil;3;3;Cordoba
+T;3;gasolina;4;4;Rio Gallegos
+T;4;híbrido;5;5;SUD

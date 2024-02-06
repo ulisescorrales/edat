@@ -10,18 +10,55 @@ package TPFinal;
  */
 public class Tren {
     
+    private int idTren;
     private String propulsion;
     private int cantVagonesPasaj;
     private int cantVagonesCarga;
-    private String linea;    
-    private int idVia;//?
+    private String linea;       
 
-    public Tren(String propulsion, int cantVagonesPasaj, int cantVagonesCarga, String linea, int idVia) {
+    public Tren(int idTren, String propulsion, int cantVagonesPasaj, int cantVagonesCarga, String linea) {
+        this.idTren = idTren;
         this.propulsion = propulsion;
         this.cantVagonesPasaj = cantVagonesPasaj;
         this.cantVagonesCarga = cantVagonesCarga;
         this.linea = linea;
-        this.idVia = idVia;
+    }
+
+    public int getIdTren() {
+        return idTren;
+    }
+    
+
+    public String getPropulsion() {
+        return propulsion;
+    }
+
+    public void setPropulsion(String propulsion) {
+        this.propulsion = propulsion;
+    }
+
+    public int getCantVagonesPasaj() {
+        return cantVagonesPasaj;
+    }
+
+    public void setCantVagonesPasaj(int cantVagonesPasaj) {
+        this.cantVagonesPasaj = cantVagonesPasaj;
+    }
+
+    public int getCantVagonesCarga() {
+        return cantVagonesCarga;
+    }
+
+    public void setCantVagonesCarga(int cantVagonesCarga) {
+        this.cantVagonesCarga = cantVagonesCarga;
+    }
+
+    public String getLinea() {
+        return linea;
+    }
+
+    public void setLinea(String linea) {
+        this.linea = linea;
     }
     
     
