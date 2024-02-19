@@ -4,36 +4,39 @@
  */
 package TPFinal;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import lineales.dinamicas.Lista;
-
 
 /**
  *
  * @author ulise
  */
 public class Diccionario {
-    private NodoAVLDicc raiz=null;
-   
-    public boolean insertar(Comparable id,Object dato){
+
+    private NodoAVLDicc raiz = null;
+
+    public boolean insertar(Comparable id, Object dato) {
         boolean exito = true;
         if (this.raiz == null) {//Si el árbol es vacío
             this.raiz = new NodoAVLDicc(id, null, null, dato); //Setear la raíz
         } else {
-            exito = insertarAux(this.raiz,id, dato);//Recorrer recursivamente
+            exito = insertarAux(this.raiz, id, dato);//Recorrer recursivamente
         }
         //        
         this.raiz = reacomodar(this.raiz);//Comprobar balance
         //
         return exito;
     }
-       private boolean insertarAux(NodoAVLDicc n,Comparable id, Object dato) {        
+
+    private boolean insertarAux(NodoAVLDicc n, Comparable id, Object dato) {
         boolean exito = true;
 
         if ((id.compareTo(n.getClave()) == 0)) {//Si ya existe el elemento entonces retorna false
             exito = false;
         } else if (id.compareTo(n.getClave()) < 0) {//Si elemento es menor a n.getElem()
             if (n.getIzquierdo() != null) {//Si no es nulo,  bajar por la izquierda
-                exito = insertarAux(n.getIzquierdo(), id,dato);
+                exito = insertarAux(n.getIzquierdo(), id, dato);
                 if (exito) {
                     if (n.getDerecho() != null) {
                         n.setAltura(Math.max(n.getIzquierdo().getAltura(), n.getDerecho().getAltura()) + 1);
@@ -46,7 +49,7 @@ public class Diccionario {
                     //--------------
                 }
             } else {//Si es nulo, crear el hijo izquierdo                
-                n.setIzquierdo(new NodoAVLDicc(id, 0,null, null,dato));
+                n.setIzquierdo(new NodoAVLDicc(id, 0, null, null, dato));
                 if (n.getDerecho() != null) {
                     n.setAltura(Math.max(0, n.getDerecho().getAltura()) + 1);
                 } else {
@@ -54,7 +57,7 @@ public class Diccionario {
                 }
             }
         } else if (n.getDerecho() != null) {//Si elemento es mayor a n.getElem(), bajar por la derecha
-            exito = insertarAux(n.getDerecho(), id,dato);
+            exito = insertarAux(n.getDerecho(), id, dato);
             if (exito) {
                 if (n.getIzquierdo() != null) {
                     n.setAltura(Math.max(n.getIzquierdo().getAltura(), n.getDerecho().getAltura()) + 1);
@@ -67,7 +70,7 @@ public class Diccionario {
                 //--------------
             }
         } else {//Si HD es nulo, crear el hijo derecho nuevo
-            n.setDerecho(new NodoAVLDicc(id,0, null, null, dato));
+            n.setDerecho(new NodoAVLDicc(id, 0, null, null, dato));
             if (n.getIzquierdo() != null) {
                 n.setAltura(Math.max(0, n.getIzquierdo().getAltura()) + 1);
             } else {
@@ -76,6 +79,7 @@ public class Diccionario {
         }
         return exito;
     }
+
     private NodoAVLDicc reacomodar(NodoAVLDicc pivote) {
         int balanceRaiz = calcularBalance(pivote);//Obtener el balance        
         int balanceHI;
@@ -116,7 +120,8 @@ public class Diccionario {
 
         return retornar;
     }
-     private int calcularBalance(NodoAVLDicc raiz) {
+
+    private int calcularBalance(NodoAVLDicc raiz) {
         //Método que calcula el balance de un nodo realizando altura(HI)-altura(HD)
         int altD = 0;
         int altI = 0;
@@ -186,19 +191,36 @@ public class Diccionario {
         }
         return h;
     }
-      
-    public boolean esVacio(){
-        return this.raiz==null;
+
+    public boolean esVacio() {
+        return this.raiz == null;
     }
-    
-    public boolean existeClave(Comparable clave){
-        boolean existe=false;
+
+    public boolean existeClave(Comparable clave) {
+        return existeClave(clave, this.raiz);
+    }
+
+    private boolean existeClave(Comparable clave, NodoAVLDicc n) {
+        boolean existe = false;
+        if (n != null) {
+            int comparacion = clave.compareTo(n.getClave());
+            if (comparacion == 0) {
+                existe = true;
+            } else if (comparacion < 0) {
+                existe = existeClave(clave, n.getIzquierdo());
+            } else {
+                existe = existeClave(clave, n.getDerecho());
+            }
+        }
         return existe;
     }
+
     public boolean eliminar(Comparable elem) {
         //Método que busca el elimento a eliminar y reacomoda los nodos según el orden, retorna éxito si el elemento existe        
         boolean exito = eliminar(elem, this.raiz, null);
-        this.raiz = reacomodar(this.raiz);//Comprobar balance
+        if (exito) {
+            this.raiz = reacomodar(this.raiz);//Comprobar balance
+        }
         return exito;
     }
 
@@ -250,6 +272,7 @@ public class Diccionario {
         }
         return exito;
     }
+
     private NodoAVLDicc buscarCandidatoA(NodoAVLDicc n) {
         //Método que busca al candidato A, el mayor elemento del subárbol izquierdo, y que setea al padre del mismo en null
         //También va actualizando la altura de los nodos que recorre
@@ -262,10 +285,10 @@ public class Diccionario {
                 if (retornar.getIzquierdo() != null) {//Si el máximo del subárbol izquierdo tiene hijo izquierdo, queda como
                     //hijo derecho del nodo superior
                     n.setDerecho(retornar.getIzquierdo());
-                    if(n.getIzquierdo()!=null){
+                    if (n.getIzquierdo() != null) {
                         n.setAltura(Math.max(n.getIzquierdo().getAltura(), n.getDerecho().getAltura()) + 1);
-                    }else{
-                        n.setAltura(n.getDerecho().getAltura()+1);
+                    } else {
+                        n.setAltura(n.getDerecho().getAltura() + 1);
                     }
                 } else {
                     n.setDerecho(null);
@@ -284,6 +307,7 @@ public class Diccionario {
         }
         return retornar;
     }
+
     private void actualizarAltura(NodoAVLDicc nodo) {
         //Módulo que actualiza la altura de un nodo recorrido por una inserción o eliminación
         if (nodo.getIzquierdo() != null && nodo.getDerecho() != null) {
@@ -312,8 +336,8 @@ public class Diccionario {
             this.raiz = nuevoHijo;//Setear la nueva raíz
         }
     }
-    
-   public Lista listarClaves() {
+
+    public Lista listarClaves() {
         Lista lis = new Lista();
 
         listarClavesAux(lis, this.raiz);
@@ -330,7 +354,8 @@ public class Diccionario {
         }
 
     }
-   public Lista listarDatos() {
+
+    public Lista listarDatos() {
         Lista lis = new Lista();
 
         listarDatos(lis, this.raiz);
@@ -346,25 +371,62 @@ public class Diccionario {
             listarDatos(lista, n.getDerecho());
         }
     }
-   public Object obtenerDato(String id){
-       Object retornar=null;
-       retornar=obtenerDato(this.raiz,id);
-       return retornar;
-   }
-   private Object obtenerDato(NodoAVLDicc n,String id){
-       Object retornar=null;
-       int comparacion;
-       if(n!=null){
-           comparacion=n.getClave().compareTo(id);
-           //Si se encuentra la clave
-           if(comparacion==0){
-               retornar=n.getDato();
-           }else if(comparacion<0){//Sino seguir buscando por izquierda
-               retornar=obtenerDato(n.getIzquierdo(),id);
-           }else{//O por derecha
-               retornar=obtenerDato(n.getDerecho(),id);
-           }
-       }
-       return retornar;
-   }
+
+    public Object obtenerDato(Comparable id) {
+        Object retornar = null;
+        retornar = obtenerDato(this.raiz, id);
+        return retornar;
+    }
+
+    private Object obtenerDato(NodoAVLDicc n, Comparable id) {
+        Object retornar = null;
+        int comparacion;
+        if (n != null) {
+            //comparacion=n.getClave().compareTo(id);
+            comparacion = id.compareTo(n.getClave());
+            //Si se encuentra la clave
+            if (comparacion == 0) {
+                retornar = n.getDato();
+            } else if (comparacion < 0) {//Sino seguir buscando por izquierda               
+                retornar = obtenerDato(n.getIzquierdo(), id);
+            } else {//O por derecha
+                retornar = obtenerDato(n.getDerecho(), id);
+            }
+        }
+        return retornar;
+    }
+
+    public String getEstructura() {
+        String retornar = "";
+        Queue<NodoAVLDicc> cola = new LinkedList();
+        int altura;
+        int aux = -1;
+        NodoAVLDicc nodoActual;
+        cola.add(this.raiz);
+        while (!cola.isEmpty()) {
+            nodoActual = cola.poll();
+            altura = nodoActual.getAltura();
+            System.out.println(altura);
+            if (altura != aux) {
+                retornar += "\n";
+                //Indentación inicial
+                for (int i = 0; i < altura; i++) {
+                    retornar += "---";
+                }
+                retornar+=nodoActual.getClave().toString();
+            }else{
+                retornar+="--|--"+nodoActual.getClave().toString();
+            }
+            aux = altura;            
+
+            if (nodoActual.getIzquierdo() != null) {
+                cola.add(nodoActual.getIzquierdo());
+            }
+            if (nodoActual.getDerecho() != null) {
+                cola.add(nodoActual.getDerecho());
+            }
+        }
+        return retornar;
+    }
+    
 }

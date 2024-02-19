@@ -5,26 +5,43 @@
 package TPFinal;
 
 import grafos.Grafo;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  *
- * @author ulises
+ * @author Ulises Corrales
  */
 public class TrenesSA {
 
     private Diccionario estaciones;
     private Grafo rieles;
     private Diccionario trenes;
-    private HashMap linea;
+    private HashMap lineas;
+    
+    public TrenesSA(){        
+    }
+    public TrenesSA(Diccionario estaciones,Diccionario trenes,HashMap lineas){
+        this.estaciones=estaciones;
+        this.trenes=trenes;
+        this.lineas=lineas;        
+    }
+    public Tren getTren(Comparable id){        
+        return (Tren)trenes.obtenerDato(id);
+    }
+    public Diccionario getTrenes(){
+        return this.trenes;
+    }
+    
+    public Estacion getEstacion(String id){
+        return (Estacion)estaciones.obtenerDato(id);
+    }        
 
-    public boolean agregarTren(int id, String propulsion, int cantVagonesPasaj, int cantVagonesCarga,String linea, int idVia) {
-        return trenes.insertar(id, new Tren(propulsion,cantVagonesPasaj,cantVagonesCarga,linea,idVia));
+    public boolean agregarTren(int id, String propulsion, int cantVagonesPasaj, int cantVagonesCarga,String linea) {
+        return trenes.insertar(id, new Tren(id,propulsion,cantVagonesPasaj,cantVagonesCarga,linea));
     }
 
-    public boolean eliminarTren(int id) {                        
+    public boolean eliminarTren(int id) {
         return trenes.eliminar(id);
     }
 
@@ -36,26 +53,26 @@ public class TrenesSA {
     //
     public boolean agregarEstacion(String id, String calle, int numCalle, String ciudad, String cp, int cantVias, int cantPlataformas) {
         //Comprobar que no existe
-        boolean existe=true;
+        boolean exito=false;
         if(!estaciones.existeClave(id)){
             Estacion nuevo=new Estacion(id,calle,numCalle,ciudad,cp,cantVias,cantPlataformas);
             estaciones.insertar(id, nuevo);            
-            existe=false;
+            exito=true;
         }
-        return existe;
+        return exito;
     }
 
     public Diccionario getEstaciones(){
         return this.estaciones;
     }
-    public String eliminarEstacion(String id) {        
-        String retornar="Estación no existe";
+    public boolean eliminarEstacion(String id) {        
+        boolean exito=false;
         if(estaciones.existeClave(id)){
             estaciones.eliminar(id);            
             rieles.eliminarVertice(id);
-            retornar="Estación eliminada correctamente";
+            exito=true;
         }
-        return retornar;
+        return exito;
     }
 
     public Estacion modificarEstacion(String idEst) {
@@ -64,26 +81,31 @@ public class TrenesSA {
         laEstacion=(Estacion)estaciones.obtenerDato(idEst);
         return laEstacion;
     }
-
-    public boolean agregarLinea(String nombreLinea) {
+    public LinkedList<String> getLinea(String nombreLinea){
+        return (LinkedList)lineas.get(nombreLinea);
+    }
+    public boolean agregarLinea(LinkedList<String> lin) {
         boolean exito = false;
-        if (!linea.containsKey(nombreLinea)) {
-            linea.put(nombreLinea, null);
+        String nombreLinea=lin.getFirst();
+        if (!lineas.containsKey(nombreLinea)) {
+            lineas.put(nombreLinea, lin);
             exito = true;
         }
         return exito;
     }
 
     public boolean eliminarLinea(String nombreLinea) {
-        return linea.remove(nombreLinea) != null;
+        return lineas.remove(nombreLinea) != null;
+    }
+    public boolean existeLinea(String nombreLinea){
+        return lineas.containsKey(nombreLinea);
     }
 
     public boolean quitarEstacionDeLinea(String nombreLinea, String nombreEstacion) {
         boolean exito = false;
-        List lista = Arrays.asList((Object[]) linea.get(nombreLinea));
+        LinkedList<String> lista = (LinkedList)lineas.get(nombreLinea);
         if (lista.contains(nombreEstacion)) {
-            lista.remove(nombreEstacion);
-            linea.put(nombreLinea, lista);
+            lista.remove(nombreEstacion);            
             exito = true;
         }
         return exito;
