@@ -4,11 +4,8 @@
  */
 package TPFinal;
 
-import grafos.*;
-import jerarquicas.dinamicas.ArbolGen;
-import lineales.dinamicas.Cola;
+import java.util.LinkedList;
 import lineales.dinamicas.Lista;
-import lineales.dinamicas.Pila;
 
 /**
  *
@@ -35,6 +32,7 @@ public class Grafo {
     }
 
     private NodoVert ubicarVertice(Object buscado) {
+        //Iterar sobre la lista de vértices hasta encontrar el objeto
         NodoVert aux = this.inicio;
         while (aux != null && !aux.getElem().equals(buscado)) {
             aux = aux.getSigVertice();
@@ -340,7 +338,7 @@ public class Grafo {
         }
         if (auxO != null && auxD != null) {
             //si ambos vertices existen, se busca el camino más corto
-            //(Si no existe camino)
+            //
             lis = caminoMasCorto(auxO, destino, lis);
         }
         return lis;
@@ -548,7 +546,7 @@ public class Grafo {
         //Método que busca el camino más corto entre el nodo origen y el nodo destino
         //Usa el recorrido en anchura hasta encontrar el destino para luego construir la lista
         Lista auxCola = new Lista();
-        int posCola = 1;            
+        int posCola = 1;
         //
         auxCola.insertar(n, 1);
         int longCola = 1;
@@ -560,21 +558,21 @@ public class Grafo {
             auxV = (NodoVert) auxCola.recuperar(posCola);
             //Colocar en la cola
             auxA = auxV.getPrimerAdy();
-            while (auxA != null) {                
+            while (auxA != null) {
                 if (auxCola.localizar(auxA.getVertice()) < 0) {//Si el nodo no fue visitado anteriormente
                     longCola++;
                     auxCola.insertar(auxA.getVertice(), longCola);
-                    System.out.print(auxA.getVertice().getElem()+" - ");
+                    System.out.print(auxA.getVertice().getElem() + " - ");
                 }
                 auxA = auxA.getSigAdyacente();
             }
             posCola++;
         }
         //Llenar la lista de recorrido con objetos de los nodos vértices de auxCola
-        int i=longCola;
-        while(i>0){
-            auxV=(NodoVert)auxCola.recuperar(i);
-            recorrido.insertar(auxV.getElem(),1);
+        int i = longCola;
+        while (i > 0) {
+            auxV = (NodoVert) auxCola.recuperar(i);
+            recorrido.insertar(auxV.getElem(), 1);
             i--;
         }
     }
@@ -648,6 +646,62 @@ public class Grafo {
         }
         return aux;
     }
+
+    public LinkedList<NodoVert> caminoMasCortoPorKm(Object origen, Object destino) {
+        //Listar todos los posibles caminos y evaluar el más corto según la sumatoria
+        //de los km que acumula cada nodo
+        NodoVert or = null;
+        NodoVert dest = null;
+        NodoVert aux = this.inicio;
+        //Si no existe camino retornar una lista vacía; si no existe algún elemento, retorna null
+        LinkedList<NodoVert> camino = null;
+
+        //Encontrar los vértices
+        while (or == null && dest == null & aux != null) {
+            if (aux.getElem().equals(origen)) {
+                or = aux;
+            }
+            if (aux.getElem().equals(origen)) {
+                dest = aux;
+            }
+        }
+        //Vértices encontrados
+        if (or != null && dest != null) {
+            camino = new LinkedList<NodoVert>();
+            LinkedList<LinkedList<NodoVert>> listaRecorridos = encontrarRecorridos(or, dest);
+            //Si existe un camino entre ambos vértices
+            if (!listaRecorridos.isEmpty()) {
+                int longitud = listaRecorridos.size();
+                LinkedList<NodoVert> camMasCorto = listaRecorridos.get(0);
+                LinkedList<NodoVert> listaActual;
+                for (int i = 1; i < longitud; i++) {
+                    listaActual = listaRecorridos.get(i);
+                    if (listaActual.size() < camMasCorto.size()) {
+                        camMasCorto = listaActual;
+                    }
+                }
+            }
+        }
+        return camino;
+    }
+
+    private LinkedList<LinkedList<NodoVert>> encontrarRecorridos(NodoVert origen, NodoVert dest) {
+        LinkedList<LinkedList<NodoVert>> retornar = new LinkedList();
+           
+       LinkedList<NodoVert> visitados= new LinkedList();
+       
+       //Listar desde todos los adyacentes
+       NodoAdy ady=this.inicio.getPrimerAdy();
+       while(ady!=null){
+           if(ady.getVertice()!=dest){
+               
+           }
+           ady=ady.getSigAdyacente();
+       }
+       
+        return retornar;
+    }
+        
 
     public String toString() {
         //Formato:

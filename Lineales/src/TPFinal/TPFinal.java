@@ -55,7 +55,7 @@ public class TPFinal {
         LinkedList<Tren> trenesList = new LinkedList();
 
         LinkedList<String> listaRecorrido;
-        LinkedList<StringTokenizer> listaRieles=new LinkedList<StringTokenizer>();
+        LinkedList<StringTokenizer> listaRieles = new LinkedList<StringTokenizer>();
         //LinkedList<Queue> listaLineas=new LinkedList();
         while (datosTok.hasMoreTokens()) {
             objetoTok = new StringTokenizer(datosTok.nextToken(), ";");
@@ -110,26 +110,40 @@ public class TPFinal {
             lineas.put(nombreLinea, recorrido);
         }*/
         TrenesSA sistema = new TrenesSA(estacionesDic, trenesDic, lineas);
-        
+
         StringTokenizer auxToken;
-        while(!listaRieles.isEmpty()){
-            auxToken=listaRieles.getFirst();
-            crearRiel(auxToken,sistema);
+        while (!listaRieles.isEmpty()) {
+            auxToken = listaRieles.getFirst();
+            cargarRiel(auxToken, sistema);
             listaRieles.removeFirst();
         }
-        
+
         //Interactuar con el menú hasta salir 
         mostrarMenuPrincipal(input, sistema);
 
     }
-    public static void crearRiel(StringTokenizer ot,TrenesSA sist){
+
+    public static void cargarRiel(StringTokenizer ot, TrenesSA sist) {
         String aux;
-        while(ot.hasMoreTokens()){
-            aux=ot.nextToken();            
-            if(!sist.getEstaciones().existeClave(aux)){
-                System.out.println(aux+" no existe");
-            };
+        byte paso = 0;
+        String estacion1 = "";
+        String estacion2 = "";
+        int distancia = 0;
+        while (ot.hasMoreTokens()) {
+            aux = ot.nextToken();
+            switch (paso) {
+                case 0:
+                    estacion1 = aux;
+                    break;
+                case 1:
+                    estacion2 = aux;
+                    break;
+                case 2:
+                    distancia = Integer.parseInt(aux);
+                    break;
+            }
         }
+        sist.agregarRiel(estacion1, estacion2, distancia);
     }
 
     public static Tren crearTren(StringTokenizer tk) {
@@ -283,8 +297,8 @@ public class TPFinal {
         String linea = in.next();
 
         if (linea.equals("") || sistema.existeLinea(linea)) {
-            if(linea.equals("")){
-                linea="no-asignado";
+            if (linea.equals("")) {
+                linea = "no-asignado";
             }
             sistema.agregarTren(id, propulsion, cantVagonesP, cantVagonesC, linea);
         } else {
