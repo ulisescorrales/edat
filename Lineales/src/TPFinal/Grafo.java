@@ -5,6 +5,7 @@
 package TPFinal;
 
 import java.util.LinkedList;
+import jerarquicas.dinamicas.ArbolGen;
 import lineales.dinamicas.Lista;
 
 /**
@@ -687,22 +688,20 @@ public class Grafo {
 
     private LinkedList<LinkedList<NodoVert>> encontrarRecorridos(NodoVert origen, NodoVert dest) {
         LinkedList<LinkedList<NodoVert>> retornar = new LinkedList();
-           
-       LinkedList<NodoVert> visitados= new LinkedList();
-       
-       //Listar desde todos los adyacentes
-       NodoAdy ady=this.inicio.getPrimerAdy();
-       while(ady!=null){
-           if(ady.getVertice()!=dest){
-               
-           }
-           ady=ady.getSigAdyacente();
-       }
-       
+        LinkedList<NodoVert> visitados = new LinkedList();
+        visitados.add(origen);
+        //Listar desde todos los adyacentes
+        NodoAdy ady = this.inicio.getPrimerAdy();
+        while (ady != null) {
+            if (ady.getVertice() != dest) {
+
+            }
+            ady = ady.getSigAdyacente();
+        }
+
         return retornar;
     }
-        
-
+    
     public String toString() {
         //Formato:
         //Vertice1---> Adyacente1 (etiqueta1) - Adyacente1 (etiqueta2)...
