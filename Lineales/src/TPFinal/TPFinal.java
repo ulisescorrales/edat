@@ -119,6 +119,7 @@ public class TPFinal {
         }
 
         //Interactuar con el menú hasta salir 
+        //System.out.print(sistema.getEstaciones().getEstructura());
         mostrarMenuPrincipal(input, sistema);
 
     }

@@ -337,37 +337,37 @@ public class Diccionario {
         }
     }
 
-    public Lista listarClaves() {
-        Lista lis = new Lista();
+    public LinkedList listarClaves() {
+        LinkedList lis = new LinkedList();
 
         listarClavesAux(lis, this.raiz);
 
         return lis;
     }
 
-    private void listarClavesAux(Lista lista, NodoAVLDicc n) {
+    private void listarClavesAux(LinkedList lista, NodoAVLDicc n) {
         //Recorrido Inorden
         if (n != null) {
             listarClavesAux(lista, n.getIzquierdo());
-            lista.insertar(n.getClave(), lista.longitud() + 1);
+            lista.add((int)n.getClave());
             listarClavesAux(lista, n.getDerecho());
         }
 
     }
 
-    public Lista listarDatos() {
-        Lista lis = new Lista();
+    public LinkedList listarDatos() {
+        LinkedList lis = new LinkedList();
 
         listarDatos(lis, this.raiz);
 
         return lis;
     }
 
-    private void listarDatos(Lista lista, NodoAVLDicc n) {
+    private void listarDatos(LinkedList lista, NodoAVLDicc n) {
         //Recorrido Inorden
         if (n != null) {
             listarDatos(lista, n.getIzquierdo());
-            lista.insertar(n.getDato(), lista.longitud() + 1);
+            lista.add((int)n.getDato(), lista.size()+ 1);
             listarDatos(lista, n.getDerecho());
         }
     }
@@ -395,38 +395,110 @@ public class Diccionario {
         }
         return retornar;
     }
+    
 
-    public String getEstructura() {
+    public String listarPorNiveles() {
+
         String retornar = "";
         Queue<NodoAVLDicc> cola = new LinkedList();
-        int altura;
-        int aux = -1;
-        NodoAVLDicc nodoActual;
         cola.add(this.raiz);
+        NodoAVLDicc elemento;
         while (!cola.isEmpty()) {
-            nodoActual = cola.poll();
-            altura = nodoActual.getAltura();
-            System.out.println(altura);
-            if (altura != aux) {
-                retornar += "\n";
-                //Indentación inicial
-                for (int i = 0; i < altura; i++) {
-                    retornar += "---";
-                }
-                retornar+=nodoActual.getClave().toString();
+            elemento = cola.poll();
+            retornar += elemento.getClave();
+            if (elemento.getIzquierdo() != null) {
+                cola.add(elemento.getIzquierdo());
+            }
+            if (elemento.getDerecho() != null) {
+                cola.add(elemento.getDerecho());
+            }
+        }
+        return retornar;
+    }
+    public String getEstructura(){       
+        int filas=this.raiz.getAltura()+1;
+        String[] retornar=new String[this.raiz.getAltura()+1];
+        for (int i = 0; i < this.raiz.getAltura()+1; i++) {
+            retornar[i]="";
+            
+        }
+        getEstructura(this.raiz,retornar,false);
+        String estructura="";
+        for (int i = filas-1; i >-1; i--) {            
+            estructura+=retornar[i]+"\n";
+        }
+        return estructura;
+    }
+    private void getEstructura(NodoAVLDicc n,String[] cadenas,boolean esDerecho){
+        if(n!=null){
+            getEstructura(n.getIzquierdo(),cadenas,false);
+            int cantSeparador=separador(n.getAltura());            
+            String separador="";
+            for (int i = 0; i < cantSeparador; i++) {
+                separador+="-";
+            }                                                   
+            if(esDerecho){
+                cadenas[n.getAltura()]+=(separador+n.getClave()+separador+"-");                        
             }else{
-                retornar+="--|--"+nodoActual.getClave().toString();
-            }
-            aux = altura;            
+                cadenas[n.getAltura()]+=(separador+n.getClave()+separador+"|");                        
+            }            
+            getEstructura(n.getDerecho(),cadenas,true);
+        }
+    }
+    
+    private int separador(int altura){
+        int retornar;
+        if(altura==0){
+            retornar=1;
+        }else{
+            retornar=separador(altura-1)*2+1;
+        }
+        return retornar;
+    }
+    public NodoAVLDicc obtenerClave(Comparable id) {
+        NodoAVLDicc retornar = null;
+        retornar = obtenerClave(this.raiz, id);
+        return retornar;
+    }
 
-            if (nodoActual.getIzquierdo() != null) {
-                cola.add(nodoActual.getIzquierdo());
-            }
-            if (nodoActual.getDerecho() != null) {
-                cola.add(nodoActual.getDerecho());
+    private NodoAVLDicc obtenerClave(NodoAVLDicc n, Comparable id) {
+        NodoAVLDicc retornar = null;
+        int comparacion;
+        if (n != null) {
+            //comparacion=n.getClave().compareTo(id);
+            comparacion = id.compareTo(n.getClave());
+            //Si se encuentra la clave
+            if (comparacion == 0) {
+                retornar = n;
+            } else if (comparacion < 0) {//Sino seguir buscando por izquierda               
+                retornar = obtenerClave(n.getIzquierdo(), id);
+            } else {//O por derecha
+                retornar = obtenerClave(n.getDerecho(), id);
             }
         }
         return retornar;
     }
     
+    
+    public static void main(String[] args) {
+        Diccionario dic=new Diccionario();
+        dic.insertar(1, "");
+        dic.insertar(2, "");
+        dic.insertar(3, "");
+        dic.insertar(4, "");
+        dic.insertar(5, "");
+        dic.insertar(6, "");
+        dic.insertar(7, "");
+        dic.insertar(8, "");
+         
+        //System.out.println(dic.obtenerClave(4).getIzquierdo().getClave());               
+        //System.out.println(dic.obtenerClave(4).getDerecho().getClave());               
+        System.out.println(dic.obtenerClave(1).getAltura());
+        System.out.println(dic.getEstructura());
+        System.out.println(dic.listarPorNiveles());
+        /*LinkedList lista =dic.listarClaves();
+        for(Object i:lista){
+            System.out.print((int)i);
+        }*/
+    }
 }
