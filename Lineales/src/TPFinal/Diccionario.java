@@ -51,7 +51,8 @@ public class Diccionario {
             } else {//Si es nulo, crear el hijo izquierdo                
                 n.setIzquierdo(new NodoAVLDicc(id, 0, null, null, dato));
                 if (n.getDerecho() != null) {
-                    n.setAltura(Math.max(0, n.getDerecho().getAltura()) + 1);
+                    //Como ya se asume altura cero en HD, se consulta el del HI
+                    n.setAltura(n.getDerecho().getAltura() + 1);
                 } else {
                     n.setAltura(1);
                 }
@@ -72,7 +73,8 @@ public class Diccionario {
         } else {//Si HD es nulo, crear el hijo derecho nuevo
             n.setDerecho(new NodoAVLDicc(id, 0, null, null, dato));
             if (n.getIzquierdo() != null) {
-                n.setAltura(Math.max(0, n.getIzquierdo().getAltura()) + 1);
+                //Cómo ya se asume altura 0 de HD, se consulta la altura del HI
+                n.setAltura(n.getIzquierdo().getAltura() + 1);
             } else {
                 n.setAltura(1);
             }
