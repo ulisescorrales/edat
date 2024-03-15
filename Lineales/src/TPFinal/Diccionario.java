@@ -446,28 +446,35 @@ public class Diccionario {
         return estructura;
     }
 
-    private void getEstructura(NodoAVLDicc n, String[] cadenas, boolean esDerecho, int alturaAbs) {
+    private int getEstructura(NodoAVLDicc n, String[] cadenas, boolean esDerecho, int alturaAbs) {
         //Método auxiliar para imprimir la estructura del árbol avl
         //Recorrido inorden
         //alturaAbs es la altura del nodo en relación al último nivel
-        
+        //Retorna la cantidad de dígitos de la clave que servirá para agregar separador a la izquierda o a la derecha
+        int cantDigitos=0;
         if (n != null) {
-            getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
+            cantDigitos+=getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
             int cantSeparador = separador(alturaAbs);
             String separador = "";
             String separadorVacio = "";
+            
+            
+            
             for (int i = 0; i < cantSeparador; i++) {
                 separador += "─";
-            }
-            for (int i = 0; i < cantSeparador; i++) {
                 separadorVacio += " ";
-            }
+            }            
             if (esDerecho) {
                 cadenas[alturaAbs] += ("┴" + separador + n.getClave() + separadorVacio + " ");
             } else {
                 cadenas[alturaAbs] += (separadorVacio + n.getClave() + separador);
+            }            
+            int aux=(int)n.getClave()/10;//Se ignora el primer dígito
+            while(aux!=0){
+                aux=aux/10;
+                cantDigitos++;                                
             }
-            getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);
+            cantDigitos+=getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);
         } else if (alturaAbs > -1) {
             //Rellenar los espacios vacíos en el último nivel para que las hojas se posicionen correctamente
             int cantSeparador = separador(alturaAbs);
@@ -475,21 +482,24 @@ public class Diccionario {
             
             int longitud=cadenas[alturaAbs].length();                        
             for (int i = 0; i < cantSeparador; i++) {
-                separador += " ";
+                separador += "─";
             }
             //Si hay espacio vacío en el lado derecho, verificar si hay un nodo izquierdo para agregar
-            //el caracter '┴'
+            //el caracter '┴' (verificando si existe un caracter de separación entre hermanos)
             if(esDerecho && cadenas[alturaAbs].charAt(longitud-1)=='─'){                                
                 StringBuilder separador2=new StringBuilder(separador);
                 separador2.setCharAt(cantSeparador-1, '┴');                
                 cadenas[alturaAbs] += (separador2.toString() + " " + separador + " ");
             }else{
                 cadenas[alturaAbs] += (separador + " " + separador + " ");
-            }            
+            }                        
         }
+        return cantDigitos;
     }
 
     private int separador(int altura) {
+        //Método auxiliar para conseguir la cantidad de espacios en blanco que necesita
+        //de separación una clave en getEstructura() (suponiendo un dígito, para luego seguir agregando)
         int retornar;
         if (altura == 0) {
             retornar = 1;
@@ -534,9 +544,7 @@ public class Diccionario {
         dic.insertar(7, "");
         dic.insertar(8, "");
         dic.insertar(0, "");
-        dic.insertar(-1, "");
-        dic.insertar(-2, "");
-        dic.insertar(9, "");
+        dic.insertar(9, "");                
         System.out.println(dic.getEstructura());
         /*LinkedList lista =dic.listarClaves();
         for(Object i:lista){

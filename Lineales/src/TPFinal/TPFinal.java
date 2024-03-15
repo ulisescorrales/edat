@@ -277,7 +277,8 @@ public class TPFinal {
     public static void agregarTren(Scanner in, TrenesSA sistema) {
         System.out.println("Ingrese idTren");
         int id = in.nextInt();
-        while (sistema.getTrenes().existeClave(id)) {
+        //Verificar si existe la clave o se introdujo un número negativo
+        while (sistema.getTrenes().existeClave(id)||id<0) {
             System.out.println("Ya existe la clave, ingrese otra");
             id = in.nextInt();
         }
