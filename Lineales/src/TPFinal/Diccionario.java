@@ -467,7 +467,11 @@ public class Diccionario {
             if (esDerecho) {
                 cadenas[alturaAbs] += ("┴" + separador + n.getClave() + separadorVacio + " ");
             } else {
-                cadenas[alturaAbs] += (separadorVacio + n.getClave() + separador);
+                if(alturaAbs==0 && cadenas[0].length()!=0){
+                    cadenas[alturaAbs] += (" "+separadorVacio + n.getClave() + separador);
+                }else{
+                    cadenas[alturaAbs] += (separadorVacio + n.getClave() + separador);
+                }                
             }            
             int aux=(int)n.getClave()/10;//Se ignora el primer dígito
             while(aux!=0){
@@ -543,8 +547,9 @@ public class Diccionario {
         dic.insertar(6, "");
         dic.insertar(7, "");
         dic.insertar(8, "");
+        dic.insertar(9, "");
         dic.insertar(0, "");
-        dic.insertar(9, "");                
+           
         System.out.println(dic.getEstructura());
         /*LinkedList lista =dic.listarClaves();
         for(Object i:lista){
