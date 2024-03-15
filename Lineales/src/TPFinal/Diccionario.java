@@ -402,51 +402,67 @@ public class Diccionario {
     public String listarPorNiveles() {
 
         String retornar = "";
-        Queue<NodoAVLDicc> cola = new LinkedList();
-        cola.add(this.raiz);
+        Queue<NodoAVLDicc> cola = new LinkedList();        
+        cola.add(this.raiz);                        
         NodoAVLDicc elemento;
         while (!cola.isEmpty()) {
             elemento = cola.poll();
-            retornar += elemento.getClave();
+            retornar += elemento.getClave();                        
             if (elemento.getIzquierdo() != null) {
-                cola.add(elemento.getIzquierdo());
+                cola.add(elemento.getIzquierdo());                
             }
             if (elemento.getDerecho() != null) {
-                cola.add(elemento.getDerecho());
+                cola.add(elemento.getDerecho());                
             }
         }
         return retornar;
     }
     public String getEstructura(){       
+        //Método que retorna en un String la estructura del árbol avl
         int filas=this.raiz.getAltura()+1;
         String[] retornar=new String[this.raiz.getAltura()+1];
         for (int i = 0; i < this.raiz.getAltura()+1; i++) {
             retornar[i]="";
             
         }
-        getEstructura(this.raiz,retornar,false);
+        getEstructura(this.raiz,retornar,false,this.raiz.getAltura());
         String estructura="";
         for (int i = filas-1; i >-1; i--) {            
             estructura+=retornar[i]+"\n";
         }
         return estructura;
     }
-    private void getEstructura(NodoAVLDicc n,String[] cadenas,boolean esDerecho){
+    private void getEstructura(NodoAVLDicc n,String[] cadenas,boolean esDerecho,int alturaAbs){
+        //Método auxiliar para imprimir la estructura del árbol avl
+        //Recorrido inorden
+        //alturaAbs es la altura del nodo en relación al último nivel
         if(n!=null){
-            getEstructura(n.getIzquierdo(),cadenas,false);
-            int cantSeparador=separador(n.getAltura());            
+            getEstructura(n.getIzquierdo(),cadenas,false,alturaAbs-1);            
+            int cantSeparador=separador(alturaAbs);            
+            String separador="";
+            String separadorVacio="";
+            for (int i = 0; i < cantSeparador; i++) {
+                separador+="─";
+            }
+            for (int i = 0; i < cantSeparador; i++) {
+                separadorVacio+=" ";
+            }
+            if(esDerecho){
+                cadenas[alturaAbs]+=("┴"+separador+n.getClave()+separadorVacio+" ");                        
+            }else{
+                cadenas[alturaAbs]+=(separadorVacio+n.getClave()+separador);                        
+            }            
+            getEstructura(n.getDerecho(),cadenas,true,alturaAbs-1);
+        }else if(alturaAbs>-1){
+            //Rellenar los espacios vacíos para que en el último nivel los nodos se posiciones correctamente
+            int cantSeparador=separador(alturaAbs);
             String separador="";
             for (int i = 0; i < cantSeparador; i++) {
-                separador+="-";
-            }                                                   
-            if(esDerecho){
-                cadenas[n.getAltura()]+=(separador+n.getClave()+separador+"-");                        
-            }else{
-                cadenas[n.getAltura()]+=(separador+n.getClave()+separador+"|");                        
-            }            
-            getEstructura(n.getDerecho(),cadenas,true);
+                separador+=" ";
+            }
+            cadenas[alturaAbs]+=(separador+" "+separador+" ");
         }
-    }
+    } 
     
     private int separador(int altura){
         int retornar;
@@ -484,6 +500,7 @@ public class Diccionario {
     
     public static void main(String[] args) {
         Diccionario dic=new Diccionario();
+        dic.insertar(0, "");
         dic.insertar(1, "");
         dic.insertar(2, "");
         dic.insertar(3, "");
@@ -493,11 +510,8 @@ public class Diccionario {
         dic.insertar(7, "");
         dic.insertar(8, "");
          
-        //System.out.println(dic.obtenerClave(4).getIzquierdo().getClave());               
-        //System.out.println(dic.obtenerClave(4).getDerecho().getClave());               
-        System.out.println(dic.obtenerClave(1).getAltura());
-        System.out.println(dic.getEstructura());
-        System.out.println(dic.listarPorNiveles());
+                
+        System.out.println(dic.getEstructura());        
         /*LinkedList lista =dic.listarClaves();
         for(Object i:lista){
             System.out.print((int)i);
