@@ -119,4 +119,7 @@ public class TrenesSA {
         }
         return exito;
     }
+    public LinkedList<Estacion> getEstacionesConSubstring(String substring){
+        return this.estaciones.getSubstringList(substring);
+    }
 }
