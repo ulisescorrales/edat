@@ -5,7 +5,6 @@
 package TPFinal;
 
 import java.util.LinkedList;
-import lineales.dinamicas.Lista;
 
 /**
  *
@@ -292,13 +291,13 @@ public class Grafo {
         }
         if (auxO != null && auxD != null) {
             //si ambos vertices existen busca si existe camino entre ambos
-            Lista visitados = new Lista();
+            LinkedList visitados = new LinkedList();
             exito = existeCaminoAux(auxO, destino, visitados);
         }
         return exito;
     }
 
-    private boolean existeCaminoAux(NodoVert n, Object dest, Lista vis) {
+    private boolean existeCaminoAux(NodoVert n, Object dest, LinkedList vis) {
         boolean exito = false;
         if (n != null) {
             //si verticen es el destino: HAY CAMINO
@@ -306,10 +305,10 @@ public class Grafo {
                 exito = true;
             } else {
                 //si no es el destino verifica si hay camino entre n y destino
-                vis.insertar(n.getElem(), vis.longitud() + 1);
+                vis.add(n.getElem());
                 NodoAdy ady = n.getPrimerAdy();
                 while (!exito && ady != null) {
-                    if (vis.localizar(ady.getVertice().getElem()) < 0) {
+                    if (vis.indexOf(ady.getVertice().getElem()) < 0) {
                         exito = existeCaminoAux(ady.getVertice(), dest, vis);
                     }
                     ady = ady.getSigAdyacente();
@@ -319,12 +318,12 @@ public class Grafo {
         return exito;
     }
 
-    public Lista caminoMasCorto(Object origen, Object destino) {
+    public LinkedList caminoMasCorto(Object origen, Object destino) {
         //verifica si ambos vértices existen
         NodoVert auxO = null;
         NodoVert auxD = null;
         NodoVert aux = this.inicio;
-        Lista lis = new Lista();
+        LinkedList lis = new LinkedList();
 
         //Comprobar que ambos nodos existan
         while ((auxO == null || auxD == null) && aux != null) {

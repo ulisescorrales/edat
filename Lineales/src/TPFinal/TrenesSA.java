@@ -119,7 +119,18 @@ public class TrenesSA {
         }
         return exito;
     }
-    public LinkedList<Estacion> getEstacionesConSubstring(String substring){
+    public LinkedList<String> getEstacionesConSubstring(String substring){
         return this.estaciones.getSubstringList(substring);
+    }
+    
+    public LinkedList<String> verificarLineaAsignada(int idTren){
+        Tren tren=(Tren)trenes.obtenerDato(idTren);
+        LinkedList lista=null;
+        System.out.println(tren);        
+        if(tren!=null){
+            String nombreLinea=tren.getLinea();            
+            lista=(LinkedList)lineas.get(nombreLinea);
+        }
+        return lista;
     }
 }

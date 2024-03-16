@@ -426,7 +426,7 @@ public class Diccionario {
 
         }
         //conseguir el string del nivel 0
-        int cantSeparador = separador(this.raiz.getAltura());        
+        int cantSeparador = separador(this.raiz.getAltura());
         String separadorVacio = "";
         for (int i = 0; i < cantSeparador; i++) {
             separadorVacio += " ";
@@ -451,48 +451,43 @@ public class Diccionario {
         //Recorrido inorden
         //alturaAbs es la altura del nodo en relación al último nivel
         //Retorna la cantidad de dígitos de la clave que servirá para agregar separador a la izquierda o a la derecha
-        int cantDigitos=0;
+        int cantDigitos = 0;
         if (n != null) {
-            cantDigitos+=getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
+            cantDigitos += getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
             int cantSeparador = separador(alturaAbs);
             String separador = "";
             String separadorVacio = "";
-            
-            
-            
+
             for (int i = 0; i < cantSeparador; i++) {
                 separador += "─";
                 separadorVacio += " ";
-            }            
+            }
             if (esDerecho) {
                 cadenas[alturaAbs] += ("┴" + separador + n.getClave() + separadorVacio + " ");
             } else {
                 cadenas[alturaAbs] += (separadorVacio + n.getClave() + separador);
-            }            
-            int aux=(int)n.getClave()/10;//Se ignora el primer dígito
-            while(aux!=0){
-                aux=aux/10;
-                cantDigitos++;                                
             }
-            cantDigitos+=getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);
+            String aux=n.getClave().toString();
+            cantDigitos+=aux.length()-1;
+            cantDigitos += getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);
         } else if (alturaAbs > -1) {
             //Rellenar los espacios vacíos en el último nivel para que las hojas se posicionen correctamente
             int cantSeparador = separador(alturaAbs);
             String separador = "";
-            
-            int longitud=cadenas[alturaAbs].length();                        
+
+            int longitud = cadenas[alturaAbs].length();
             for (int i = 0; i < cantSeparador; i++) {
                 separador += "─";
             }
             //Si hay espacio vacío en el lado derecho, verificar si hay un nodo izquierdo para agregar
             //el caracter '┴' (verificando si existe un caracter de separación entre hermanos)
-            if(esDerecho && cadenas[alturaAbs].charAt(longitud-1)=='─'){                                
-                StringBuilder separador2=new StringBuilder(separador);
-                separador2.setCharAt(cantSeparador-1, '┴');                
+            if (esDerecho && cadenas[alturaAbs].charAt(longitud - 1) == '─') {
+                StringBuilder separador2 = new StringBuilder(separador);
+                separador2.setCharAt(cantSeparador - 1, '┴');
                 cadenas[alturaAbs] += (separador2.toString() + " " + separador + " ");
-            }else{
+            } else {
                 cadenas[alturaAbs] += (separador + " " + separador + " ");
-            }                        
+            }
         }
         return cantDigitos;
     }
@@ -532,10 +527,38 @@ public class Diccionario {
         }
         return retornar;
     }
-    
+
+    public LinkedList<String> getSubstringList(String substring) {
+        LinkedList<String> retornar = new LinkedList();
+        getSubstring(this.raiz, substring, retornar);
+        return retornar;
+    }
+
+    private void getSubstring(NodoAVLDicc n, String subs, LinkedList resultado) {
+        //Método auxiliar para getSubstringList
+        if (n != null) {
+            if (n.getClave().toString().contains(subs)) {
+                //Si contiene el substring, recorre en preorden 
+                getSubstring(n.getIzquierdo(), subs, resultado);
+                resultado.add(n.getClave());
+                getSubstring(n.getDerecho(), subs, resultado);
+            } else {
+                int comparacion = subs.compareTo(n.getClave().toString());
+                if (comparacion < 0) {
+                    //Sino baja por la izquierda
+                    getSubstring(n.getIzquierdo(), subs, resultado);
+
+                } else {
+                    //Sino baja por la derecha
+                    getSubstring(n.getDerecho(), subs, resultado);
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Diccionario dic = new Diccionario();        
-        dic.insertar(1, "");
+        /*dic.insertar(1, "");
         dic.insertar(2, "");
         dic.insertar(3, "");
         dic.insertar(4, "");
@@ -545,10 +568,25 @@ public class Diccionario {
         dic.insertar(8, "");
         dic.insertar(0, "");
         dic.insertar(9, "");                
-        System.out.println(dic.getEstructura());
-        /*LinkedList lista =dic.listarClaves();
+        System.out.println(dic.getEstructura());*/
+ /*LinkedList lista =dic.listarClaves();
         for(Object i:lista){
             System.out.print((int)i);
         }*/
+        dic.insertar("Villa a", "");
+        dic.insertar("Villa b", "");
+        dic.insertar("Zapala", "");        
+        dic.insertar("Retiro", "");
+        dic.insertar("Bahía", "");
+        dic.insertar("Villa", ""); 
+        dic.insertar("Villa n", ""); 
+        dic.insertar("Wi", "");
+        
+        System.out.println(dic.getEstructura());
+        
+        LinkedList lista=dic.getSubstringList("Villa");
+        for(Object i:lista){
+            System.out.println(i);
+        }
     }
 }

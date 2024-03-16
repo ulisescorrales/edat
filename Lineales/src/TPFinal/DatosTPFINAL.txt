@@ -33,13 +33,55 @@ E;Bariloche;Primeros Pobladores;323;Bariloche;D234;2;2
 E;Beazley;Italia;234;Beazley;GF23;3;3
 E;Roca;Ruta 22;34;CABA;DK32;2;2
 L;Retiro;Roca;Mitre;Gral. Guido;Pinamar
-L;Cordoba;Villa María;Armstrong;Rosario Norte;Retiro;
+L;Cordoba;Villa María;Armstrong;Rosario Norte;Retiro
 L;Rio Gallegos;Trelew;Bariloche;Neuquen;Allen;Santa Rosa;Musters;SUD;Marl Del Plata;Gral. Guido;Pinamar
-L;SUD;Pigue;Trenque Lauquén;Cañuelas;Mitre;Las Heras;
+L;SUD;Pigue;Trenque Lauquén;Cañuelas;Mitre;Las Heras
+L;Tucumán;Colonia Dora;Arrufó;Rafaela;Misiones
+L;Córdoba;Villa María;Armstrong;Rosario Norte;Retiro
+L;Retiro;Pehuejó;Beazley;Palmira;Godoy Cruz;Neuquén
+L;Neuquén;Allen;Santa Rosa;Musters;SUD;
+L;SUD;Rawson;Trelew;Río Gallegos
+L;Río Gallegos;Trelew;Bariloche;Neuquén
+L;Mar del Plata;SUD;Pigue;Trenque Lauquén;Cañuelas;Mitre
+L;Las Heras;Mitre;Gral. Guido;Pinamar
+L;Pinamar,Gral. Guido;Mitre;Roca;Retiro
+L;Misiones;Rafaela;Campana;Retiro
+L;Mitre;Roca;Retiro
+L;Roca;Retiro;Rosario Norte;Armstrong;Villa María;Córdoba
+L;Santa Rosa;Caleufú;Beazley;Palmira;Godoy Cruz;Neuquén;Allen;Santa Rosa
+L;Allen;Santa Rosa;Musters;SUD;Caleufú
+L;Palmira;Godoy Cruz;Neuquén
 T;1;electricidad;5;5;Retiro
 T;2;fuel oil;3;3;Cordoba
 T;3;gasolina;4;4;Rio Gallegos
 T;4;híbrido;5;5;SUD
+T;5;gasolina;2;2;Mar Del Plata
+T;6;fuel oil;1;1;SUD
+T;7;electricidad;4;4;Pinamar
+T;8;híbrido;4;4;Sin Asignar
+T;8;fuel oil;5;5;Misiones
+T;9;electricidad;3;3;Neuquén
+T;10;híbrido;3;3;Mitre
+T;11;fuel oil;3;3;Las Heras
+T;12;electricidad;4;4;Misiones
+T;13;gasolina;5;5;Roca
+T;14;fuel oil3;3;Córdoba
+T;15;electricidad;2;2;Misiones
+T;16;gasolina;3;3;Santa Rosa
+T;17;electricidad;3;3;Retiro
+T;18;fuel oil;4;4;sin asignar
+T;19;híbrido;5;5;Río Gallegos
+T;20;gasolina;3;3;Palmira
+T;21;electricidad;2;2;Allen
+T;22;gasolina;3;3;Retiro
+T;23;electricidad;2;2;sin asignar
+T;24;fuel oil;3;3;Roca
+T;25;electricidad;4;4;sin asignar
+T;26;fuel oil;2;2;Mitre
+T;27;híbrido;3;3;Neuquén
+T;28;electricidad;3;3;Las Heras
+T;29;híbrido;3;3;Misiones
+T;30;gasolina;3;3;Tucumán
 R;Río Gallegos;Trelew;100
 R;Trelew;Bariloche;100
 R;Trelew;Rawson;50

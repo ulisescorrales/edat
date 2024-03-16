@@ -31,7 +31,7 @@ public class TPFinal {
         StringBuilder datos = new StringBuilder();
         HashMap lineas = new HashMap();
         Diccionario estacionesDic = new Diccionario();
-        Diccionario trenesDic = new Diccionario();
+        Diccionario trenesDic = new Diccionario();        
         try {
             FileReader txt = new FileReader("src/TPFinal/DatosTPFINAL.txt");
             int i;
@@ -47,20 +47,23 @@ public class TPFinal {
         }
         String datosString = datos.toString();
 
+        //Separar los tokens por líneas
         StringTokenizer datosTok = new StringTokenizer(datosString, "\n");
         StringTokenizer objetoTok;
         String cabecera;
+        //Contador de tokens usados para poder identificar errores        
 
         LinkedList<Estacion> estacionesList = new LinkedList();
         LinkedList<Tren> trenesList = new LinkedList();
 
         LinkedList<String> listaRecorrido;
         LinkedList<StringTokenizer> listaRieles = new LinkedList<StringTokenizer>();
-        //LinkedList<Queue> listaLineas=new LinkedList();
-        while (datosTok.hasMoreTokens()) {
+        
+        //Analizar cada token
+        while (datosTok.hasMoreTokens()) {            
             objetoTok = new StringTokenizer(datosTok.nextToken(), ";");
-            cabecera = objetoTok.nextToken();
-            //La cabecera indica: 'E' para estación, 'L' para línea y 'T' para tren
+            cabecera = objetoTok.nextToken();            
+            //La cabecera indica: 'E' para estación, 'L' para línea, 'T' para tren y 'R' para riel
             switch (cabecera) {
                 case "E":
                     estacionesList.add(crearEstaciones(objetoTok));
@@ -84,47 +87,36 @@ public class TPFinal {
             }
         }
 
-        /*Primero se cargan las estaciones y trenes en una lista y luego se cargan por orden aleatorio en
+        /*Primero se cargaron las estaciones y trenes en una lista y luego aquí se cargan por orden aleatorio en
         el diccionario implementado con árbol AVL */
         cargarEstaciones(estacionesDic, estacionesList);
-        //Luego cargar el recorrido con sus objetos
-        Random ran = new Random();
-        int num;
-        while (!trenesList.isEmpty()) {
-            num = ran.nextInt(trenesList.size());
-            Tren trenAInsertar = trenesList.get(num);
-            trenesDic.insertar(trenAInsertar.getIdTren(), trenAInsertar);
-            trenesList.remove(num);
-        }
-
-        /*LinkedList<Estacion> recorrido;
-        while(!listaLineas.isEmpty()){
-            recorrido = new LinkedList();
-            colaRecorrido=listaLineas.get(0);
-            listaLineas.remove(0);
-            String nombreLinea=colaRecorrido.remove();
-            recorrido.add((Estacion)estacionesDic.obtenerDato(nombreLinea));
-            while(!colaRecorrido.isEmpty()){
-                recorrido.add((Estacion)estacionesDic.obtenerDato(colaRecorrido.remove()));
-            }
-            lineas.put(nombreLinea, recorrido);
-        }*/
+        cargarTrenes(trenesDic,trenesList);        
+                
         TrenesSA sistema = new TrenesSA(estacionesDic, trenesDic, lineas);
 
         StringTokenizer auxToken;
         while (!listaRieles.isEmpty()) {
             auxToken = listaRieles.getFirst();
-            cargarRiel(auxToken, sistema);
+            if(!cargarRiel(auxToken, sistema)){                
+                System.out.println("Error cargando riel: una estación no existe");
+            }
             listaRieles.removeFirst();
-        }
-
-        //Interactuar con el menú hasta salir 
-        //System.out.print(sistema.getEstaciones().getEstructura());
+        }        
+        //Interactuar con el menú hasta salir         
         mostrarMenuPrincipal(input, sistema);
-
     }
 
-    public static void cargarRiel(StringTokenizer ot, TrenesSA sist) {
+    public static void cargarTrenes(Diccionario trenDicc,LinkedList<Tren> listaTrenes){
+        Random ran = new Random();
+        int num;
+        while (!listaTrenes.isEmpty()) {
+            num = ran.nextInt(listaTrenes.size());
+            Tren trenAInsertar = listaTrenes.get(num);
+            trenDicc.insertar(trenAInsertar.getIdTren(), trenAInsertar);
+            listaTrenes.remove(num);
+        }
+    }
+    public static boolean cargarRiel(StringTokenizer ot, TrenesSA sist) {
         String aux;
         byte paso = 0;
         String estacion1 = "";
@@ -144,7 +136,7 @@ public class TPFinal {
                     break;
             }
         }
-        sist.agregarRiel(estacion1, estacion2, distancia);
+        return sist.agregarRiel(estacion1, estacion2, distancia);
     }
 
     public static Tren crearTren(StringTokenizer tk) {
@@ -300,7 +292,7 @@ public class TPFinal {
 
         if (linea.equals("") || sistema.existeLinea(linea)) {
             if (linea.equals("")) {
-                linea = "no-asignado";
+                linea = "sin asignar";
             }
             sistema.agregarTren(id, propulsion, cantVagonesP, cantVagonesC, linea);
         } else {
