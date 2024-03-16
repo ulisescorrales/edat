@@ -343,45 +343,44 @@ public class Grafo {
         return lis;
     }
 
-    private Lista caminoMasCorto(NodoVert or, Object dest, Lista recorrido) {
+    private LinkedList caminoMasCorto(NodoVert or, Object dest, LinkedList recorrido) {
         //Método que busca el camino más corto entre el nodo origen y el nodo destino
         //Usa el recorrido en anchura hasta encontrar el destino para luego construir la lista
-        Lista auxCola = new Lista();
-        Lista saltos = new Lista();
+        LinkedList auxCola = new LinkedList();
+        LinkedList saltos = new LinkedList();
         int posCola = 1;
         int contSalto = 0;
         int puntero;
 
         int posSalto = 1;//Para recuperar el recorrido anterior
-        saltos.insertar(1, 1);
+        saltos.addFirst(1);
 
         boolean encontrado = false;
         //
-        auxCola.insertar(or, 1);
+        auxCola.addFirst(or);
         int longCola = 1;
         //
         NodoVert auxV;
         NodoAdy auxA;
 
         while (posCola <= longCola && !encontrado) {
-            auxV = (NodoVert) auxCola.recuperar(posCola);
+            auxV = (NodoVert) auxCola.get(posCola);
             //Colocar en la cola
             auxA = auxV.getPrimerAdy();
             while (auxA != null && !encontrado) {
                 posSalto++;
-                if (auxCola.localizar(auxA.getVertice()) < 0) {//Si el nodo no fue visitado anteriormente
+                if (auxCola.indexOf(auxA.getVertice()) < 0) {//Si el nodo no fue visitado anteriormente
                     if (auxA.getVertice().getElem().equals(dest)) {//Si se encuentra el destino
                         //insertar el destino en la lista a retornar (no se inserta en auxCola
-                        recorrido.insertar(auxA.getVertice().getElem(), 1);
+                        recorrido.addFirst(auxA.getVertice().getElem());
                         encontrado = true;
                     } else {
                         contSalto++;
                         //
                         longCola++;
-                        auxCola.insertar(auxA.getVertice(), longCola);
-
+                        auxCola.add(longCola,auxA.getVertice());                        
                         //
-                        saltos.insertar(contSalto, longCola);
+                        saltos.add(longCola,contSalto);
                     }
                 }
                 auxA = auxA.getSigAdyacente();
@@ -393,32 +392,32 @@ public class Grafo {
         puntero = posCola - 1;
         NodoVert auxRecuperar;
         while (puntero != 0) {
-            auxRecuperar = (NodoVert) auxCola.recuperar(puntero);
-            recorrido.insertar(auxRecuperar.getElem(), 1);
-            puntero = puntero - (int) saltos.recuperar(puntero);
+            auxRecuperar = (NodoVert) auxCola.get(puntero);
+            recorrido.addFirst(auxRecuperar.getElem());
+            puntero = puntero - (int) saltos.get(puntero);
         }
         return recorrido;
     }
 
-    public String toStringLista(Lista lis) {
+    public String toStringLista(LinkedList lis) {
         String cadena = "";
-        int longitud = lis.longitud();
+        int longitud = lis.size();
         int i = 1;
         NodoVert aux;
         while (i <= longitud) {
-            aux = (NodoVert) lis.recuperar(i);
+            aux = (NodoVert) lis.get(i);
             cadena = cadena + aux.getElem() + " - ";
             i++;
         }
         return cadena;
     }
 
-    public Lista caminoMasLargo(Object origen, Object destino) {
+    public LinkedList caminoMasLargo(Object origen, Object destino) {
         //verifica si ambos vértices existen
         NodoVert auxO = null;
         NodoVert auxD = null;
         NodoVert aux = this.inicio;
-        Lista lis = null;
+        LinkedList lis = null;
 
         while ((auxO == null || auxD == null) && aux != null) {
             if (aux.getElem().equals(origen)) {
@@ -437,16 +436,16 @@ public class Grafo {
         return lis;
     }
 
-    private Lista caminoMasLargo(NodoVert or, Object dest) {
+    private LinkedList caminoMasLargo(NodoVert or, Object dest) {
         //Método que busca el camino más corto entre el nodo origen y el nodo destino
         //Usa el recorrido en anchura hasta encontrar el destino para luego construir la lista
         //Misma metodología que caminoMasCorto pero con la diferencia de que:
         //No se inserta en la cola el nodo del que derivó el mismo ni el nodo origen (puede repetirse)
         //Se insertan elementos en la cola hasta que no existan más posibilidades de insertar, luego
         //la lista de recorrido mas largo se construye a partir del último nodo destino registrado en la cola
-        Lista auxCola = new Lista();
-        Lista saltos = new Lista();
-        Lista recorrido = new Lista();
+        LinkedList auxCola = new LinkedList();
+        LinkedList saltos = new LinkedList();
+        LinkedList recorrido = new LinkedList();
         int posCola = 1;
         int contSalto = 0;
         int puntero;
@@ -454,31 +453,31 @@ public class Grafo {
         NodoVert anterior;
 
         int posSalto = 1;//Para recuperar el recorrido anterior
-        saltos.insertar(1, 1);
+        saltos.addFirst(1);
 
         //
-        auxCola.insertar(or, 1);
+        auxCola.addFirst(or);
         int longCola = 1;
         //
         NodoVert auxV;
         NodoAdy auxA;
 
         while (posCola <= longCola) {
-            auxV = (NodoVert) auxCola.recuperar(posCola);
+            auxV = (NodoVert) auxCola.get(posCola);
             //Colocar en la cola
             if (!auxV.getElem().equals(dest)) {//Con el nodo destino no se agregan sus adyacentes
                 auxA = auxV.getPrimerAdy();
                 while (auxA != null) {
                     posSalto++;
-                    anterior = (NodoVert) auxCola.recuperar(posCola - (int) saltos.recuperar(posCola));
+                    anterior = (NodoVert) auxCola.get(posCola - (int) saltos.get(posCola));
                     if (auxA.getVertice() != or && auxA.getVertice() != anterior) {//Si no es el anterior o el origen
 
                         contSalto++;
                         //
                         longCola++;
-                        auxCola.insertar(auxA.getVertice(), longCola);
+                        auxCola.add(longCola,auxA.getVertice());
                         //
-                        saltos.insertar(contSalto, longCola);
+                        saltos.add(longCola,contSalto);
 
                     }
                     auxA = auxA.getSigAdyacente();
@@ -491,27 +490,27 @@ public class Grafo {
         System.out.println(saltos.toString());
         //Ubicar el puntero en el último nodo destino encontrado
         puntero = longCola;
-        NodoVert auxRecuperar = (NodoVert) auxCola.recuperar(puntero);
+        NodoVert auxRecuperar = (NodoVert) auxCola.get(puntero);
         while (!auxRecuperar.getElem().equals(dest)) {
             puntero = puntero - 1;
-            auxRecuperar = (NodoVert) auxCola.recuperar(puntero);
+            auxRecuperar = (NodoVert) auxCola.get(puntero);
         }
 
         //A partir del último nodo destino encontrado, armar la lista con los anteriores a cada nodo        
         while (puntero != 0) {
-            auxRecuperar = (NodoVert) auxCola.recuperar(puntero);
-            recorrido.insertar(auxRecuperar.getElem(), 1);
-            puntero = puntero - (int) saltos.recuperar(puntero);
+            auxRecuperar = (NodoVert) auxCola.get(puntero);
+            recorrido.add(1,auxRecuperar.getElem());
+            puntero = puntero - (int) saltos.get(puntero);
         }
         return recorrido;
     }
 
-    public Lista listarEnProfundidad() {
-        Lista visitados = new Lista();
+    public LinkedList listarEnProfundidad() {
+        LinkedList visitados = new LinkedList();
         //define un vértice donde comenzar a recorrer
         NodoVert aux = this.inicio;
         while (aux != null) {
-            if (visitados.localizar(aux.getElem()) < 0) {
+            if (visitados.indexOf(aux.getElem()) < 0) {
                 //si el vértice no fue visitado aun, avanza en profundidad
                 listarEnProfundidadAux(aux, visitados);
             }
@@ -520,14 +519,14 @@ public class Grafo {
         return visitados;
     }
 
-    private void listarEnProfundidadAux(NodoVert n, Lista vis) {
+    private void listarEnProfundidadAux(NodoVert n, LinkedList vis) {
         if (n != null) {
             //marca al vertice n como visitado
-            vis.insertar(n.getElem(), vis.longitud() + 1);
+            vis.add(n.getElem());
             NodoAdy ady = n.getPrimerAdy();
             while (ady != null) {
                 //visita en profundidad los adyacentes de n aun no visitados
-                if (vis.localizar(ady.getVertice().getElem()) < 0) {//Si aun no fue visitado
+                if (vis.indexOf(ady.getVertice().getElem()) < 0) {//Si aun no fue visitado
                     listarEnProfundidadAux(ady.getVertice(), vis);
                 }
                 ady = ady.getSigAdyacente();
@@ -535,32 +534,32 @@ public class Grafo {
         }
     }
 
-    public Lista listarEnAnchura() {
-        Lista lis = new Lista();
+    public LinkedList listarEnAnchura() {
+        LinkedList lis = new LinkedList();
         listarEnAnchura(this.inicio, lis);
         return lis;
     }
 
-    private void listarEnAnchura(NodoVert n, Lista recorrido) {
+    private void listarEnAnchura(NodoVert n, LinkedList recorrido) {
         //Método que busca el camino más corto entre el nodo origen y el nodo destino
         //Usa el recorrido en anchura hasta encontrar el destino para luego construir la lista
-        Lista auxCola = new Lista();
+        LinkedList auxCola = new LinkedList();
         int posCola = 1;
         //
-        auxCola.insertar(n, 1);
+        auxCola.addFirst(n);
         int longCola = 1;
         //
         NodoVert auxV;
         NodoAdy auxA;
 
         while (posCola <= longCola) {
-            auxV = (NodoVert) auxCola.recuperar(posCola);
+            auxV = (NodoVert) auxCola.get(posCola);
             //Colocar en la cola
             auxA = auxV.getPrimerAdy();
             while (auxA != null) {
-                if (auxCola.localizar(auxA.getVertice()) < 0) {//Si el nodo no fue visitado anteriormente
+                if (auxCola.indexOf(auxA.getVertice()) < 0) {//Si el nodo no fue visitado anteriormente
                     longCola++;
-                    auxCola.insertar(auxA.getVertice(), longCola);
+                    auxCola.add(longCola,auxA.getVertice());
                     System.out.print(auxA.getVertice().getElem() + " - ");
                 }
                 auxA = auxA.getSigAdyacente();
@@ -570,8 +569,8 @@ public class Grafo {
         //Llenar la lista de recorrido con objetos de los nodos vértices de auxCola
         int i = longCola;
         while (i > 0) {
-            auxV = (NodoVert) auxCola.recuperar(i);
-            recorrido.insertar(auxV.getElem(), 1);
+            auxV = (NodoVert) auxCola.get(i);
+            recorrido.addFirst(auxV.getElem());
             i--;
         }
     }
@@ -720,6 +719,7 @@ public class Grafo {
         }
         return cadena;
     }
+    /*
     public String toString() {
         //Formato:
         //Vertice1---> Adyacente1 (etiqueta1) - Adyacente1 (etiqueta2)...
@@ -740,7 +740,7 @@ public class Grafo {
         }
         return cadena;
     }
-
+*/
     public LinkedList<Object> getCaminoMasLargoPorCantNodos(Object origen, Object destino) {
         LinkedList<LinkedList> listaDeListas = getPosiblesCaminos(origen, destino);
         LinkedList<grafos.NodoAdy> caminoMasLargo = new LinkedList();
@@ -798,16 +798,16 @@ public class Grafo {
 
     private LinkedList<LinkedList> getPosiblesCaminos(Object origen, Object destino) {
         //Método que retorna los posibles caminos de un nodo a otro
-        LinkedList<grafos.NodoAdy> listaActual = new LinkedList();//Va acumulando los arcos cuando avanza y se borran los nodos cuando se retrocede, si llega a destino se clona y se suma a listaDeListas
+        LinkedList<NodoAdy> listaActual = new LinkedList();//Va acumulando los arcos cuando avanza y se borran los nodos cuando se retrocede, si llega a destino se clona y se suma a listaDeListas
         //Se almacenan los nodos adyacentes para tener luego acceso a su etiqueta
-        LinkedList<grafos.NodoVert> visitados = new LinkedList();//Misma función que en listarEnProfundidad
+        LinkedList<NodoVert> visitados = new LinkedList();//Misma función que en listarEnProfundidad
         LinkedList<LinkedList> listaDeListas = new LinkedList();//Contiene todos los posibles caminos        
 
         boolean encontradoOrigen = false;
         boolean encontradoDestino = false;
-        grafos.NodoVert aux = this.inicio;
-        grafos.NodoVert nodoOrigen = null;
-        grafos.NodoVert nodoDestino = null;
+        NodoVert aux = this.inicio;
+        NodoVert nodoOrigen = null;
+        NodoVert nodoDestino = null;
         //Buscar los nodos origen y destino
         while ((!encontradoOrigen || !encontradoDestino) && aux != null) {
             if (aux.getElem().equals(origen)) {
@@ -826,18 +826,18 @@ public class Grafo {
         return listaDeListas;
     }
 
-    private void getPosiblesCaminos(grafos.NodoVert n, grafos.NodoVert dest, LinkedList<grafos.NodoAdy> listaActual, LinkedList visitados, LinkedList listaDeListas) {
+    private void getPosiblesCaminos(NodoVert n, NodoVert dest, LinkedList<NodoAdy> listaActual, LinkedList visitados, LinkedList listaDeListas) {
         //Método auxiliar para la recursión de getPosiblesCaminos. En el camino no se pueden repetir nodos
         //y si el camino no conduce al nodo buscado, en ningún momento se incorpora a listaDeListas
         if (n == dest) {
             //Aquí se clona solo cuando se llega a destino y termina la llamada recursiva
             listaDeListas.addFirst(listaActual.clone());
         } else {
-            grafos.NodoAdy ady = n.getPrimerAdy();
+            NodoAdy ady = n.getPrimerAdy();
             visitados.add(n);
             //Si no hubieran más nodos adyacentes, termina la llamada recursiva
             while (ady != null) {
-                grafos.NodoVert auxVert = ady.getVertice();
+                NodoVert auxVert = ady.getVertice();
                 if (visitados.indexOf(auxVert) == -1) {
                     listaActual.add(ady);
                     getPosiblesCaminos(auxVert, dest, listaActual, visitados, listaDeListas);
@@ -851,18 +851,18 @@ public class Grafo {
 
     public LinkedList getPosiblesCaminosSinPasarPor(Object origen, Object destino, Object claveAEvitar) {
         //Método que retorna los posibles caminos de un nodo a otro
-        LinkedList<grafos.NodoAdy> listaActual = new LinkedList();//Va acumulando los arcos cuando avanza y se borran los nodos cuando se retrocede, si llega a destino se clona y se suma a listaDeListas
+        LinkedList<NodoAdy> listaActual = new LinkedList();//Va acumulando los arcos cuando avanza y se borran los nodos cuando se retrocede, si llega a destino se clona y se suma a listaDeListas
         //Se almacenan los nodos adyacentes para tener luego acceso a su etiqueta
-        LinkedList<grafos.NodoVert> visitados = new LinkedList();//Misma función que en listarEnProfundidad
+        LinkedList<NodoVert> visitados = new LinkedList();//Misma función que en listarEnProfundidad
         LinkedList<LinkedList> listaDeListas = new LinkedList();//Contiene todos los posibles caminos        
 
         boolean encontradoOrigen = false;
         boolean encontradoDestino = false;
         boolean encontradoEvitar = false;
-        grafos.NodoVert aux = this.inicio;
-        grafos.NodoVert nodoOrigen = null;
-        grafos.NodoVert nodoDestino = null;
-        grafos.NodoVert nodoAEvitar = null;
+        NodoVert aux = this.inicio;
+        NodoVert nodoOrigen = null;
+        NodoVert nodoDestino = null;
+        NodoVert nodoAEvitar = null;
         //Buscar los nodos origen y destino
         while ((!encontradoOrigen || !encontradoDestino || !encontradoEvitar) && aux != null) {
             if (aux.getElem().equals(origen)) {
@@ -884,15 +884,15 @@ public class Grafo {
         return listaDeListas;
     }
 
-    private void getPosiblesCaminoSinPasarPor(grafos.NodoVert n, grafos.NodoVert dest, grafos.NodoVert nodoEvitar, LinkedList<grafos.NodoAdy> listaActual, LinkedList visitados, LinkedList listaDeListas) {
+    private void getPosiblesCaminoSinPasarPor(NodoVert n, NodoVert dest, NodoVert nodoEvitar, LinkedList<NodoAdy> listaActual, LinkedList visitados, LinkedList listaDeListas) {
         //Es el mismo método que getPosiblesCaminos pero con una verificación extra para nodoEvitar
         if (n == dest) {
             listaDeListas.addFirst(listaActual.clone());
         } else {
-            grafos.NodoAdy ady = n.getPrimerAdy();
+            NodoAdy ady = n.getPrimerAdy();
             visitados.add(n);
             while (ady != null) {
-                grafos.NodoVert auxVert = ady.getVertice();
+                NodoVert auxVert = ady.getVertice();
                 //Aquí se agrega la verificación extra al detectarse el nodo a evitar, no se realiza ninguna llamada
                 //recursiva sobre el mismo
 
@@ -935,7 +935,7 @@ public class Grafo {
         return existeCamino;
     }
 
-    private boolean getPosiblesCaminosConMaxKm(grafos.NodoVert n, grafos.NodoVert dest, LinkedList visitados, int cantKmMax, int sumatoria) {
+    private boolean getPosiblesCaminosConMaxKm(NodoVert n, NodoVert dest, LinkedList visitados, int cantKmMax, int sumatoria) {
         //Método auxiliar para la recursión de getPosiblesCaminos. En el camino no se pueden repetir nodos
         //y si el camino no conduce al nodo buscado, en ningún momento se incorpora a listaDeListas
         boolean existeCaminoConMaxKm = false;
@@ -943,11 +943,11 @@ public class Grafo {
             if (n == dest) {                
                 existeCaminoConMaxKm = true;
             } else {
-                grafos.NodoAdy ady = n.getPrimerAdy();
+                NodoAdy ady = n.getPrimerAdy();
                 visitados.add(n);
                 //Si no hubieran más nodos adyacentes, termina la llamada recursiva
                 while (ady != null && !existeCaminoConMaxKm) {
-                    grafos.NodoVert auxVert = ady.getVertice();
+                    NodoVert auxVert = ady.getVertice();
                     if (visitados.indexOf(auxVert) == -1) {
                         sumatoria += (int) ady.getEtiqueta();
                         existeCaminoConMaxKm=getPosiblesCaminosConMaxKm(auxVert, dest, visitados, cantKmMax, sumatoria);
