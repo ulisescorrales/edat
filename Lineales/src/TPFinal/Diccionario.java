@@ -558,7 +558,7 @@ public class Diccionario {
 
     public static void main(String[] args) {
         Diccionario dic = new Diccionario();        
-        /*dic.insertar(1, "");
+        dic.insertar(1, "");
         dic.insertar(2, "");
         dic.insertar(3, "");
         dic.insertar(4, "");
@@ -568,25 +568,12 @@ public class Diccionario {
         dic.insertar(8, "");
         dic.insertar(0, "");
         dic.insertar(9, "");                
-        System.out.println(dic.getEstructura());*/
+        System.out.println(dic.getEstructura());
  /*LinkedList lista =dic.listarClaves();
         for(Object i:lista){
             System.out.print((int)i);
-        }*/
-        dic.insertar("Villa a", "");
-        dic.insertar("Villa b", "");
-        dic.insertar("Zapala", "");        
-        dic.insertar("Retiro", "");
-        dic.insertar("Bahía", "");
-        dic.insertar("Villa", ""); 
-        dic.insertar("Villa n", ""); 
-        dic.insertar("Wi", "");
-        
-        System.out.println(dic.getEstructura());
-        
-        LinkedList lista=dic.getSubstringList("Villa");
-        for(Object i:lista){
-            System.out.println(i);
-        }
+        }*/        
+                
+                
     }
 }
