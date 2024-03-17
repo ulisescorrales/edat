@@ -451,22 +451,27 @@ public class Diccionario {
         //Recorrido inorden
         //alturaAbs es la altura del nodo en relación al último nivel
         //Retorna la cantidad de dígitos de la clave que servirá para agregar separador a la izquierda o a la derecha
-        int cantDigitos = 0;
+
+        int cantDigitos=0;
         if (n != null) {
-            cantDigitos += getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
+            cantDigitos+=getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
             int cantSeparador = separador(alturaAbs);
             String separador = "";
             String separadorVacio = "";
-
+                                    
             for (int i = 0; i < cantSeparador; i++) {
                 separador += "─";
                 separadorVacio += " ";
-            }
+            }            
             if (esDerecho) {
                 cadenas[alturaAbs] += ("┴" + separador + n.getClave() + separadorVacio + " ");
             } else {
-                cadenas[alturaAbs] += (separadorVacio + n.getClave() + separador);
-            }
+                if(alturaAbs==0 && cadenas[0].length()!=0){
+                    cadenas[alturaAbs] += (" "+separadorVacio + n.getClave() + separador);
+                }else{
+                    cadenas[alturaAbs] += (separadorVacio + n.getClave() + separador);
+                }                
+            }                        
             String aux=n.getClave().toString();
             cantDigitos+=aux.length()-1;
             cantDigitos += getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);
@@ -481,13 +486,14 @@ public class Diccionario {
             }
             //Si hay espacio vacío en el lado derecho, verificar si hay un nodo izquierdo para agregar
             //el caracter '┴' (verificando si existe un caracter de separación entre hermanos)
-            if (esDerecho && cadenas[alturaAbs].charAt(longitud - 1) == '─') {
-                StringBuilder separador2 = new StringBuilder(separador);
-                separador2.setCharAt(cantSeparador - 1, '┴');
+            if(esDerecho && cadenas[alturaAbs].charAt(longitud-1)=='─'){                                
+                StringBuilder separador2=new StringBuilder(separador);
+                separador2.setCharAt(cantSeparador-1, '┴');                
                 cadenas[alturaAbs] += (separador2.toString() + " " + separador + " ");
             } else {
                 cadenas[alturaAbs] += (separador + " " + separador + " ");
-            }
+
+            }                        
         }
         return cantDigitos;
     }
@@ -566,8 +572,9 @@ public class Diccionario {
         dic.insertar(6, "");
         dic.insertar(7, "");
         dic.insertar(8, "");
+        dic.insertar(9, "");
         dic.insertar(0, "");
-        dic.insertar(9, "");                
+           
         System.out.println(dic.getEstructura());
  /*LinkedList lista =dic.listarClaves();
         for(Object i:lista){
