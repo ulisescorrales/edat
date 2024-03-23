@@ -61,8 +61,7 @@ public class TPFinal {
         LinkedList<StringTokenizer> trenesList = new LinkedList();
         LinkedList<StringTokenizer> rielesList = new LinkedList();
         Queue<StringTokenizer> lineasCola = new LinkedList();
-
-        LinkedList<String> listaRecorrido;
+       
 
         TrenesSA sistema = new TrenesSA();
 
@@ -102,15 +101,10 @@ public class TPFinal {
 
         try {
             logs.write("---FIN CARGA INICIAL---\n");
-        } catch (IOException ex) {
-            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            //Escribir toda la carga inicial en logs.log
             logs.flush();
         } catch (IOException ex) {
             Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }        
         //Interactuar con el menú hasta salir         
         mostrarMenuPrincipal(input, sistema, logs);
     }
@@ -142,34 +136,195 @@ public class TPFinal {
                         eliminarInformacion(in, sist, lg);
                         resultado = true;
                     case 4:
-                        modificarInformacion(in,sist,lg);
-                        resultado=true;
+                        modificarInformacion(in, sist, lg);
+                        resultado = true;
                         break;
                 }
             } while (!resultado);
         } while (opcion != -1);
 
     }
-    public static void modificarInformacion(Scanner input,TrenesSA sistema,FileWriter logs){
+
+    public static void modificarInformacion(Scanner input, TrenesSA sistema, FileWriter logs) {
         System.out.println("Seleccione qué quiere modificar: ");
         System.out.println("1-Estacion");
         System.out.println("2-Tren");
         System.out.println("3-Linea");
         System.out.println("4-Riel");
-        
-        byte opcion=input.nextByte();
-        switch(opcion){
+        System.out.println("Ingrese -1 para salir");
+
+        byte opcion = input.nextByte();
+        switch (opcion) {
             case 1:
-                System.out.println("Ingrese el nombre de la estación a modificar:");
-                String est=input.next();
-                
+                //Pedir el nombre de la estación
+                modificarEstacion(sistema, input, logs);
                 break;
             case 2:
+                modificarTren(sistema, input, logs);
                 break;
             case 3:
                 break;
             case 4:
                 break;
+        }
+    }
+
+    public static void modificarTren(TrenesSA sist, Scanner in, FileWriter lg) {
+        //Método para modificar un tren, dado un ID ingresado
+        System.out.println("Ingrese el número de id del tren a modificar, -1 para salir");
+        int idTren = in.nextInt();
+        byte opcion;
+        Tren tren = sist.getTren(idTren);
+        while (tren == null && idTren != -1) {
+            System.out.println("No existe el tren, ingrese otro número o -1 para salir");
+            idTren = in.nextInt();
+        }
+        if (idTren != -1) {
+            imprimirTren(in, tren);
+            System.out.println("¿Qué desea modificar?");
+            System.out.println("1-Propulsión");
+            System.out.println("2-Cant. vagones para pasajeros");
+            System.out.println("3-Cant. vagones para carga");
+            System.out.println("4-Línea");
+            opcion = in.nextByte();
+            switch (opcion) {
+                case 1:
+                    System.out.println("Ingrese propulsión, -1 para cancelar");
+                    String propulsion = in.next().toUpperCase();
+                    while ((!propulsion.equals("ELECTRICIDAD") || !propulsion.equals("DIESEL")
+                            || !propulsion.equals("FUEL OIL") || !propulsion.equals("GASOLINA")
+                            || !propulsion.equals("HÍBRIDO")) && !propulsion.equals("-1")) {
+                        System.out.println("Error, ingrese una opción válida: electricidad, diesel, fuel oil, gasolina, híbrido o -1 para salir");
+                        propulsion = in.next().toUpperCase();
+                    }
+                    if (!propulsion.equals("-1")) {
+                        String propulsionAnterior = tren.getPropulsion();
+                        tren.setPropulsion(propulsion);
+                        System.out.println("Propulsión cambiada");
+                        try {
+                            lg.write("Modificado propulsión de TREN " + idTren + ": " + propulsionAnterior + "->" + propulsion);
+                            lg.flush();
+                        } catch (IOException ex) {
+                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case 2:
+                    System.out.println("Ingrese la nueva cantidad de vagones para pasajeros, -1 para cancelar");
+                    int cantVagones = in.nextInt();
+                    while (cantVagones < -1) {
+                        System.out.println("Error, ingrese un número positivo");
+                        cantVagones = in.nextInt();
+                    }
+                    if (cantVagones != -1) {
+                        int cantAnterior = tren.getCantVagonesPasaj();
+                        try {
+                            lg.write("Modificado cant. pasajeros de TREN " + idTren + ": " + cantAnterior + "->" + cantVagones);
+                            lg.flush();
+                        } catch (IOException ex) {
+                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case 3:
+                    System.out.println("Ingrese la nueva cantidad de vagones para carga, -1 para cancelar");
+                    int cantVagonesCarga = in.nextInt();
+                    while (cantVagonesCarga < -1) {
+                        System.out.println("Error, ingrese un número positivo");
+                        cantVagones = in.nextInt();
+                    }
+                    if (cantVagonesCarga != -1) {
+                        int cantAnterior = tren.getCantVagonesPasaj();
+                        try {
+                            lg.write("Modificado cant. vagones de carga de TREN " + idTren + ": " + cantAnterior + "->" + cantVagonesCarga);
+                            lg.flush();
+                        } catch (IOException ex) {
+                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case 4:
+                    System.out.println("Ingrese una línea cargada, -1 para salir");
+                    String linea = in.next();
+                    while (!sist.existeLinea(linea) && !linea.equals("-1")) {
+                        System.out.println("No existe la línea, intente nuevamente o ingrese -1 para salir");
+                    }
+                    if (!linea.equals("-1")) {
+                        String lineaAnterior = tren.getLinea();
+                        try {
+                            lg.write("Modificado línea de TREN " + idTren + ": " + lineaAnterior + "->" + linea);
+                            lg.flush();
+                        } catch (IOException ex) {
+                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+            }
+
+        }
+    }
+
+    public static void modificarEstacion(TrenesSA sist, Scanner in, FileWriter lg) {
+        //Submenú para modificar una estación dada
+        System.out.println("Ingrese el nombre de la estación a modificar, -1 para salir");
+        String est = in.next();
+        byte opcion;
+        Estacion estacion = sist.getEstacion(est);
+        while (estacion == null && !est.equals("-1")) {
+            System.out.println("No existe estación, ingrese otra o -1 para salir");
+            est = in.next();
+            estacion = sist.getEstacion(est);
+        }
+        if (!est.equals("-1")) {
+            imprimirEstacion(in, estacion);
+            System.out.println("¿Qué desea modificar?");
+            System.out.println("1-Calle");
+            System.out.println("2-Núm. Calle");
+            System.out.println("3-Ciudad");
+            System.out.println("4-Cód. Postal");
+            System.out.println("5-Cantidad de plataformas");
+            System.out.println("Cualquier otro número para salir");
+
+            opcion = in.nextByte();
+            switch (opcion) {
+
+                case 1:
+                    System.out.println("Ingrese calle");
+                    String calleAnterior = estacion.getCalle();
+                    String calle = in.next();
+                    estacion.setCalle(calle);
+                     {
+                        try {
+                            lg.write("Modificado calle de ESTACIÓN " + calleAnterior + "->" + calle);
+                            lg.flush();
+                        } catch (IOException ex) {
+                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                case 2:
+                    System.out.println("Ingrese número de calle");
+                    int numCalleAnterior = estacion.getNumCalle();
+                    int numCalle = in.nextInt();
+                    estacion.setNumCalle(numCalle);
+                    try {
+                        lg.write("Modificado núm. calle de ESTACIÓN " + numCalleAnterior + "->" + numCalle);
+                        lg.flush();
+                    } catch (IOException ex) {
+                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                case 3:
+                    System.out.println("Ingrese Ciudad");
+                    String ciudadAnterior = estacion.getCiudad();
+                    String ciudad = in.next();
+                    estacion.setCiudad(ciudad);
+                    try {
+                        lg.write("Modificado ciudad de ESTACIÓN " + ciudadAnterior + "->" + ciudad);
+                        lg.flush();
+                    } catch (IOException ex) {
+                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
         }
     }
 
@@ -190,12 +345,14 @@ public class TPFinal {
             if (sist.agregarLinea(listaRecorrido)) {
                 try {
                     lg.write("Agregada LÍNEA: " + lineas + "\n");
+                    lg.flush();
                 } catch (IOException ex) {
                     Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 try {
                     lg.write("Error al agregar LÍNEA: " + lineas + "\n");
+                    lg.flush();
                 } catch (IOException ex) {
                     Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -238,6 +395,7 @@ public class TPFinal {
                             + "   cant. vagones pasajeros :" + cantVagonesPasaj + "\n"
                             + "   cant. vagones carga: " + cantVagonesCarga + "\n"
                             + "   linea: " + linea + "\n");
+                    lg.flush();
                 } catch (IOException ex) {
                     Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -248,6 +406,7 @@ public class TPFinal {
                             + "   cant. vagones pasajeros :" + cantVagonesPasaj + "\n"
                             + "   cant. vagones carga: " + cantVagonesCarga + "\n"
                             + "   linea: " + linea + "\n");
+                    lg.flush();
                 } catch (IOException ex) {
                     Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -320,6 +479,7 @@ public class TPFinal {
                             + "   cód. postal: " + cp + "\n"
                             + "   cantidad de vías: " + cantVias + "\n"
                             + "   cantidad de plataformas:" + cantPlataformas + "\n");
+                    lg.flush();
                 } catch (IOException ex) {
                     Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -332,6 +492,7 @@ public class TPFinal {
                             + "   cód. postal: " + cp + "\n"
                             + "   cantidad de vías: " + cantVias + "\n"
                             + "   cantidad de plataformas:" + cantPlataformas + "\n");
+                    lg.flush();
                 } catch (IOException ex) {
                     Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -463,7 +624,7 @@ public class TPFinal {
             //Ingresar una opción válida
             while ((!propulsion.equals("ELECTRICIDAD") || !propulsion.equals("DIESEL")
                     || !propulsion.equals("FUEL OIL") || !propulsion.equals("GASOLINA")
-                    || !propulsion.equals("HÍBRIDO")) && !propulsion.equals(99)) {
+                    || !propulsion.equals("HÍBRIDO")) && !propulsion.equals("-1")) {
                 System.out.println("Error, ingrese una opción válida: electricidad, diesel, fuel oil, gasolina, híbrido o -1 para salir");
                 propulsion = in.next().toUpperCase();
             }
