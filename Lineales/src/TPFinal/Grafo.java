@@ -65,6 +65,57 @@ public class Grafo {
         return encontrado;
     }
 
+    public Object getEtiqueta(Object estacion1, Object estacion2) {
+        //Retorna -1 en caso de que no exista un arco entre un objeto y otro
+        int distancia = -1;
+        NodoVert aux = this.inicio;
+        while (aux.getElem().equals(estacion1) && aux != null) {
+            aux = aux.getSigVertice();
+        }
+
+        if (aux != null) {
+            NodoAdy auxAdy = aux.getPrimerAdy();
+            while (!auxAdy.getVertice().getElem().equals(estacion2) && auxAdy != null) {
+                auxAdy = auxAdy.getSigAdyacente();
+            }
+            if (auxAdy != null) {
+                distancia = (int) auxAdy.getEtiqueta();
+            }
+        }
+        return distancia;
+    }
+
+    public boolean cambiarEtiqueta(Object estacion1, Object estacion2, int nuevaEtiqueta) {
+        NodoVert aux = this.inicio;
+        boolean exito = true;
+        while (aux.getElem().equals(estacion1) && aux != null) {
+            aux = aux.getSigVertice();
+        }
+
+        if (aux != null) {
+            NodoAdy auxAdy = aux.getPrimerAdy();
+            while (!auxAdy.getVertice().getElem().equals(estacion2) && auxAdy != null) {
+                auxAdy = auxAdy.getSigAdyacente();
+            }
+            if (auxAdy != null) {
+                auxAdy.setEtiqueta(nuevaEtiqueta);
+                NodoVert aux2 = auxAdy.getVertice();
+                NodoAdy auxAdy2 = aux2.getPrimerAdy();
+                while (auxAdy2 != null && !auxAdy.getVertice().getElem().equals(estacion2)) {
+                    auxAdy2 = auxAdy2.getSigAdyacente();
+                }
+                if (auxAdy2 != null) {
+                    auxAdy2.setEtiqueta(nuevaEtiqueta);
+                } else {
+                    exito = false;
+                }
+            } else {
+                exito = false;
+            }
+        }
+        return exito;
+    }
+
     private void eliminarNodosAdyacentes(NodoVert apuntado) {
         //Módulo que elimina los nodos adyacentes que apuntan al nodo vértice eliminado
         NodoAdy aux = apuntado.getPrimerAdy();//Apunta a cada adyacente del vértice a eliminar
@@ -378,9 +429,9 @@ public class Grafo {
                         contSalto++;
                         //
                         longCola++;
-                        auxCola.add(longCola,auxA.getVertice());                        
+                        auxCola.add(longCola, auxA.getVertice());
                         //
-                        saltos.add(longCola,contSalto);
+                        saltos.add(longCola, contSalto);
                     }
                 }
                 auxA = auxA.getSigAdyacente();
@@ -475,9 +526,9 @@ public class Grafo {
                         contSalto++;
                         //
                         longCola++;
-                        auxCola.add(longCola,auxA.getVertice());
+                        auxCola.add(longCola, auxA.getVertice());
                         //
-                        saltos.add(longCola,contSalto);
+                        saltos.add(longCola, contSalto);
 
                     }
                     auxA = auxA.getSigAdyacente();
@@ -499,7 +550,7 @@ public class Grafo {
         //A partir del último nodo destino encontrado, armar la lista con los anteriores a cada nodo        
         while (puntero != 0) {
             auxRecuperar = (NodoVert) auxCola.get(puntero);
-            recorrido.add(1,auxRecuperar.getElem());
+            recorrido.add(1, auxRecuperar.getElem());
             puntero = puntero - (int) saltos.get(puntero);
         }
         return recorrido;
@@ -559,7 +610,7 @@ public class Grafo {
             while (auxA != null) {
                 if (auxCola.indexOf(auxA.getVertice()) < 0) {//Si el nodo no fue visitado anteriormente
                     longCola++;
-                    auxCola.add(longCola,auxA.getVertice());
+                    auxCola.add(longCola, auxA.getVertice());
                     System.out.print(auxA.getVertice().getElem() + " - ");
                 }
                 auxA = auxA.getSigAdyacente();
@@ -698,7 +749,7 @@ public class Grafo {
 
         return retornar;
     }
-    
+
     public String toString() {
         //Formato:
         //Vertice1---> Adyacente1 (etiqueta1) - Adyacente1 (etiqueta2)...
@@ -719,28 +770,7 @@ public class Grafo {
         }
         return cadena;
     }
-    /*
-    public String toString() {
-        //Formato:
-        //Vertice1---> Adyacente1 (etiqueta1) - Adyacente1 (etiqueta2)...
-        String cadena = "";
-        grafos.NodoVert auxV = this.inicio;
-        grafos.NodoAdy auxA;
 
-        while (auxV != null) {
-            cadena = cadena + auxV.getElem() + "--->";
-
-            auxA = auxV.getPrimerAdy();
-            while (auxA != null) {
-                cadena = cadena + auxA.getVertice().getElem() + " (" + auxA.getEtiqueta() + ")" + " - ";
-                auxA = auxA.getSigAdyacente();
-            }
-            cadena = cadena + "\n";
-            auxV = auxV.getSigVertice();
-        }
-        return cadena;
-    }
-*/
     public LinkedList<Object> getCaminoMasLargoPorCantNodos(Object origen, Object destino) {
         LinkedList<LinkedList> listaDeListas = getPosiblesCaminos(origen, destino);
         LinkedList<grafos.NodoAdy> caminoMasLargo = new LinkedList();
@@ -907,7 +937,7 @@ public class Grafo {
         }
     }
 
-    public boolean verificarCaminoConKmMax(Object origen, Object destino, int kmMax) {        
+    public boolean verificarCaminoConKmMax(Object origen, Object destino, int kmMax) {
         //Se almacenan los nodos adyacentes para tener luego acceso a su etiqueta
         LinkedList<grafos.NodoVert> visitados = new LinkedList();//Misma función que en listarEnProfundidad        
         boolean existeCamino = false;
@@ -940,7 +970,7 @@ public class Grafo {
         //y si el camino no conduce al nodo buscado, en ningún momento se incorpora a listaDeListas
         boolean existeCaminoConMaxKm = false;
         if (sumatoria <= cantKmMax) {
-            if (n == dest) {                
+            if (n == dest) {
                 existeCaminoConMaxKm = true;
             } else {
                 NodoAdy ady = n.getPrimerAdy();
@@ -950,7 +980,7 @@ public class Grafo {
                     NodoVert auxVert = ady.getVertice();
                     if (visitados.indexOf(auxVert) == -1) {
                         sumatoria += (int) ady.getEtiqueta();
-                        existeCaminoConMaxKm=getPosiblesCaminosConMaxKm(auxVert, dest, visitados, cantKmMax, sumatoria);
+                        existeCaminoConMaxKm = getPosiblesCaminosConMaxKm(auxVert, dest, visitados, cantKmMax, sumatoria);
                         sumatoria -= (int) ady.getEtiqueta();
                     }
                     ady = ady.getSigAdyacente();
@@ -962,4 +992,5 @@ public class Grafo {
         }
         return existeCaminoConMaxKm;
     }
+
 }

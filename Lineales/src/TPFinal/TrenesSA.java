@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package TPFinal;
-
-import grafos.Grafo;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -46,7 +44,25 @@ public class TrenesSA {
     public boolean eliminarTren(int id) {
         return trenes.eliminar(id);
     }
-
+    public boolean existeRiel(String estacion1,String estacion2){
+        boolean existe;
+        
+        existe=rieles.existeArco(estacion1, estacion2);
+        
+        return existe;
+    }
+    public int getDistanciaRiel(String estacion1,String estacion2){
+        return (int)rieles.getEtiqueta(estacion1,estacion2);
+    }
+    public boolean modificarDistancia(String estacion1,String estacion2,int nuevaDist){
+        //Método que modifica la distancia entre estaciones conectadas
+        
+        return rieles.cambiarEtiqueta(estacion1,estacion2,nuevaDist);
+        
+    }
+    public boolean eliminarRiel(String estacion1,String estacion2){
+        return rieles.eliminarArco(estacion1, estacion2);
+    }
     public boolean agregarEstacion(String id, String calle, int numCalle, String ciudad, String cp, int cantVias, int cantPlataformas) {
         //Comprobar que no existe
         boolean exito = false;
@@ -70,13 +86,6 @@ public class TrenesSA {
             exito = true;
         }
         return exito;
-    }
-
-    public Estacion modificarEstacion(String idEst) {
-        //Retorna la estación
-        Estacion laEstacion = null;
-        laEstacion = (Estacion) estaciones.obtenerDato(idEst);
-        return laEstacion;
     }
 
     public LinkedList<String> getLinea(String nombreLinea) {

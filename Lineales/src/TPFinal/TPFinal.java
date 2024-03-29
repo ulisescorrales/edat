@@ -61,7 +61,6 @@ public class TPFinal {
         LinkedList<StringTokenizer> trenesList = new LinkedList();
         LinkedList<StringTokenizer> rielesList = new LinkedList();
         Queue<StringTokenizer> lineasCola = new LinkedList();
-       
 
         TrenesSA sistema = new TrenesSA();
 
@@ -104,7 +103,7 @@ public class TPFinal {
             logs.flush();
         } catch (IOException ex) {
             Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
         //Interactuar con el menú hasta salir         
         mostrarMenuPrincipal(input, sistema, logs);
     }
@@ -163,25 +162,86 @@ public class TPFinal {
                 modificarTren(sistema, input, logs);
                 break;
             case 3:
-                modificarEstacion(sistema,input,logs);
+                modificarEstacion(sistema, input, logs);
                 break;
             case 4:
+                modificarRiel(sistema, input, logs);
                 break;
         }
     }
-    public static void modificarLinea(TrenesSA sist,Scanner in,FileWriter lg){
+
+    public static void modificarRiel(TrenesSA sist, Scanner in, FileWriter lg) {
+        System.out.println("Ingrese el nombre de una estación");
+        String estacion1 = in.next();
+        while (!sist.existeEstacion(estacion1)) {
+            System.out.println("No existe estación, intente nuevamente");
+            estacion1 = in.next();
+        }
+        System.out.println("Ingrese el nombre de la otra estación");
+        String estacion2 = in.next();
+        while (!sist.existeEstacion(estacion2)) {
+            System.out.println("No existe estación, intente nuevamente");
+            estacion2 = in.next();
+        }
+        if (sist.existeRiel(estacion1, estacion2)) {
+            int distanciaAnterior = sist.getDistanciaRiel(estacion1, estacion2);
+            System.out.println("Ingrese una nueva distancia entre rieles");
+            int nuevaDistancia = in.nextInt();
+            if (sist.modificarDistancia(estacion1, estacion2, nuevaDistancia)) {
+                try {
+                    lg.write("Modificado rieal " + estacion1 + " -" + estacion2 + ": " + distanciaAnterior + "->" + nuevaDistancia);
+                    lg.flush();
+                } catch (IOException ex) {
+                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            System.out.println("No existe riel entre las estaciones");
+        }
+    }
+
+    public static void modificarLinea(TrenesSA sist, Scanner in, FileWriter lg) {
         //Método para modificar una línea, dado un nombre de línea
         System.out.println("Ingrese el número de línea, -1 para salir");
-        String nombreLinea=in.next();
-        LinkedList<String> linea=sist.getLinea(nombreLinea);
-        while(linea.size()==0 && !nombreLinea.equals("-1")){
+        String nombreLinea = in.next();
+        LinkedList<String> linea = sist.getLinea(nombreLinea);
+        while (linea.isEmpty() && !nombreLinea.equals("-1")) {
             System.out.println("No existe la línea, intente nuevamente o ingrese -1 para salir");
-            linea=sist.getLinea(nombreLinea);
+            linea = sist.getLinea(nombreLinea);
         }
-        if(!nombreLinea.equals("-1")){
+        if (!nombreLinea.equals("-1")) {
             imprimirLinea(linea);
-            
-            System.out.println("");
+            //Vaciar la lista de la línea desde la última hasta la primera (la clave)
+            while (linea.size() != 1) {
+                linea.removeLast();
+            }
+
+            boolean salir = false;
+            String estacion;
+            String lineasString = nombreLinea;
+            while (!salir) {
+                //Ingresar el recorrido a partir de la segunda estación, solo admite estaciones cargadas al sistema
+                System.out.println("Ingrese el nombre de una estación del recorrido, ingrese -1 para terminar");
+                estacion = in.next();
+                if (!in.equals("-1")) {
+                    if (sist.getEstaciones().existeClave(estacion)) {
+                        linea.add(estacion);
+                        lineasString += " - " + estacion;
+                    } else {
+                        System.out.println("Estación no existe, vuelva a intentarlo");
+                    }
+                } else {
+                    salir = true;
+                }
+            }
+            System.out.println("Estación modificada: " + lineasString);
+            //Escribir en el archivo log
+            try {
+                lg.write("Modificada línea " + nombreLinea + ": " + lineasString);
+                lg.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -591,10 +651,36 @@ public class TPFinal {
                     }
                 }
                 break;
+            case 4:
+                System.out.println("Ingrese una estación");
+                String estacion1 = input.next();
+                while (!sistema.existeEstacion(estacion1) && !estacion1.equals("-1")) {
+                    System.out.println("Error, no existe estación. Intente nuevamente o presion -1 para salir");
+                    estacion1 = input.next();
+                }
+                if (!estacion1.equals("-1")) {
+                    String estacion2 = input.next();
+                    while (!sistema.existeEstacion(estacion2) && !estacion2.equals("-1")) {
+                        System.out.println("Error, no existe estación. Intente nuevamente o presion -1 para salir");
+                        estacion2 = input.next();
+                    }
+                    if (!estacion2.equals("-1")) {
+                        if (sistema.eliminarRiel(estacion1, estacion2)) {
+                            try {
+                                logs.write("Eliminado RIEL: " + estacion1 + " <-> " + estacion2);
+                                logs.flush();
+                            } catch (IOException ex) {
+                                Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                }
+                break;
         }
     }
 
     public static void mostrarSubMenuAgregar(Scanner input, TrenesSA sist, FileWriter logs) {
+        //Método que muestra el submenú para agregar información
         System.out.println("Eliga qué quiere agregar:");
         System.out.println("1-Estaciones");
         System.out.println("2-Líneas");
@@ -611,6 +697,43 @@ public class TPFinal {
             case 3:
                 agregarTren(input, sist, logs);
                 break;
+            case 4:
+                agregarRiel(input, sist, logs);
+                break;
+        }
+    }
+
+    public static void agregarRiel(Scanner in, TrenesSA sistema, FileWriter lg) {
+        //Método para agregar rieles a través de la terminal
+        System.out.println("Ingrese el nombre de una estación o -1 para cancelar");
+        String estacion1 = in.next();
+        while (!sistema.existeEstacion(estacion1) && !estacion1.equals("-1")) {
+            System.out.println("Ya existe estación, intente nuevamente o ingrese -1 para salir");
+            estacion1 = in.next();
+        }
+        if (!estacion1.equals("-1")) {
+            System.out.println("Ingrese el nombre de otra estación");
+            String estacion2 = in.next();
+            while (!sistema.existeEstacion(estacion2) && !estacion2.equals("-1")) {
+                System.out.println("Ya existe estación, intente nuevamente o ingrese -1 para salir");
+                estacion2 = in.next();
+            }
+            if (!estacion2.equals("-1")) {
+                System.out.println("Ingrese distancia entre estaciones en km");
+                int distancia = in.nextInt();
+                while (distancia < 0) {
+                    System.out.println("Distancia debe ser un número positivo");
+                    distancia = in.nextInt();
+                }
+                if (sistema.agregarRiel(estacion2, estacion2, distancia)) {
+                    try {
+                        lg.write("Agregado RIEL: " + estacion1 + " - " + estacion2 + " - " + distancia);
+                        lg.flush();
+                    } catch (IOException ex) {
+                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
         }
     }
 
