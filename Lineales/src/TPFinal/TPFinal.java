@@ -163,9 +163,25 @@ public class TPFinal {
                 modificarTren(sistema, input, logs);
                 break;
             case 3:
+                modificarEstacion(sistema,input,logs);
                 break;
             case 4:
                 break;
+        }
+    }
+    public static void modificarLinea(TrenesSA sist,Scanner in,FileWriter lg){
+        //Método para modificar una línea, dado un nombre de línea
+        System.out.println("Ingrese el número de línea, -1 para salir");
+        String nombreLinea=in.next();
+        LinkedList<String> linea=sist.getLinea(nombreLinea);
+        while(linea.size()==0 && !nombreLinea.equals("-1")){
+            System.out.println("No existe la línea, intente nuevamente o ingrese -1 para salir");
+            linea=sist.getLinea(nombreLinea);
+        }
+        if(!nombreLinea.equals("-1")){
+            imprimirLinea(linea);
+            
+            System.out.println("");
         }
     }
 
