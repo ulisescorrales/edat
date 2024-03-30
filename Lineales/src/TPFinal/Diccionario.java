@@ -203,7 +203,7 @@ public class Diccionario {
 
     private boolean existeClave(Comparable clave, NodoAVLDicc n) {
         boolean existe = false;
-        if (n != null) {
+        if (n != null) {            
             int comparacion = clave.compareTo(n.getClave());
             if (comparacion == 0) {
                 existe = true;

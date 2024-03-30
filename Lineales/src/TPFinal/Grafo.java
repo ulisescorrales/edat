@@ -229,6 +229,12 @@ public class Grafo {
         }
 
     }
+    public static void main(String[] args) {
+        Grafo grafo=new Grafo();
+        grafo.insertarVertice("A");
+        grafo.insertarVertice("B");
+        System.out.println(grafo.insertarArco("A", "B", 23));        
+    }
 
     public boolean eliminarArco(Object unVertice, Object otroVertice) {
         //Método que elimina un arco entre dos vértices eliminando los nodos adyacentes correspondientes 
@@ -296,7 +302,7 @@ public class Grafo {
         while (aux != null && !encontrado1) {
             if (aux.getElem().equals(unNodo) || aux.getElem().equals(otroNodo)) {//Si encuentra alguno de los dos nodos
                 //sigue buscando el otro nodo en su lista de adyacentes
-                encontrado1 = true;
+                encontrado1 = true;                
                 auxAdy = aux.getPrimerAdy();
                 if (aux.getElem().equals(unNodo)) {
                     while (auxAdy != null && !encontrado2) {

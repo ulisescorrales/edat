@@ -1,35 +1,35 @@
-E;Retiro;Av. Dr. José María Ramos Mejía;1430;CABA;C1104;9;6
-E;Córdoba;Boulevard Juan Domingo Perón;101;Córdoba capital;5000;6;4
-E;Mar Del Plata;San Juan;1642;Mar del Plata;7600;5;4
-E;Cañuelas;Olascoaga;74;AMBA;B1814;3;3
-E;Trenque Lauquén;Sarmiento;456;Trenque Lauquén;B6400;4;5
-E;SUD;Italia;39;Bahía Blanca;B7511;4;5
-E;Neuquén;Parque Central;0;Neuquén capital;8300;3;1
-E;Godoy Cruz;San Martín;801;Godoy Cruz;5501;2;2
-E;Musters;Cabral;45;Musters;8536;2;1
-E;Santa Rosa;Godoy;324;Santa Rosa;L6302;3;2
-E;Caleufú;Velazquez;3234;Caleufú;6387;3;2
-E;Villa María;Arcuate;85;Villa María;X5900;2;2
-E;Rosario Norte;La Paz;468;Rosario;S2000;2;3
-E;Tucumán;Brasil;16;Tucumán cap.;P2343;1;1;
-E;Arrufó;Lavalle;86;Arrufó;S3203;2;2;
-E;Rafaela;Velazo;46;Rafaela;D2341;3;3
-E;Campana;Arcuate;365;Campana;G123;3;3
-E;Pehuajó;Mari Menuco;5;Pehuajó;W314;2;1
-E;Pinamar;Jacinto;435;Pinamar;L314;1;1;
-E;Gral. Guido;Alvear;234;Gral. Guido;4FK2;3;2
-E;Palmira;Trelew;234;Palmira;F3KFJ;2;2
-E;Allen;Sarmiento;23;Allen;8328;2;1
-E;Las Heras;Jauregui;90;Las Heras;K320N;1;1
-E;Pigue;Cabral;234;Cabral;KD29D;2;2
-E;Colonia Dora;Alm. Brown;847;Colonia Dora;SK39D;1;1
-E;Armstrong;Velázquez;456;Armstrong;SE324;2;3
-E;Trelew;Pehuajó;456;Trelew;3928;3;2
-E;Río Gallegos;Mitre;32;Río Gallegos; M2949;1;2
-E;Mitre;San Juan;32;CABA;3234;4;4
-E;Rawson;Av. Las Heras;1265;Rawson;DD31;2;2
-E;Misiones;San Martín;55;Misiones Cap.;W3942;1;1
-E;Bariloche;Primeros Pobladores;323;Bariloche;D234;2;2
+E;Retiro;Av. Dr. José María Ramos Mejía;1430;CABA;C1104;9
+E;Córdoba;Boulevard Juan Domingo Perón;101;Córdoba capital;5000;6
+E;Mar Del Plata;San Juan;1642;Mar del Plata;7600;5
+E;Cañuelas;Olascoaga;74;AMBA;B1814;3
+E;Trenque Lauquén;Sarmiento;456;Trenque Lauquén;B6400;4
+E;SUD;Italia;39;Bahía Blanca;B7511;4
+E;Neuquén;Parque Central;0;Neuquén capital;8300;3
+E;Godoy Cruz;San Martín;801;Godoy Cruz;5501;2
+E;Musters;Cabral;45;Musters;8536;2
+E;Santa Rosa;Godoy;324;Santa Rosa;L6302;3
+E;Caleufú;Velazquez;3234;Caleufú;6387;3
+E;Villa María;Arcuate;85;Villa María;X5900;2
+E;Rosario Norte;La Paz;468;Rosario;S2000;2
+E;Tucumán;Brasil;16;Tucumán cap.;P2343;1
+E;Arrufó;Lavalle;86;Arrufó;S3203;2
+E;Rafaela;Velazo;46;Rafaela;D2341;3
+E;Campana;Arcuate;365;Campana;G123;3
+E;Pehuajó;Mari Menuco;5;Pehuajó;W314;2
+E;Pinamar;Jacinto;435;Pinamar;L314;1;
+E;Gral. Guido;Alvear;234;Gral. Guido;4FK2;3
+E;Palmira;Trelew;234;Palmira;F3KFJ;2
+E;Allen;Sarmiento;23;Allen;8328;2
+E;Las Heras;Jauregui;90;Las Heras;K320N;1
+E;Pigue;Cabral;234;Cabral;KD29D;2
+E;Colonia Dora;Alm. Brown;847;Colonia Dora;SK39D;1
+E;Armstrong;Velázquez;456;Armstrong;SE324;2
+E;Trelew;Pehuajó;456;Trelew;3928;3
+E;Río Gallegos;Mitre;32;Río Gallegos; M2949;1
+E;Mitre;San Juan;32;CABA;3234;4
+E;Rawson;Av. Las Heras;1265;Rawson;DD31;2
+E;Misiones;San Martín;55;Misiones Cap.;W3942;1
+E;Bariloche;Primeros Pobladores;323;Bariloche;D234;2
 E;Beazley;Italia;234;Beazley;GF23;3;3
 E;Roca;Ruta 22;34;CABA;DK32;2;2
 L;Retiro;Roca;Mitre;Gral. Guido;Pinamar

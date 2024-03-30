@@ -51,6 +51,9 @@ public class TrenesSA {
         
         return existe;
     }
+    public Grafo getRieles(){
+        return this.rieles;
+    }
     public int getDistanciaRiel(String estacion1,String estacion2){
         return (int)rieles.getEtiqueta(estacion1,estacion2);
     }
@@ -92,7 +95,7 @@ public class TrenesSA {
         return (LinkedList) lineas.get(nombreLinea);
     }
 
-    public boolean existeEstacion(String nombreEst) {
+    public boolean existeEstacion(String nombreEst) {        
         return this.estaciones.existeClave(nombreEst);
     }
 
@@ -143,8 +146,7 @@ public class TrenesSA {
     public boolean agregarRiel(String unaEstacion, String otraEstacion, int km) {
         boolean exito = false;
         if (estaciones.existeClave(unaEstacion) && estaciones.existeClave(otraEstacion)) {
-            exito = true;//Como existen entonces la operación será exitosa
-            rieles.insertarArco(unaEstacion, otraEstacion, km);
+            exito = rieles.insertarArco(unaEstacion, otraEstacion, km);            
         }
         return exito;
     }
