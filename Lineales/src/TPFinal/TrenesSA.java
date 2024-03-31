@@ -82,9 +82,11 @@ public class TrenesSA {
     }
 
     public boolean eliminarEstacion(String id) {
+        //Método para eliminar una estación del sistema
         boolean exito = false;
         if (estaciones.existeClave(id)) {
             estaciones.eliminar(id);
+            //Actualizar grafo            
             rieles.eliminarVertice(id);
             exito = true;
         }
@@ -145,7 +147,8 @@ public class TrenesSA {
 
     public boolean agregarRiel(String unaEstacion, String otraEstacion, int km) {
         boolean exito = false;
-        if (estaciones.existeClave(unaEstacion) && estaciones.existeClave(otraEstacion)) {
+        //Si existen las estaciones
+        if (estaciones.existeClave(unaEstacion) && estaciones.existeClave(otraEstacion)) {            
             exito = rieles.insertarArco(unaEstacion, otraEstacion, km);            
         }
         return exito;

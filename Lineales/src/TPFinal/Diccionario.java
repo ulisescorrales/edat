@@ -221,7 +221,7 @@ public class Diccionario {
         boolean exito = eliminar(elem, this.raiz, null);
         if (exito) {
             this.raiz = reacomodar(this.raiz);//Comprobar balance
-        }
+        }        
         return exito;
     }
 
@@ -270,7 +270,7 @@ public class Diccionario {
                     actualizarAltura(n);
                 }
             }
-        }
+        }        
         return exito;
     }
 
