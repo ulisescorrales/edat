@@ -474,7 +474,7 @@ public class Diccionario {
             }                        
             String aux=n.getClave().toString();
             cantDigitos+=aux.length()-1;
-            cantDigitos += getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);
+            cantDigitos += getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);            
         } else if (alturaAbs > -1) {
             //Rellenar los espacios vacíos en el último nivel para que las hojas se posicionen correctamente
             int cantSeparador = separador(alturaAbs);
@@ -482,7 +482,7 @@ public class Diccionario {
 
             int longitud = cadenas[alturaAbs].length();
             for (int i = 0; i < cantSeparador; i++) {
-                separador += "─";
+                separador += " ";
             }
             //Si hay espacio vacío en el lado derecho, verificar si hay un nodo izquierdo para agregar
             //el caracter '┴' (verificando si existe un caracter de separación entre hermanos)
@@ -564,16 +564,17 @@ public class Diccionario {
 
     public static void main(String[] args) {
         Diccionario dic = new Diccionario();        
-        dic.insertar(1, "");
-        dic.insertar(2, "");
-        dic.insertar(3, "");
-        dic.insertar(4, "");
-        dic.insertar(5, "");
-        dic.insertar(6, "");
-        dic.insertar(7, "");
-        dic.insertar(8, "");
-        dic.insertar(9, "");
-        dic.insertar(0, "");
+        dic.insertar("1", "");
+        dic.insertar("2", "");
+        dic.insertar("3", "");
+        dic.insertar("4", "");
+        dic.insertar("5", "");
+        dic.insertar("6", "");
+        dic.insertar("7", "");
+        dic.insertar("8", "");
+        dic.insertar("9", "");
+        dic.insertar("0", "");
+        dic.insertar("000000000", "");
            
         System.out.println(dic.getEstructura());
  /*LinkedList lista =dic.listarClaves();

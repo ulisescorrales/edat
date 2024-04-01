@@ -12,7 +12,6 @@ import java.util.Queue;
  * @author ulise
  */
 public class Grafo {
-
     //Grafo que vincula los vértices en ambos sentidos
     private NodoVert inicio;
 
@@ -21,6 +20,7 @@ public class Grafo {
     }
 
     public boolean insertarVertice(Object nuevoVertice) {
+        //Crea un nuevo objeto NodoVert y lo añade a la lista de vértices
         boolean exito = false;
         NodoVert aux = ubicarVertice(nuevoVertice);
         //Si no existe el vértice, se lo inserta en la primera posición en la lista de vértices
@@ -41,6 +41,7 @@ public class Grafo {
     }
 
     public boolean eliminarVertice(Object elem) {
+        //Busca el vértice en la lista de vértices y elimina los arcos unidos al mismo
         boolean encontrado = false;
         if (this.inicio != null) {
             NodoVert aux = this.inicio;
@@ -67,6 +68,7 @@ public class Grafo {
     }
 
     public Object getEtiqueta(Object estacion1, Object estacion2) {
+        //Busca el arco entre ambos nodos y retorna su etiqueta
         //Retorna -1 en caso de que no exista un arco entre un objeto y otro
         int distancia = -1;
         NodoVert aux = this.inicio;
@@ -87,6 +89,7 @@ public class Grafo {
     }
 
     public boolean cambiarEtiqueta(Object estacion1, Object estacion2, int nuevaEtiqueta) {
+        //Método que busca los arcos entre ambos nodos y modifica la etiqueta
         NodoVert aux = this.inicio;
         boolean exito = true;
         while (aux.getElem().equals(estacion1) && aux != null) {
@@ -152,6 +155,7 @@ public class Grafo {
     }
 
     public boolean existeVertice(Object elem) {
+        //Método para saber si existe un vértice en la lista de NodoVert
         boolean existe = false;
         NodoVert aux = inicio;
         while (aux != null && !existe) {
@@ -284,8 +288,8 @@ public class Grafo {
     }
 
     private NodoAdy eliminarNodoAdyacente(NodoVert vertice, Object eliminar) {
-        //Módulo que elimina un nodo adyacente en la lista del nodo vértice
-        //Retorna el nodo adyacente eliminado para poder reutilizarlo en el método de origen
+        /*Módulo que elimina un nodo adyacente en la lista del nodo vértice
+        Retorna el nodo adyacente eliminado para poder reutilizarlo en el método de origen*/
         NodoAdy aux = vertice.getPrimerAdy();
         NodoAdy antAux = null;
         boolean encontrado = false;
@@ -307,6 +311,7 @@ public class Grafo {
     }
 
     public boolean existeArco(Object unNodo, Object otroNodo) {
+        //Método para saber si dos nodos están conectados
         NodoVert aux = this.inicio;
         boolean encontrado1 = false;
         boolean encontrado2 = false;
@@ -340,10 +345,12 @@ public class Grafo {
     }
 
     public boolean vacio() {
+        //Método para saber si el grafo no contiene nodos
         return this.inicio == null;
     }
 
     public boolean existeCamino(Object origen, Object destino) {
+        //Método para verificar si existe un camino entre dos nodos
         boolean exito = false;
         //verifica si ambos vértices existen
         NodoVert auxO = null;
@@ -368,6 +375,7 @@ public class Grafo {
     }
 
     private boolean existeCaminoAux(NodoVert n, Object dest, LinkedList vis) {
+        //Método auxiliar para existeCamino
         boolean exito = false;
         if (n != null) {
             //si verticen es el destino: HAY CAMINO
@@ -507,12 +515,12 @@ public class Grafo {
     }
 
     private LinkedList caminoMasLargo(NodoVert or, Object dest) {
-        //Método que busca el camino más corto entre el nodo origen y el nodo destino
-        //Usa el recorrido en anchura hasta encontrar el destino para luego construir la lista
-        //Misma metodología que caminoMasCorto pero con la diferencia de que:
-        //No se inserta en la cola el nodo del que derivó el mismo ni el nodo origen (puede repetirse)
-        //Se insertan elementos en la cola hasta que no existan más posibilidades de insertar, luego
-        //la lista de recorrido mas largo se construye a partir del último nodo destino registrado en la cola
+        /*Método que busca el camino más corto entre el nodo origen y el nodo destino
+        Usa el recorrido en anchura hasta encontrar el destino para luego construir la lista
+        Misma metodología que caminoMasCorto pero con la diferencia de que:
+        No se inserta en la cola el nodo del que derivó el mismo ni el nodo origen (puede repetirse)
+        Se insertan elementos en la cola hasta que no existan más posibilidades de insertar, luego
+        la lista de recorrido mas largo se construye a partir del último nodo destino registrado en la cola*/
         LinkedList auxCola = new LinkedList();
         LinkedList saltos = new LinkedList();
         LinkedList recorrido = new LinkedList();
@@ -576,6 +584,7 @@ public class Grafo {
     }
 
     public LinkedList listarEnProfundidad() {
+        //Método para listar en profundidad con el algoritmo definido para grafo
         LinkedList visitados = new LinkedList();
         //define un vértice donde comenzar a recorrer
         NodoVert aux = this.inicio;
@@ -590,6 +599,7 @@ public class Grafo {
     }
 
     private void listarEnProfundidadAux(NodoVert n, LinkedList vis) {
+        //Método auxiliar para listar en profundidad
         if (n != null) {
             //marca al vertice n como visitado
             vis.add(n.getElem());
@@ -616,6 +626,7 @@ public class Grafo {
         return visitados;
     }
     private void anchuraDesde(NodoVert aux,LinkedList visitados){
+        //Método auxiliar para reAnchura()
         Queue cola=new LinkedList();
         visitados.add(aux);
         System.out.println(aux.getElem());
@@ -639,6 +650,7 @@ public class Grafo {
    
     @Override
     public Grafo clone() {
+        //Método para clonar el grafo retornando un nuevo objeto
         Grafo nuevoGrafo = new Grafo();
         NodoVert auxO = this.inicio;
         NodoVert auxN;

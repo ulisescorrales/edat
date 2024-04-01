@@ -3,7 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package TPFinal;
+
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -44,28 +47,34 @@ public class TrenesSA {
     public boolean eliminarTren(int id) {
         return trenes.eliminar(id);
     }
-    public boolean existeRiel(String estacion1,String estacion2){
+
+    public boolean existeRiel(String estacion1, String estacion2) {
         boolean existe;
-        
-        existe=rieles.existeArco(estacion1, estacion2);
-        
+
+        existe = rieles.existeArco(estacion1, estacion2);
+
         return existe;
     }
-    public Grafo getRieles(){
+
+    public Grafo getRieles() {
         return this.rieles;
     }
-    public int getDistanciaRiel(String estacion1,String estacion2){
-        return (int)rieles.getEtiqueta(estacion1,estacion2);
+
+    public int getDistanciaRiel(String estacion1, String estacion2) {
+        return (int) rieles.getEtiqueta(estacion1, estacion2);
     }
-    public boolean modificarDistancia(String estacion1,String estacion2,int nuevaDist){
+
+    public boolean modificarDistancia(String estacion1, String estacion2, int nuevaDist) {
         //Método que modifica la distancia entre estaciones conectadas
-        
-        return rieles.cambiarEtiqueta(estacion1,estacion2,nuevaDist);
-        
+
+        return rieles.cambiarEtiqueta(estacion1, estacion2, nuevaDist);
+
     }
-    public boolean eliminarRiel(String estacion1,String estacion2){
+
+    public boolean eliminarRiel(String estacion1, String estacion2) {
         return rieles.eliminarArco(estacion1, estacion2);
     }
+
     public boolean agregarEstacion(String id, String calle, int numCalle, String ciudad, String cp, int cantVias, int cantPlataformas) {
         //Comprobar que no existe
         boolean exito = false;
@@ -97,7 +106,7 @@ public class TrenesSA {
         return (LinkedList) lineas.get(nombreLinea);
     }
 
-    public boolean existeEstacion(String nombreEst) {        
+    public boolean existeEstacion(String nombreEst) {
         return this.estaciones.existeClave(nombreEst);
     }
 
@@ -148,8 +157,8 @@ public class TrenesSA {
     public boolean agregarRiel(String unaEstacion, String otraEstacion, int km) {
         boolean exito = false;
         //Si existen las estaciones
-        if (estaciones.existeClave(unaEstacion) && estaciones.existeClave(otraEstacion)) {            
-            exito = rieles.insertarArco(unaEstacion, otraEstacion, km);            
+        if (estaciones.existeClave(unaEstacion) && estaciones.existeClave(otraEstacion)) {
+            exito = rieles.insertarArco(unaEstacion, otraEstacion, km);
         }
         return exito;
     }
@@ -171,5 +180,68 @@ public class TrenesSA {
 
     public boolean existeLinea(int idTren, String linea) {
         return this.lineas.containsKey(linea);
+    }
+
+    public LinkedList verificarEstacionBorradaYLineas(String nombreEstacion) {
+        //Cuando se borra una estación, se elimina una línea que lo contenía (se debe redefinir el recorrido)
+        LinkedList lineasBorradas = new LinkedList();
+        Iterator valores = this.lineas.values().iterator();
+        while (valores.hasNext()) {
+            LinkedList recorridoAux = (LinkedList) valores.next();
+            if (recorridoAux.contains(nombreEstacion)) {
+                String nombreLinea = (String) recorridoAux.getFirst();
+                lineasBorradas.addFirst(nombreLinea);
+                this.lineas.remove(nombreLinea);
+            }
+        }
+        return lineasBorradas;
+    }
+
+    public LinkedList<Integer> verificarLineaBorradaYTrenes(String linea) {
+        //Cuando se borra una línea, se actualiza la línea del tren como "no asignado"
+        LinkedList<Tren> listaTrenes = this.trenes.listarDatos();
+        int longitud = listaTrenes.size();
+        LinkedList trenesModificados = new LinkedList();
+        for (int i = 0; i < longitud; i++) {
+            Tren unTren = listaTrenes.get(i);
+            if (unTren.getLinea().equals(linea)) {
+                unTren.setLinea("no asignado");
+                trenesModificados.add(unTren.getIdTren());
+            }
+        }
+        return trenesModificados;
+    }
+
+    public LinkedList verificarLineaRiel(String estacion1, String estacion2) {
+        //Método que verifica si al eliminar un riel, se debe eliminar una línea que conectaba ambas estaciones
+        Iterator valores = this.lineas.values().iterator();
+        LinkedList lineasBorradas = new LinkedList();
+        while (valores.hasNext()) {
+            LinkedList recorrido = (LinkedList) valores.next();
+            int longitud2 = recorrido.size() - 1;//Para el último elemento ya no habría un siguiente con quien comparar
+            boolean estacionesConectadas = false;
+            int i = 0;
+            while (!estacionesConectadas && i < longitud2) {
+                if (recorrido.get(i).equals(estacion1)) {
+                    if (recorrido.get(i + 1).equals(estacion2)) {
+                        estacionesConectadas = true;
+                        //Agregar el nombre de la línea
+                        lineasBorradas.add(recorrido.get(0));
+                    } else {
+                        i++;
+                    }
+                } else if (recorrido.get(i).equals(estacion2)) {
+                    if (recorrido.get(i + 1).equals(estacion1)) {
+                        estacionesConectadas = true;
+                        //Agregar el nombre de la línea
+                        lineasBorradas.add(recorrido.get(0));
+                    } else {
+                        i++;
+                    }
+                }
+                i++;
+            }
+        }
+        return lineasBorradas;
     }
 }
