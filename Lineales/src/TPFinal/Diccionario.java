@@ -452,7 +452,7 @@ public class Diccionario {
         //alturaAbs es la altura del nodo en relación al último nivel
         //Retorna la cantidad de dígitos de la clave que servirá para agregar separador a la izquierda o a la derecha
 
-        int cantDigitos=0;
+        int cantDigitos=0;        
         if (n != null) {
             cantDigitos+=getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
             int cantSeparador = separador(alturaAbs);
@@ -462,7 +462,7 @@ public class Diccionario {
             for (int i = 0; i < cantSeparador; i++) {
                 separador += "─";
                 separadorVacio += " ";
-            }            
+            }                 
             if (esDerecho) {
                 cadenas[alturaAbs] += ("┴" + separador + n.getClave() + separadorVacio + " ");
             } else {
@@ -474,7 +474,7 @@ public class Diccionario {
             }                        
             String aux=n.getClave().toString();
             cantDigitos+=aux.length()-1;
-            cantDigitos += getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);            
+            cantDigitos += getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);                        
         } else if (alturaAbs > -1) {
             //Rellenar los espacios vacíos en el último nivel para que las hojas se posicionen correctamente
             int cantSeparador = separador(alturaAbs);

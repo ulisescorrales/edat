@@ -12,6 +12,7 @@ import java.util.Queue;
  * @author ulise
  */
 public class Grafo {
+
     //Grafo que vincula los vértices en ambos sentidos
     private NodoVert inicio;
 
@@ -22,9 +23,9 @@ public class Grafo {
     public boolean insertarVertice(Object nuevoVertice) {
         //Crea un nuevo objeto NodoVert y lo añade a la lista de vértices
         boolean exito = false;
-        NodoVert aux = ubicarVertice(nuevoVertice);
+        NodoVert consultaVert = ubicarVertice(nuevoVertice);
         //Si no existe el vértice, se lo inserta en la primera posición en la lista de vértices
-        if (aux == null) {
+        if (consultaVert == null) {
             this.inicio = new NodoVert(nuevoVertice, this.inicio, null);
             exito = true;
         }
@@ -33,34 +34,34 @@ public class Grafo {
 
     private NodoVert ubicarVertice(Object buscado) {
         //Iterar sobre la lista de vértices hasta encontrar el objeto
-        NodoVert aux = this.inicio;
-        while (aux != null && !aux.getElem().equals(buscado)) {
-            aux = aux.getSigVertice();
+        NodoVert vertice = this.inicio;
+        while (vertice != null && !vertice.getElem().equals(buscado)) {
+            vertice = vertice.getSigVertice();
         }
-        return aux;
+        return vertice;
     }
 
     public boolean eliminarVertice(Object elem) {
         //Busca el vértice en la lista de vértices y elimina los arcos unidos al mismo
         boolean encontrado = false;
         if (this.inicio != null) {
-            NodoVert aux = this.inicio;
-            NodoVert auxAnt = null;
+            NodoVert vertice = this.inicio;
+            NodoVert verticeAnterior = null;
             //Buscar el vértice en la lista de adyacentes
-            while (aux != null && !encontrado) {
-                if (aux.getElem().equals(elem)) {
+            while (vertice != null && !encontrado) {
+                if (vertice.getElem().equals(elem)) {
                     encontrado = true;
-                    eliminarNodosAdyacentes(aux);
-                    if (auxAnt != null) {
+                    eliminarNodosAdyacentes(vertice);
+                    if (verticeAnterior != null) {
                         //Si no es el primer vértice, enlazar el anterior con el siguiente
-                        auxAnt.setSigVertice(aux.getSigVertice());
+                        verticeAnterior.setSigVertice(vertice.getSigVertice());
                     } else {
                         //Sino setear al siguiente como el inicio de la lista
-                        this.inicio = aux.getSigVertice();
+                        this.inicio = vertice.getSigVertice();
                     }
                 } else {
-                    auxAnt = aux;
-                    aux = aux.getSigVertice();
+                    verticeAnterior = vertice;
+                    vertice = vertice.getSigVertice();
                 }
             }
         }
@@ -68,30 +69,45 @@ public class Grafo {
     }
 
     public Object getEtiqueta(Object estacion1, Object estacion2) {
-        //Busca el arco entre ambos nodos y retorna su etiqueta
-        //Retorna -1 en caso de que no exista un arco entre un objeto y otro
-        int distancia = -1;
-        NodoVert aux = this.inicio;
-        while (aux.getElem().equals(estacion1) && aux != null) {
-            aux = aux.getSigVertice();
-        }
-
-        if (aux != null) {
-            NodoAdy auxAdy = aux.getPrimerAdy();
-            while (!auxAdy.getVertice().getElem().equals(estacion2) && auxAdy != null) {
-                auxAdy = auxAdy.getSigAdyacente();
+        //Busca el arco entre ambos nodos y retorna su etiqueta        
+        Object etiqueta = null;
+        NodoVert vertice = this.inicio;
+        boolean encontrado1 = false;
+        boolean encontrado2 = false;
+        //Variable para iterar sobre la lista de nodos adyacentes
+        NodoAdy auxAdy;
+        //Encontrar estacion1 o estación 2 y luego buscar en la lista de adyacentes la otra estación
+        while (!encontrado1 && !encontrado2 && vertice != null) {
+            if (vertice.getElem().equals(estacion1)) {
+                encontrado1 = true;
+                auxAdy = vertice.getPrimerAdy();
+                while (!encontrado2 && auxAdy != null) {
+                    if (!auxAdy.getVertice().getElem().equals(estacion2)) {
+                        encontrado2 = true;
+                        etiqueta = auxAdy.getEtiqueta();
+                    }
+                    auxAdy = auxAdy.getSigAdyacente();
+                }
+            } else if (vertice.getElem().equals(estacion2)) {
+                encontrado2 = true;
+                auxAdy = vertice.getPrimerAdy();
+                while (!encontrado1 && auxAdy != null) {
+                    if (!auxAdy.getVertice().getElem().equals(estacion2)) {
+                        encontrado1 = true;
+                        etiqueta = auxAdy.getEtiqueta();
+                    }
+                    auxAdy = auxAdy.getSigAdyacente();
+                }
             }
-            if (auxAdy != null) {
-                distancia = (int) auxAdy.getEtiqueta();
-            }
+            vertice = vertice.getSigVertice();
         }
-        return distancia;
+        return etiqueta;
     }
 
     public boolean cambiarEtiqueta(Object estacion1, Object estacion2, int nuevaEtiqueta) {
         //Método que busca los arcos entre ambos nodos y modifica la etiqueta
         NodoVert aux = this.inicio;
-        boolean exito = true;
+        boolean exito = false;
         while (aux.getElem().equals(estacion1) && aux != null) {
             aux = aux.getSigVertice();
         }
@@ -110,11 +126,8 @@ public class Grafo {
                 }
                 if (auxAdy2 != null) {
                     auxAdy2.setEtiqueta(nuevaEtiqueta);
-                } else {
-                    exito = false;
+                    exito=true;
                 }
-            } else {
-                exito = false;
             }
         }
         return exito;
@@ -249,8 +262,8 @@ public class Grafo {
         System.out.println(grafo.insertarArco("C", "D", 23));
         System.out.println(grafo.insertarArco("D", "G", 23));
         System.out.println(grafo.insertarArco("C", "E", 23));
-        grafo.reAnchura();
-        
+
+        System.out.println(grafo.toString());
     }
 
     public boolean eliminarArco(Object unVertice, Object otroVertice) {
@@ -396,8 +409,8 @@ public class Grafo {
         return exito;
     }
 
-    public LinkedList caminoMasCorto(Object origen, Object destino) {
-        //verifica si ambos vértices existen
+    public LinkedList caminoMasCortoPorCantNodos(Object origen, Object destino) {
+        //Método que encuentra el camino entre dos nodos con la menor cantidad de nodos posibles        
         NodoVert auxO = null;
         NodoVert auxD = null;
         NodoVert aux = this.inicio;
@@ -422,7 +435,7 @@ public class Grafo {
     }
 
     private LinkedList caminoMasCorto(NodoVert or, Object dest, LinkedList recorrido) {
-        //Método que busca el camino más corto entre el nodo origen y el nodo destino
+        //Método auxiliar para caminoMasCortoPorCantNodos
         //Usa el recorrido en anchura hasta encontrar el destino para luego construir la lista
         LinkedList auxCola = new LinkedList();
         LinkedList saltos = new LinkedList();
@@ -490,99 +503,6 @@ public class Grafo {
         return cadena;
     }
 
-    public LinkedList caminoMasLargo(Object origen, Object destino) {
-        //verifica si ambos vértices existen
-        NodoVert auxO = null;
-        NodoVert auxD = null;
-        NodoVert aux = this.inicio;
-        LinkedList lis = null;
-
-        while ((auxO == null || auxD == null) && aux != null) {
-            if (aux.getElem().equals(origen)) {
-                auxO = aux;
-            }
-            if (aux.getElem().equals(destino)) {
-                auxD = aux;
-            }
-            aux = aux.getSigVertice();
-        }
-        if (auxO != null && auxD != null) {
-            //si ambos vertices existen, se busca el camino más corto
-
-            lis = caminoMasLargo(auxO, destino);
-        }
-        return lis;
-    }
-
-    private LinkedList caminoMasLargo(NodoVert or, Object dest) {
-        /*Método que busca el camino más corto entre el nodo origen y el nodo destino
-        Usa el recorrido en anchura hasta encontrar el destino para luego construir la lista
-        Misma metodología que caminoMasCorto pero con la diferencia de que:
-        No se inserta en la cola el nodo del que derivó el mismo ni el nodo origen (puede repetirse)
-        Se insertan elementos en la cola hasta que no existan más posibilidades de insertar, luego
-        la lista de recorrido mas largo se construye a partir del último nodo destino registrado en la cola*/
-        LinkedList auxCola = new LinkedList();
-        LinkedList saltos = new LinkedList();
-        LinkedList recorrido = new LinkedList();
-        int posCola = 1;
-        int contSalto = 0;
-        int puntero;
-
-        NodoVert anterior;
-
-        int posSalto = 1;//Para recuperar el recorrido anterior
-        saltos.addFirst(1);
-
-        //
-        auxCola.addFirst(or);
-        int longCola = 1;
-        //
-        NodoVert auxV;
-        NodoAdy auxA;
-
-        while (posCola <= longCola) {
-            auxV = (NodoVert) auxCola.get(posCola);
-            //Colocar en la cola
-            if (!auxV.getElem().equals(dest)) {//Con el nodo destino no se agregan sus adyacentes
-                auxA = auxV.getPrimerAdy();
-                while (auxA != null) {
-                    posSalto++;
-                    anterior = (NodoVert) auxCola.get(posCola - (int) saltos.get(posCola));
-                    if (auxA.getVertice() != or && auxA.getVertice() != anterior) {//Si no es el anterior o el origen
-
-                        contSalto++;
-                        //
-                        longCola++;
-                        auxCola.add(longCola, auxA.getVertice());
-                        //
-                        saltos.add(longCola, contSalto);
-
-                    }
-                    auxA = auxA.getSigAdyacente();
-                }
-            }
-            posCola++;
-            contSalto--;
-        }
-        System.out.println(toStringLista(auxCola));
-        System.out.println(saltos.toString());
-        //Ubicar el puntero en el último nodo destino encontrado
-        puntero = longCola;
-        NodoVert auxRecuperar = (NodoVert) auxCola.get(puntero);
-        while (!auxRecuperar.getElem().equals(dest)) {
-            puntero = puntero - 1;
-            auxRecuperar = (NodoVert) auxCola.get(puntero);
-        }
-
-        //A partir del último nodo destino encontrado, armar la lista con los anteriores a cada nodo        
-        while (puntero != 0) {
-            auxRecuperar = (NodoVert) auxCola.get(puntero);
-            recorrido.add(1, auxRecuperar.getElem());
-            puntero = puntero - (int) saltos.get(puntero);
-        }
-        return recorrido;
-    }
-
     public LinkedList listarEnProfundidad() {
         //Método para listar en profundidad con el algoritmo definido para grafo
         LinkedList visitados = new LinkedList();
@@ -613,41 +533,42 @@ public class Grafo {
             }
         }
     }
-    public LinkedList reAnchura(){
+
+    public LinkedList reAnchura() {
         //Método para listar en anchura
-        LinkedList visitados=new LinkedList();        
-        NodoVert aux=this.inicio;
-        while(aux!=null){
-            if(visitados.indexOf(aux)==-1){
-                anchuraDesde(aux,visitados);
+        LinkedList visitados = new LinkedList();
+        NodoVert aux = this.inicio;
+        while (aux != null) {
+            if (visitados.indexOf(aux) == -1) {
+                anchuraDesde(aux, visitados);
             }
-            aux=aux.getSigVertice();
+            aux = aux.getSigVertice();
         }
         return visitados;
     }
-    private void anchuraDesde(NodoVert aux,LinkedList visitados){
+
+    private void anchuraDesde(NodoVert aux, LinkedList visitados) {
         //Método auxiliar para reAnchura()
-        Queue cola=new LinkedList();
+        Queue cola = new LinkedList();
         visitados.add(aux);
-        System.out.println(aux.getElem());
         cola.add(aux);
-        
+
         NodoVert frente;
         NodoAdy auxAdy;
-        while(!cola.isEmpty()){
-            frente=(NodoVert)cola.poll();
-            auxAdy=frente.getPrimerAdy();
-            while(auxAdy!=null){
-                if(visitados.indexOf(auxAdy.getVertice())==-1){
-                    visitados.add(auxAdy.getVertice());                    
+        while (!cola.isEmpty()) {
+            frente = (NodoVert) cola.poll();
+            auxAdy = frente.getPrimerAdy();
+            while (auxAdy != null) {
+                if (visitados.indexOf(auxAdy.getVertice()) == -1) {
+                    visitados.add(auxAdy.getVertice());
                     cola.add(auxAdy.getVertice());
                 }
-                auxAdy=auxAdy.getSigAdyacente();
+                auxAdy = auxAdy.getSigAdyacente();
             }
         }
-        
+
     }
-   
+
     @Override
     public Grafo clone() {
         //Método para clonar el grafo retornando un nuevo objeto
@@ -784,9 +705,8 @@ public class Grafo {
             cadena = cadena + auxV.getElem() + "--->";
 
             auxA = auxV.getPrimerAdy();
-            while (auxA != null) {
-                cadena = cadena + auxA.getVertice().getElem() + " (" + auxA.getEtiqueta() + ")" + " - ";
-                auxA = auxA.getSigAdyacente();
+            if (auxA != null) {
+                cadena += auxA.getVertice().getElem() + " (" + auxA.getEtiqueta() + ")" + toString(auxA.getSigAdyacente());
             }
             cadena = cadena + "\n";
             auxV = auxV.getSigVertice();
@@ -794,7 +714,15 @@ public class Grafo {
         return cadena;
     }
 
-    public LinkedList<Object> getCaminoMasLargoPorCantNodos(Object origen, Object destino) {
+    private String toString(NodoAdy a) {
+        String retornar = "";
+        if (a != null) {
+            retornar = "-" + a.getVertice().getElem() + " (" + a.getEtiqueta() + ")" + toString(a.getSigAdyacente());
+        }
+        return retornar;
+    }
+
+    public LinkedList<Object> caminoMasLargoPorCantNodos(Object origen, Object destino) {
         LinkedList<LinkedList> listaDeListas = getPosiblesCaminos(origen, destino);
         LinkedList<grafos.NodoAdy> caminoMasLargo = new LinkedList();
         int longitud = listaDeListas.size();
@@ -819,7 +747,7 @@ public class Grafo {
         return retornar;
     }
 
-    public LinkedList<Object> getCaminoMasLargoPorKm(Object origen, Object destino) {
+    public LinkedList<Object> caminoMasLargoPorKm(Object origen, Object destino) {
         LinkedList<LinkedList> listaDeListas = getPosiblesCaminos(origen, destino);
         LinkedList<grafos.NodoAdy> caminoMasLargo = new LinkedList();
         int longitud1 = listaDeListas.size();

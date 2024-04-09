@@ -28,8 +28,66 @@ public class TrenesSA {
 
     }
 
+    public String getRielesEstructura() {
+        return this.rieles.toString();
+    }
+
+    public String getTrenesEstructura() {
+        return this.trenes.getEstructura();
+    }
+
+    public String getEstacionesEstructura() {
+        return this.estaciones.getEstructura();
+    }
+
+    public String getLineasEstructura() {
+        String retornar = "Tabla HashMap para líneas:\n";
+        Iterator lineas = this.lineas.values().iterator();
+        LinkedList recorrido;        
+        while (lineas.hasNext()) {
+            recorrido=(LinkedList)lineas.next();
+            retornar += "Clave: "+recorrido.get(0)+", recorrido: "+getStringLista(recorrido) + "\n";
+        }
+        return retornar;
+    }
+
+    private String getStringLista(LinkedList lista) {
+        String list="";
+        int longitud=lista.size();
+        for (int i = 0; i < longitud; i++) {
+            list+=lista.get(i)+" ";
+        }
+        return list;
+    }
+
+    public LinkedList getLineaAsignada(int idTreb) {
+        Tren tren = (Tren) this.trenes.obtenerDato(idTreb);
+
+        return (LinkedList) this.lineas.get(tren.getLinea());
+    }
+
     public Tren getTren(Comparable id) {
         return (Tren) trenes.obtenerDato(id);
+    }
+
+    public LinkedList getTrenesSubcadena(String subcadena) {
+        return this.trenes.getSubstringList(subcadena);
+    }
+
+    public LinkedList getCaminoMasCortoPorEstaciones(String estacion1, String estacion2) {
+        return this.rieles.caminoMasCortoPorCantNodos(estacion1, estacion2);
+    }
+
+    public LinkedList getCaminosPosiblesSinPasarPor(String estacion1, String estacion2, String estacion3) {
+        return this.rieles.getPosiblesCaminosSinPasarPor(estacion1, estacion2, estacion3);
+    }
+
+    public LinkedList getCaminoMasCortoPorKm(String estacion1, String estacion2) {
+        return this.rieles.caminoMasCortoPorKm(estacion1, estacion2);
+    }
+
+    public boolean existeCaminoConMaxKm(String estacion1, String estacion2, int kmMax) {
+        return this.rieles.verificarCaminoConKmMax(estacion1, estacion2, kmMax);
     }
 
     public Diccionario getTrenes() {
