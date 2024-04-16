@@ -12,7 +12,7 @@ import java.util.Queue;
  * @author ulise
  */
 public class Diccionario {
-
+//Clase Diccionario implementado con un árbol AVL
     private NodoAVLDicc raiz = null;
 
     public boolean insertar(Comparable id, Object dato) {
@@ -194,14 +194,17 @@ public class Diccionario {
     }
 
     public boolean esVacio() {
+        //Método que retorna si es vacío
         return this.raiz == null;
     }
 
     public boolean existeClave(Comparable clave) {
+        //Método que verifica si existe una clave
         return existeClave(clave, this.raiz);
     }
 
     private boolean existeClave(Comparable clave, NodoAVLDicc n) {
+        //Método auxiliar que verifica si existe una clave
         boolean existe = false;
         if (n != null) {            
             int comparacion = clave.compareTo(n.getClave());
@@ -339,6 +342,7 @@ public class Diccionario {
     }
 
     public LinkedList listarClaves() {
+        //Método que lista las claves del árbol en inorden
         LinkedList lis = new LinkedList();
 
         listarClavesAux(lis, this.raiz);
@@ -347,7 +351,7 @@ public class Diccionario {
     }
 
     private void listarClavesAux(LinkedList lista, NodoAVLDicc n) {
-        //Recorrido Inorden
+        //Recorrido Inorden, método auxiliar para listarClaves
         if (n != null) {
             listarClavesAux(lista, n.getIzquierdo());
             lista.add((int) n.getClave());
@@ -357,6 +361,7 @@ public class Diccionario {
     }
 
     public LinkedList listarDatos() {
+        //Método para listar datos en inorden
         LinkedList lis = new LinkedList();
 
         listarDatos(lis, this.raiz);
@@ -365,7 +370,7 @@ public class Diccionario {
     }
 
     private void listarDatos(LinkedList lista, NodoAVLDicc n) {
-        //Recorrido Inorden
+        //Recorrido Inorden, método auxiliar para listar datos
         if (n != null) {
             listarDatos(lista, n.getIzquierdo());
             lista.add((int) n.getDato(), lista.size() + 1);
@@ -374,12 +379,14 @@ public class Diccionario {
     }
 
     public Object obtenerDato(Comparable id) {
+        //Retorna el objeto que aloja un nodo dado una clave ingresada
         Object retornar = null;
         retornar = obtenerDato(this.raiz, id);
         return retornar;
     }
 
     private Object obtenerDato(NodoAVLDicc n, Comparable id) {
+        //Método auxiliar para obtenerDato()
         Object retornar = null;
         int comparacion;
         if (n != null) {
@@ -398,7 +405,7 @@ public class Diccionario {
     }
 
     public String listarPorNiveles() {
-
+        //Método para listar por niveles
         String retornar = "";
         Queue<NodoAVLDicc> cola = new LinkedList();
         cola.add(this.raiz);
@@ -420,6 +427,7 @@ public class Diccionario {
         //Método que retorna en un String la estructura del árbol avl
         int alturaMax = this.raiz.getAltura();
         int filas = alturaMax + 1;
+        //Filas a imprimir (uno por nivel)
         String[] retornar = new String[this.raiz.getAltura() + 1];
         for (int i = 0; i < this.raiz.getAltura() + 1; i++) {
             retornar[i] = "";
@@ -454,7 +462,7 @@ public class Diccionario {
 
         int cantDigitos=0;        
         if (n != null) {
-            cantDigitos+=getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
+            getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
             int cantSeparador = separador(alturaAbs);
             String separador = "";
             String separadorVacio = "";
@@ -562,7 +570,7 @@ public class Diccionario {
         }
     }
 
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         Diccionario dic = new Diccionario();        
         dic.insertar("1", "");
         dic.insertar("2", "");
@@ -577,11 +585,11 @@ public class Diccionario {
         dic.insertar("000000000", "");
            
         System.out.println(dic.getEstructura());
- /*LinkedList lista =dic.listarClaves();
+ LinkedList lista =dic.listarClaves();
         for(Object i:lista){
             System.out.print((int)i);
-        }*/        
+        }    
                 
                 
-    }
+    }*/
 }

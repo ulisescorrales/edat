@@ -1,10 +1,80 @@
 ---EMPIEZA CARGA INICIAL---
-Agregado ESTACIÓN: Río Gallegos
-   calle: Mitre
+Agregado ESTACIÓN: Rosario Norte
+   calle: La Paz
+   Nº calle: 468
+   ciudad: Rosario
+   cód. postal: S2000
+   cantidad de vías: 2
+   cantidad de plataformas:3
+Agregado ESTACIÓN: Cañuelas
+   calle: Olascoaga
+   Nº calle: 74
+   ciudad: AMBA
+   cód. postal: B1814
+   cantidad de vías: 3
+   cantidad de plataformas:3
+Agregado ESTACIÓN: Mitre
+   calle: San Juan
    Nº calle: 32
-   ciudad: Río Gallegos
-   cód. postal:  M2949
-   cantidad de vías: 1
+   ciudad: CABA
+   cód. postal: 3234
+   cantidad de vías: 4
+   cantidad de plataformas:4
+Agregado ESTACIÓN: Pehuajó
+   calle: Mari Menuco
+   Nº calle: 5
+   ciudad: Pehuajó
+   cód. postal: W314
+   cantidad de vías: 2
+   cantidad de plataformas:1
+Agregado ESTACIÓN: Trelew
+   calle: Pehuajó
+   Nº calle: 456
+   ciudad: Trelew
+   cód. postal: 3928
+   cantidad de vías: 3
+   cantidad de plataformas:2
+Agregado ESTACIÓN: Godoy Cruz
+   calle: San Martín
+   Nº calle: 801
+   ciudad: Godoy Cruz
+   cód. postal: 5501
+   cantidad de vías: 2
+   cantidad de plataformas:2
+Agregado ESTACIÓN: Campana
+   calle: Arcuate
+   Nº calle: 365
+   ciudad: Campana
+   cód. postal: G123
+   cantidad de vías: 3
+   cantidad de plataformas:3
+Agregado ESTACIÓN: Bariloche
+   calle: Primeros Pobladores
+   Nº calle: 323
+   ciudad: Bariloche
+   cód. postal: D234
+   cantidad de vías: 2
+   cantidad de plataformas:2
+Agregado ESTACIÓN: Beazley
+   calle: Italia
+   Nº calle: 234
+   ciudad: Beazley
+   cód. postal: GF23
+   cantidad de vías: 3
+   cantidad de plataformas:3
+Agregado ESTACIÓN: Rawson
+   calle: Av. Las Heras
+   Nº calle: 1265
+   ciudad: Rawson
+   cód. postal: DD31
+   cantidad de vías: 2
+   cantidad de plataformas:2
+Agregado ESTACIÓN: Palmira
+   calle: Trelew
+   Nº calle: 234
+   ciudad: Palmira
+   cód. postal: F3KFJ
+   cantidad de vías: 2
    cantidad de plataformas:2
 Agregado ESTACIÓN: Las Heras
    calle: Jauregui
@@ -13,48 +83,13 @@ Agregado ESTACIÓN: Las Heras
    cód. postal: K320N
    cantidad de vías: 1
    cantidad de plataformas:1
-Agregado ESTACIÓN: Beazley
-   calle: Italia
-   Nº calle: 234
-   ciudad: Beazley
-   cód. postal: GF23
+Agregado ESTACIÓN: Rafaela
+   calle: Velazo
+   Nº calle: 46
+   ciudad: Rafaela
+   cód. postal: D2341
    cantidad de vías: 3
    cantidad de plataformas:3
-Agregado ESTACIÓN: Córdoba
-   calle: Boulevard Juan Domingo Perón
-   Nº calle: 101
-   ciudad: Córdoba capital
-   cód. postal: 5000
-   cantidad de vías: 6
-   cantidad de plataformas:4
-Agregado ESTACIÓN: Misiones
-   calle: San Martín
-   Nº calle: 55
-   ciudad: Misiones Cap.
-   cód. postal: W3942
-   cantidad de vías: 1
-   cantidad de plataformas:1
-Agregado ESTACIÓN: Mitre
-   calle: San Juan
-   Nº calle: 32
-   ciudad: CABA
-   cód. postal: 3234
-   cantidad de vías: 4
-   cantidad de plataformas:4
-Agregado ESTACIÓN: Colonia Dora
-   calle: Alm. Brown
-   Nº calle: 847
-   ciudad: Colonia Dora
-   cód. postal: SK39D
-   cantidad de vías: 1
-   cantidad de plataformas:1
-Agregado ESTACIÓN: Santa Rosa
-   calle: Godoy
-   Nº calle: 324
-   ciudad: Santa Rosa
-   cód. postal: L6302
-   cantidad de vías: 3
-   cantidad de plataformas:2
 Agregado ESTACIÓN: Neuquén
    calle: Parque Central
    Nº calle: 0
@@ -62,6 +97,104 @@ Agregado ESTACIÓN: Neuquén
    cód. postal: 8300
    cantidad de vías: 3
    cantidad de plataformas:1
+Agregado ESTACIÓN: Pinamar
+   calle: Jacinto
+   Nº calle: 435
+   ciudad: Pinamar
+   cód. postal: L314
+   cantidad de vías: 1
+   cantidad de plataformas:1
+Agregado ESTACIÓN: Córdoba
+   calle: Boulevard Juan Domingo Perón
+   Nº calle: 101
+   ciudad: Córdoba capital
+   cód. postal: 5000
+   cantidad de vías: 6
+   cantidad de plataformas:4
+Agregado ESTACIÓN: Pigue
+   calle: Cabral
+   Nº calle: 234
+   ciudad: Cabral
+   cód. postal: KD29D
+   cantidad de vías: 2
+   cantidad de plataformas:2
+Agregado ESTACIÓN: Santa Rosa
+   calle: Godoy
+   Nº calle: 324
+   ciudad: Santa Rosa
+   cód. postal: L6302
+   cantidad de vías: 3
+   cantidad de plataformas:2
+Agregado ESTACIÓN: Allen
+   calle: Sarmiento
+   Nº calle: 23
+   ciudad: Allen
+   cód. postal: 8328
+   cantidad de vías: 2
+   cantidad de plataformas:1
+Agregado ESTACIÓN: Río Gallegos
+   calle: Mitre
+   Nº calle: 32
+   ciudad: Río Gallegos
+   cód. postal:  M2949
+   cantidad de vías: 1
+   cantidad de plataformas:2
+Agregado ESTACIÓN: Misiones
+   calle: San Martín
+   Nº calle: 55
+   ciudad: Misiones Cap.
+   cód. postal: W3942
+   cantidad de vías: 1
+   cantidad de plataformas:1
+Agregado ESTACIÓN: Mar Del Plata
+   calle: San Juan
+   Nº calle: 1642
+   ciudad: Mar del Plata
+   cód. postal: 7600
+   cantidad de vías: 5
+   cantidad de plataformas:4
+Agregado ESTACIÓN: Musters
+   calle: Cabral
+   Nº calle: 45
+   ciudad: Musters
+   cód. postal: 8536
+   cantidad de vías: 2
+   cantidad de plataformas:1
+Agregado ESTACIÓN: Retiro
+   calle: Av. Dr. José María Ramos Mejía
+   Nº calle: 1430
+   ciudad: CABA
+   cód. postal: C1104
+   cantidad de vías: 9
+   cantidad de plataformas:6
+Agregado ESTACIÓN: SUD
+   calle: Italia
+   Nº calle: 39
+   ciudad: Bahía Blanca
+   cód. postal: B7511
+   cantidad de vías: 4
+   cantidad de plataformas:5
+Agregado ESTACIÓN: Tucumán
+   calle: Brasil
+   Nº calle: 16
+   ciudad: Tucumán cap.
+   cód. postal: P2343
+   cantidad de vías: 1
+   cantidad de plataformas:1
+Agregado ESTACIÓN: Armstrong
+   calle: Velázquez
+   Nº calle: 456
+   ciudad: Armstrong
+   cód. postal: SE324
+   cantidad de vías: 2
+   cantidad de plataformas:3
+Agregado ESTACIÓN: Arrufó
+   calle: Lavalle
+   Nº calle: 86
+   ciudad: Arrufó
+   cód. postal: S3203
+   cantidad de vías: 2
+   cantidad de plataformas:2
 Agregado ESTACIÓN: Villa María
    calle: Arcuate
    Nº calle: 85
@@ -76,83 +209,6 @@ Agregado ESTACIÓN: Trenque Lauquén
    cód. postal: B6400
    cantidad de vías: 4
    cantidad de plataformas:5
-Agregado ESTACIÓN: Rafaela
-   calle: Velazo
-   Nº calle: 46
-   ciudad: Rafaela
-   cód. postal: D2341
-   cantidad de vías: 3
-   cantidad de plataformas:3
-Agregado ESTACIÓN: Campana
-   calle: Arcuate
-   Nº calle: 365
-   ciudad: Campana
-   cód. postal: G123
-   cantidad de vías: 3
-   cantidad de plataformas:3
-Agregado ESTACIÓN: Allen
-   calle: Sarmiento
-   Nº calle: 23
-   ciudad: Allen
-   cód. postal: 8328
-   cantidad de vías: 2
-   cantidad de plataformas:1
-Agregado ESTACIÓN: SUD
-   calle: Italia
-   Nº calle: 39
-   ciudad: Bahía Blanca
-   cód. postal: B7511
-   cantidad de vías: 4
-   cantidad de plataformas:5
-Agregado ESTACIÓN: Bariloche
-   calle: Primeros Pobladores
-   Nº calle: 323
-   ciudad: Bariloche
-   cód. postal: D234
-   cantidad de vías: 2
-   cantidad de plataformas:2
-Agregado ESTACIÓN: Trelew
-   calle: Pehuajó
-   Nº calle: 456
-   ciudad: Trelew
-   cód. postal: 3928
-   cantidad de vías: 3
-   cantidad de plataformas:2
-Agregado ESTACIÓN: Retiro
-   calle: Av. Dr. José María Ramos Mejía
-   Nº calle: 1430
-   ciudad: CABA
-   cód. postal: C1104
-   cantidad de vías: 9
-   cantidad de plataformas:6
-Agregado ESTACIÓN: Musters
-   calle: Cabral
-   Nº calle: 45
-   ciudad: Musters
-   cód. postal: 8536
-   cantidad de vías: 2
-   cantidad de plataformas:1
-Agregado ESTACIÓN: Palmira
-   calle: Trelew
-   Nº calle: 234
-   ciudad: Palmira
-   cód. postal: F3KFJ
-   cantidad de vías: 2
-   cantidad de plataformas:2
-Agregado ESTACIÓN: Tucumán
-   calle: Brasil
-   Nº calle: 16
-   ciudad: Tucumán cap.
-   cód. postal: P2343
-   cantidad de vías: 1
-   cantidad de plataformas:1
-Agregado ESTACIÓN: Pehuajó
-   calle: Mari Menuco
-   Nº calle: 5
-   ciudad: Pehuajó
-   cód. postal: W314
-   cantidad de vías: 2
-   cantidad de plataformas:1
 Agregado ESTACIÓN: Roca
    calle: Ruta 22
    Nº calle: 34
@@ -160,18 +216,11 @@ Agregado ESTACIÓN: Roca
    cód. postal: DK32
    cantidad de vías: 2
    cantidad de plataformas:2
-Agregado ESTACIÓN: Cañuelas
-   calle: Olascoaga
-   Nº calle: 74
-   ciudad: AMBA
-   cód. postal: B1814
-   cantidad de vías: 3
-   cantidad de plataformas:3
-Agregado ESTACIÓN: Pinamar
-   calle: Jacinto
-   Nº calle: 435
-   ciudad: Pinamar
-   cód. postal: L314
+Agregado ESTACIÓN: Colonia Dora
+   calle: Alm. Brown
+   Nº calle: 847
+   ciudad: Colonia Dora
+   cód. postal: SK39D
    cantidad de vías: 1
    cantidad de plataformas:1
 Agregado ESTACIÓN: Caleufú
@@ -181,27 +230,6 @@ Agregado ESTACIÓN: Caleufú
    cód. postal: 6387
    cantidad de vías: 3
    cantidad de plataformas:2
-Agregado ESTACIÓN: Pigue
-   calle: Cabral
-   Nº calle: 234
-   ciudad: Cabral
-   cód. postal: KD29D
-   cantidad de vías: 2
-   cantidad de plataformas:2
-Agregado ESTACIÓN: Arrufó
-   calle: Lavalle
-   Nº calle: 86
-   ciudad: Arrufó
-   cód. postal: S3203
-   cantidad de vías: 2
-   cantidad de plataformas:2
-Agregado ESTACIÓN: Mar Del Plata
-   calle: San Juan
-   Nº calle: 1642
-   ciudad: Mar del Plata
-   cód. postal: 7600
-   cantidad de vías: 5
-   cantidad de plataformas:4
 Agregado ESTACIÓN: Gral. Guido
    calle: Alvear
    Nº calle: 234
@@ -209,34 +237,6 @@ Agregado ESTACIÓN: Gral. Guido
    cód. postal: 4FK2
    cantidad de vías: 3
    cantidad de plataformas:2
-Agregado ESTACIÓN: Armstrong
-   calle: Velázquez
-   Nº calle: 456
-   ciudad: Armstrong
-   cód. postal: SE324
-   cantidad de vías: 2
-   cantidad de plataformas:3
-Agregado ESTACIÓN: Godoy Cruz
-   calle: San Martín
-   Nº calle: 801
-   ciudad: Godoy Cruz
-   cód. postal: 5501
-   cantidad de vías: 2
-   cantidad de plataformas:2
-Agregado ESTACIÓN: Rawson
-   calle: Av. Las Heras
-   Nº calle: 1265
-   ciudad: Rawson
-   cód. postal: DD31
-   cantidad de vías: 2
-   cantidad de plataformas:2
-Agregado ESTACIÓN: Rosario Norte
-   calle: La Paz
-   Nº calle: 468
-   ciudad: Rosario
-   cód. postal: S2000
-   cantidad de vías: 2
-   cantidad de plataformas:3
 Agregada LÍNEA: Retiro-Roca-Mitre-Gral. Guido-Pinamar-
 Agregada LÍNEA: Córdoba-Villa María-Armstrong-Rosario Norte-Retiro-
 Agregada LÍNEA: Trelew-Bariloche-Neuquén-Allen-Santa Rosa-Musters-SUD-Mar Del Plata-Gral. Guido-Pinamar-
@@ -261,113 +261,53 @@ Agregado TREN:3
    cant. vagones pasajeros :4
    cant. vagones carga: 4
    linea: Río Gallegos
-Agregado TREN:31
-   propulsión: fuel oil
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: Misiones
-Agregado TREN:27
-   propulsión: híbrido
+Agregado TREN:17
+   propulsión: electricidad
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: Retiro
+Agregado TREN:9
+   propulsión: electricidad
    cant. vagones pasajeros :3
    cant. vagones carga: 3
    linea: Neuquén
-Agregado TREN:21
+Agregado TREN:1
    propulsión: electricidad
-   cant. vagones pasajeros :2
-   cant. vagones carga: 2
-   linea: Allen
-Agregado TREN:6
-   propulsión: fuel oil
-   cant. vagones pasajeros :1
-   cant. vagones carga: 1
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: Retiro
+Agregado TREN:25
+   propulsión: electricidad
+   cant. vagones pasajeros :4
+   cant. vagones carga: 4
    linea: no asignado
 Agregado TREN:14
    propulsión: fuel oil
    cant. vagones pasajeros :3
    cant. vagones carga: 3
    linea: Córdoba
-Agregado TREN:2
-   propulsión: fuel oil
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: Córdoba
-Agregado TREN:25
+Agregado TREN:21
    propulsión: electricidad
-   cant. vagones pasajeros :4
-   cant. vagones carga: 4
-   linea: no asignado
-Agregado TREN:28
-   propulsión: electricidad
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: Las Heras
-Agregado TREN:9
-   propulsión: electricidad
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: Neuquén
-Agregado TREN:17
-   propulsión: electricidad
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: Retiro
-Agregado TREN:18
-   propulsión: fuel oil
-   cant. vagones pasajeros :4
-   cant. vagones carga: 4
-   linea: no asignado
-Agregado TREN:5
-   propulsión: gasolina
    cant. vagones pasajeros :2
    cant. vagones carga: 2
-   linea: Mar Del Plata
+   linea: Allen
+Agregado TREN:19
+   propulsión: híbrido
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: Río Gallegos
 Agregado TREN:22
    propulsión: gasolina
    cant. vagones pasajeros :3
    cant. vagones carga: 3
    linea: Retiro
-Agregado TREN:13
-   propulsión: gasolina
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: Roca
-Agregado TREN:11
-   propulsión: fuel oil
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: Las Heras
 Agregado TREN:24
    propulsión: fuel oil
    cant. vagones pasajeros :3
    cant. vagones carga: 3
    linea: Roca
-Agregado TREN:20
-   propulsión: gasolina
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: Palmira
-Agregado TREN:10
-   propulsión: híbrido
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: Mitre
-Agregado TREN:7
-   propulsión: electricidad
-   cant. vagones pasajeros :4
-   cant. vagones carga: 4
-   linea: Pinamar
-Agregado TREN:29
-   propulsión: híbrido
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: Misiones
-Agregado TREN:30
-   propulsión: gasolina
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: Tucumán
-Agregado TREN:8
-   propulsión: híbrido
+Agregado TREN:18
+   propulsión: fuel oil
    cant. vagones pasajeros :4
    cant. vagones carga: 4
    linea: no asignado
@@ -376,11 +316,11 @@ Agregado TREN:26
    cant. vagones pasajeros :2
    cant. vagones carga: 2
    linea: Mitre
-Agregado TREN:12
-   propulsión: electricidad
-   cant. vagones pasajeros :4
-   cant. vagones carga: 4
-   linea: Misiones
+Agregado TREN:2
+   propulsión: fuel oil
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: Córdoba
 Agregado TREN:23
    propulsión: electricidad
    cant. vagones pasajeros :2
@@ -391,26 +331,86 @@ Agregado TREN:15
    cant. vagones pasajeros :2
    cant. vagones carga: 2
    linea: Misiones
-Agregado TREN:19
-   propulsión: híbrido
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: Río Gallegos
-Agregado TREN:4
-   propulsión: híbrido
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: no asignado
-Agregado TREN:1
+Agregado TREN:12
    propulsión: electricidad
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: Retiro
+   cant. vagones pasajeros :4
+   cant. vagones carga: 4
+   linea: Misiones
+Agregado TREN:10
+   propulsión: híbrido
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: Mitre
 Agregado TREN:16
    propulsión: gasolina
    cant. vagones pasajeros :3
    cant. vagones carga: 3
    linea: Santa Rosa
+Agregado TREN:20
+   propulsión: gasolina
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: Palmira
+Agregado TREN:28
+   propulsión: electricidad
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: Las Heras
+Agregado TREN:8
+   propulsión: híbrido
+   cant. vagones pasajeros :4
+   cant. vagones carga: 4
+   linea: no asignado
+Agregado TREN:13
+   propulsión: gasolina
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: Roca
+Agregado TREN:11
+   propulsión: fuel oil
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: Las Heras
+Agregado TREN:29
+   propulsión: híbrido
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: Misiones
+Agregado TREN:5
+   propulsión: gasolina
+   cant. vagones pasajeros :2
+   cant. vagones carga: 2
+   linea: Mar Del Plata
+Agregado TREN:30
+   propulsión: gasolina
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: Tucumán
+Agregado TREN:4
+   propulsión: híbrido
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: no asignado
+Agregado TREN:7
+   propulsión: electricidad
+   cant. vagones pasajeros :4
+   cant. vagones carga: 4
+   linea: Pinamar
+Agregado TREN:31
+   propulsión: fuel oil
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: Misiones
+Agregado TREN:27
+   propulsión: híbrido
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: Neuquén
+Agregado TREN:6
+   propulsión: fuel oil
+   cant. vagones pasajeros :1
+   cant. vagones carga: 1
+   linea: no asignado
 Agregado RIEL: Río Gallegos-Trelew - 100Km
 Agregado RIEL: Trelew-Bariloche - 100Km
 Agregado RIEL: Trelew-Rawson - 50Km

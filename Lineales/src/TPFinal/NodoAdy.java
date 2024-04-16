@@ -13,9 +13,9 @@ import grafos.*;
 public class NodoAdy {
     private NodoVert vertice;
     private NodoAdy sigAdyacente;
-    private int etiqueta;
+    private Object etiqueta;
 
-    public NodoAdy(NodoVert vertice, NodoAdy sigAdyacente, int etiqueta) {
+    public NodoAdy(NodoVert vertice, NodoAdy sigAdyacente, Object etiqueta) {
         this.vertice = vertice;
         this.sigAdyacente = sigAdyacente;
         this.etiqueta = etiqueta;
@@ -37,11 +37,11 @@ public class NodoAdy {
         this.sigAdyacente = sigAdyacente;
     }
 
-    public int getEtiqueta() {
+    public Object getEtiqueta() {
         return etiqueta;
     }
 
-    public void setEtiqueta(int etiqueta) {
+    public void setEtiqueta(Object etiqueta) {
         this.etiqueta = etiqueta;
     }
     
