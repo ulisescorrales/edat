@@ -13,6 +13,7 @@ import java.util.Queue;
  */
 public class Diccionario {
 //Clase Diccionario implementado con un árbol AVL
+
     private NodoAVLDicc raiz = null;
 
     public boolean insertar(Comparable id, Object dato) {
@@ -206,7 +207,7 @@ public class Diccionario {
     private boolean existeClave(Comparable clave, NodoAVLDicc n) {
         //Método auxiliar que verifica si existe una clave
         boolean existe = false;
-        if (n != null) {            
+        if (n != null) {
             int comparacion = clave.compareTo(n.getClave());
             if (comparacion == 0) {
                 existe = true;
@@ -224,7 +225,7 @@ public class Diccionario {
         boolean exito = eliminar(elem, this.raiz, null);
         if (exito) {
             this.raiz = reacomodar(this.raiz);//Comprobar balance
-        }        
+        }
         return exito;
     }
 
@@ -273,7 +274,7 @@ public class Diccionario {
                     actualizarAltura(n);
                 }
             }
-        }        
+        }
         return exito;
     }
 
@@ -354,7 +355,7 @@ public class Diccionario {
         //Recorrido Inorden, método auxiliar para listarClaves
         if (n != null) {
             listarClavesAux(lista, n.getIzquierdo());
-            lista.add((int) n.getClave());
+            lista.add(n.getClave());
             listarClavesAux(lista, n.getDerecho());
         }
 
@@ -443,9 +444,9 @@ public class Diccionario {
 
         //Conseguir los strings de los otros niveles
         getEstructura(this.raiz.getIzquierdo(), retornar,
-                false, alturaMax - 1);
+                false, alturaMax - 1, 0);
         getEstructura(this.raiz.getDerecho(), retornar,
-                true, alturaMax - 1);
+                true, alturaMax - 1, 0);
         String estructura = "";
         for (int i = filas - 1;
                 i > -1; i--) {
@@ -454,35 +455,48 @@ public class Diccionario {
         return estructura;
     }
 
-    private int getEstructura(NodoAVLDicc n, String[] cadenas, boolean esDerecho, int alturaAbs) {
+    private int getEstructura(NodoAVLDicc n, String[] cadenas, boolean esDerecho, int alturaAbs, int desfasaje) {
         //Método auxiliar para imprimir la estructura del árbol avl
         //Recorrido inorden
         //alturaAbs es la altura del nodo en relación al último nivel
         //Retorna la cantidad de dígitos de la clave que servirá para agregar separador a la izquierda o a la derecha
-
-        int cantDigitos=0;        
-        if (n != null) {
-            getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1);
+        int medio = -1;
+        int cantDigitos = 0;
+        if (n != null) {            
             int cantSeparador = separador(alturaAbs);
             String separador = "";
             String separadorVacio = "";
-                                    
+            int posIn=cadenas[alturaAbs].length()+1+cantSeparador;
+            int ultimoMedioIzq = getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1, posIn);
+            System.out.println(n.getClave().toString());
             for (int i = 0; i < cantSeparador; i++) {
                 separador += "─";
                 separadorVacio += " ";
-            }                 
+            }
+            int posActual = cadenas[alturaAbs].length() + (" " + separadorVacio + n.getClave()).length() ;
+            int diferencia = ultimoMedioIzq - posActual;
+            for (int i = 0; i < diferencia; i++) {
+                separadorVacio += " ";
+            }            
+            //System.out.println(n.getClave().toString() + " dif: " + diferencia);
             if (esDerecho) {
-                cadenas[alturaAbs] += ("┴" + separador + n.getClave() + separadorVacio + " ");
-            } else {
-                if(alturaAbs==0 && cadenas[0].length()!=0){
-                    cadenas[alturaAbs] += (" "+separadorVacio + n.getClave() + separador);
-                }else{
-                    cadenas[alturaAbs] += (separadorVacio + n.getClave() + separador);
+                medio = cadenas[alturaAbs].length() + 1;
+                for (int i = 0; i < diferencia; i++) {
+                    separador += "─";
                 }                
-            }                        
-            String aux=n.getClave().toString();
-            cantDigitos+=aux.length()-1;
-            cantDigitos += getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1);                        
+                cadenas[alturaAbs] += ("┴" + separador + n.getClave() + separadorVacio + " ");                
+            } else {
+                if (alturaAbs == 0 && cadenas[0].length() != 0) {
+                    cadenas[alturaAbs] += (" " + separadorVacio + n.getClave() + separador);
+                    medio = cadenas[alturaAbs].length() + 1;
+                } else {
+                    cadenas[alturaAbs] += (separadorVacio + n.getClave() + separador);
+                    medio = cadenas[alturaAbs].length() + 1;
+                    System.out.println(n.getClave().toString() + " : " + medio);
+                }
+            }
+            getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1, posIn);
+
         } else if (alturaAbs > -1) {
             //Rellenar los espacios vacíos en el último nivel para que las hojas se posicionen correctamente
             int cantSeparador = separador(alturaAbs);
@@ -490,20 +504,21 @@ public class Diccionario {
 
             int longitud = cadenas[alturaAbs].length();
             for (int i = 0; i < cantSeparador; i++) {
-                separador += " ";
+                separador += "-";
             }
             //Si hay espacio vacío en el lado derecho, verificar si hay un nodo izquierdo para agregar
             //el caracter '┴' (verificando si existe un caracter de separación entre hermanos)
-            if(esDerecho && cadenas[alturaAbs].charAt(longitud-1)=='─'){                                
-                StringBuilder separador2=new StringBuilder(separador);
-                separador2.setCharAt(cantSeparador-1, '┴');                
+            if (esDerecho && cadenas[alturaAbs].charAt(longitud - 1) == '─') {
+                StringBuilder separador2 = new StringBuilder(separador);
+                separador2.setCharAt(cantSeparador - 1, '┴');                
                 cadenas[alturaAbs] += (separador2.toString() + " " + separador + " ");
             } else {
-                cadenas[alturaAbs] += (separador + " " + separador + " ");
+                String separadorAux = separador;                
+                cadenas[alturaAbs] += (separador + "-" + separadorAux + "-");
 
-            }                        
+            }
         }
-        return cantDigitos;
+        return medio;
     }
 
     private int separador(int altura) {
@@ -570,26 +585,22 @@ public class Diccionario {
         }
     }
 
-   /* public static void main(String[] args) {
-        Diccionario dic = new Diccionario();        
-        dic.insertar("1", "");
-        dic.insertar("2", "");
-        dic.insertar("3", "");
-        dic.insertar("4", "");
-        dic.insertar("5", "");
-        dic.insertar("6", "");
-        dic.insertar("7", "");
-        dic.insertar("8", "");
-        dic.insertar("9", "");
-        dic.insertar("0", "");
-        dic.insertar("000000000", "");
-           
-        System.out.println(dic.getEstructura());
- LinkedList lista =dic.listarClaves();
-        for(Object i:lista){
-            System.out.print((int)i);
-        }    
-                
-                
-    }*/
+    public static void main(String[] args) {
+        Diccionario dic = new Diccionario();
+        dic.insertar("Hola", "");
+        dic.insertar("Mar Del Plata", "");
+        dic.insertar("San Luis", "");
+        dic.insertar("San Clemente", "");
+        dic.insertar("Bahía Blanca", "");
+        dic.insertar("Villa María", "");
+        dic.insertar("Neuquén", "");
+        dic.insertar("Colón de Santa Fe", "");
+        dic.insertar("Rosario", "");
+        dic.insertar("River Plate", "");
+        dic.insertar("Comahue", "");
+        dic.insertar("Arrufó", "");
+
+        System.out.println(dic.getEstructura());        
+
+    }
 }

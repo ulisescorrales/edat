@@ -70,8 +70,8 @@ public class TrenesSA {
         return (Tren) trenes.obtenerDato(id);
     }
 
-    public LinkedList getTrenesSubcadena(String subcadena) {
-        return this.trenes.getSubstringList(subcadena);
+    public LinkedList getEstacionesSubcadena(String subcadena) {
+        return this.estaciones.getSubstringList(subcadena);
     }
 
     public LinkedList getCaminoMasCortoPorEstaciones(String estacion1, String estacion2) {

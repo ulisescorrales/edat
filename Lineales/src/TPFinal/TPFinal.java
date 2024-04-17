@@ -115,8 +115,8 @@ public class TPFinal {
         System.out.println("Bienvenidos al sistema de TrenesSA");
         do {
             System.out.println("--------------------------------");
-            System.out.println("Eliga que acción desea realizar:\n"
-                    + "ESTACIONES:\n"
+            System.out.println("MENÚ PRINCIPAL:");
+            System.out.println("Eliga que acción desea realizar:\n"                    
                     + "1-Consultar información\n"
                     + "2-Agregar información\n"
                     + "3-Eliminar información\n"
@@ -454,25 +454,24 @@ public class TPFinal {
         while (!tokensQueue.isEmpty()) {
             StringTokenizer linea = tokensQueue.poll();
 
-            LinkedList listaRecorrido = new LinkedList();
-            String lineas = "";
+            LinkedList listaRecorrido = new LinkedList();            
             String lineaToken;
             while (linea.hasMoreTokens()) {
-                lineaToken = linea.nextToken();
-                lineas += lineaToken + "-";
+                lineaToken = linea.nextToken().toUpperCase();                                
                 listaRecorrido.add(lineaToken);
             }
             //El recorrido está construido como una secuencia de strings (los id de las estaciones)
+            //Si todas las estaciones existen, se carga
             if (sist.agregarLinea(listaRecorrido)) {
                 try {
-                    lg.write("Agregada LÍNEA: " + lineas + "\n");
+                    lg.write("Agregada LÍNEA: " + getStringLista(listaRecorrido) + "\n");
                     lg.flush();
                 } catch (IOException ex) {
                     Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
                 try {
-                    lg.write("Error al agregar LÍNEA: " + lineas + "\n");
+                    lg.write("Error al agregar LÍNEA: " + getStringLista(listaRecorrido) + "\n");
                     lg.flush();
                 } catch (IOException ex) {
                     Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
@@ -503,7 +502,7 @@ public class TPFinal {
             String propulsion = trenTk.nextToken();
             int cantVagonesPasaj = Integer.parseInt(trenTk.nextToken());
             int cantVagonesCarga = Integer.parseInt(trenTk.nextToken());
-            String linea = trenTk.nextToken();
+            String linea = trenTk.nextToken().toUpperCase();
 
             //Si no existe la línea indicada, se deja como no asignado
             if (!sist.existeLinea(linea)) {
@@ -546,7 +545,7 @@ public class TPFinal {
         String estacion2 = "";
         int distancia = 0;
         while (ot.hasMoreTokens()) {
-            rielToken = ot.nextToken();
+            rielToken = ot.nextToken().toUpperCase();
             switch (paso) {
                 case 0:
                     estacion1 = rielToken;
@@ -586,11 +585,11 @@ public class TPFinal {
             //Cargar aleatoriamente las estaciones sobre el diccionario
             pos = ran.nextInt(listEst.size());
             StringTokenizer estTok = listEst.get(pos);
-            String nombre = estTok.nextToken();
-            String calle = estTok.nextToken();
+            String nombre = estTok.nextToken().toUpperCase();
+            String calle = estTok.nextToken().toUpperCase();
             int numCalle = Integer.parseInt(estTok.nextToken());
-            String ciudad = estTok.nextToken();
-            String cp = estTok.nextToken();
+            String ciudad = estTok.nextToken().toUpperCase();
+            String cp = estTok.nextToken().toUpperCase();
             int cantVias = Integer.parseInt(estTok.nextToken());
             int cantPlataformas = Integer.parseInt(estTok.nextToken());
             if (sist.agregarEstacion(nombre, calle, numCalle, ciudad, cp, cantVias, cantPlataformas)) {
@@ -749,6 +748,7 @@ public class TPFinal {
 
     public static void mostrarSubMenuAgregar(Scanner input, TrenesSA sist, FileWriter logs) {
         //Método que muestra el submenú para agregar información
+        System.out.println("-------------------------------");
         System.out.println("Eliga qué quiere agregar:");
         System.out.println("1-Estaciones");
         System.out.println("2-Líneas");
@@ -773,8 +773,7 @@ public class TPFinal {
     }
 
     public static String[] ingresarEstaciones(int cantEstaciones, Scanner in, TrenesSA sist) {
-        //Método para verificar que las estaciones ingresadas en los menúes existan, retorna un arreglo de 2 o 3 estaciones segun cantEstaciones
-        System.out.println("cant estaciones" + cantEstaciones);
+        //Método para verificar que las estaciones ingresadas en los menúes existan, retorna un arreglo de 2 o 3 estaciones segun cantEstaciones        ;
         String[] retornar = new String[cantEstaciones];    
         System.out.println("Ingrese el nombre de una estación o -1 para cancelar");
         String estacion = in.next().toUpperCase();
@@ -951,6 +950,7 @@ public class TPFinal {
 
     public static void mostrarSubMenuConsulta(Scanner input, TrenesSA sist) {
         //Mostrar el submenú para consulta
+        System.out.println("-------------------------------");
         System.out.println("Eliga qué quiere consultar");
         System.out.println("1-Estaciones");
         System.out.println("2-Líneas");
@@ -961,6 +961,7 @@ public class TPFinal {
         byte opcionElegida = input.nextByte();
         switch (opcionElegida) {
             case 1:
+                System.out.println("-------------------------------");
                 System.out.println("Ingrese qué quiere consultar sobre estaciones:");
                 System.out.println("1-Información de una estación");
                 System.out.println("2-Ver estaciones que comienzan con una subcadena");
@@ -983,9 +984,9 @@ public class TPFinal {
                     case 2:
                         System.out.println("Ingrese una subcadena");
                         String subcadena = input.next().toUpperCase();
+                        System.out.println("-------------------------------");
                         System.out.println("Resultado:");
-                        System.out.println(getStringLista(sist.getTrenesSubcadena(subcadena)));
-                        System.out.println("------------------");
+                        System.out.println(getStringLista(sist.getEstacionesSubcadena(subcadena)));                        
                         break;
 
                 }
@@ -997,14 +998,14 @@ public class TPFinal {
                 while (linea == null && !nombreLinea.equals("-1")) {
                     System.out.println("No existe la línea, vuelva a colocar el nombre o presione -1 para salir");
                     nombreLinea = input.next().toUpperCase();
+                    linea = sist.getLinea(nombreLinea);
                 }
                 if (!nombreLinea.equals("-1")) {
-                    imprimirLinea(linea);
-                    System.out.println("Ingrese cualquier letra para continuar");
-                    input.next().toUpperCase();
+                    imprimirLinea(linea);                    
                 }
                 break;
             case 3:
+                System.out.println("-------------------------------");
                 System.out.println("Ingrese que quiere consultar:");
                 System.out.println("1-Información de un tren");
                 System.out.println("2-Consultar línea asignada");
@@ -1033,6 +1034,8 @@ public class TPFinal {
                             id = input.nextInt();
                         }
                         if (unId != -1) {
+                            System.out.println("-----------------------------");
+                            System.out.println("Línea asignada:");
                             System.out.println(getStringLista(sist.getLineaAsignada(unId)));
                         }
                         break;
@@ -1041,6 +1044,7 @@ public class TPFinal {
                 break;
             case 4:
                 //viajes
+                System.out.println("-------------------------------");
                 System.out.println("Eliga que quiere consultar sobre viajes:");
                 System.out.println("1-Camino A a B con menos estaciones");
                 System.out.println("2-Camino A a B con menos km");
@@ -1102,6 +1106,7 @@ public class TPFinal {
                         System.out.println(sist.getLineasEstructura());
                         break;
                     case 4:
+                        System.out.println("NodoVert --> NodoAdy(etiqueta) - ....");
                         System.out.println(sist.getRielesEstructura());
                         break;                    
 
@@ -1112,16 +1117,20 @@ public class TPFinal {
 
     private static String getStringLista(LinkedList lista) {
         //Método auxiliar para conseguir el string de una lista e imprimirla por pantalla
-        return getStringLista(lista, 0, lista.size());
+        String retornar="";
+        if(lista.size()>0){
+            retornar = getStringLista(lista, 0, lista.size()-1);
+        }
+        return retornar;
     }
 
-    private static String getStringLista(LinkedList lista, int n, int longitud) {
+    private static String getStringLista(LinkedList lista, int n, int limite) {
         //Método 1iliar para hacer el llamado recursivo de getStringLista
         String resultado = "";
-        if (n == longitud - 1) {
+        if (n == limite) {
             resultado = lista.get(n).toString();
         } else {
-            resultado = lista.get(n).toString() + " - " + getStringLista(lista, n + 1, longitud);
+            resultado = lista.get(n).toString() + " - " + getStringLista(lista, n + 1, limite);
         }
         return resultado;
     }
@@ -1143,9 +1152,7 @@ public class TPFinal {
         System.out.println("Cantidad de vagones para pasajeros: " + tren.getCantVagonesPasaj());
         System.out.println("Cantidad de vagones para carga: " + tren.getCantVagonesCarga());
         System.out.println("Línea asignada: " + tren.getLinea());
-        System.out.println("---------------");
-        System.out.println("Ingrese cualquier letra para continuar");
-        i.next();
+        System.out.println("---------------");        
     }
 
     public static void imprimirEstacion(Scanner i, Estacion est) {
@@ -1157,9 +1164,7 @@ public class TPFinal {
         System.out.println("CP: " + est.getCp());
         System.out.println("Cantidad de vías: " + est.getCantVias());
         System.out.println("Cantidad de plataformas: " + est.getCantPlataformas());
-        System.out.println("---------------");
-        System.out.println("Ingrese cualquier letra para continuar");
-        i.next();
+        System.out.println("---------------");        
     }
 
     public static void agregarEstacion(Scanner in,TrenesSA elSistema, FileWriter lg) {
