@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  *
@@ -43,19 +44,19 @@ public class TrenesSA {
     public String getLineasEstructura() {
         String retornar = "Tabla HashMap para líneas:\n";
         Iterator lineas = this.lineas.values().iterator();
-        LinkedList recorrido;        
+        LinkedList recorrido;
         while (lineas.hasNext()) {
-            recorrido=(LinkedList)lineas.next();
-            retornar += "Clave: "+recorrido.get(0)+", recorrido: "+getStringLista(recorrido) + "\n";
+            recorrido = (LinkedList) lineas.next();
+            retornar += "Clave: " + recorrido.get(0) + ", recorrido: " + getStringLista(recorrido) + "\n";
         }
         return retornar;
     }
 
     private String getStringLista(LinkedList lista) {
-        String list="";
-        int longitud=lista.size();
+        String list = "";
+        int longitud = lista.size();
         for (int i = 0; i < longitud; i++) {
-            list+=lista.get(i)+" ";
+            list += lista.get(i) + " ";
         }
         return list;
     }
@@ -83,7 +84,7 @@ public class TrenesSA {
     }
 
     public LinkedList getCaminoMasCortoPorKm(String estacion1, String estacion2) {
-        return this.rieles.caminoMasCortoPorKm(estacion1, estacion2);
+        return this.rieles.caminoMasCortoPorEtiqueta(estacion1, estacion2);
     }
 
     public boolean existeCaminoConMaxKm(String estacion1, String estacion2, int kmMax) {
@@ -146,7 +147,7 @@ public class TrenesSA {
 
     public Diccionario getEstaciones() {
         return this.estaciones;
-    }
+    }    
 
     public boolean eliminarEstacion(String id) {
         //Método para eliminar una estación del sistema
@@ -216,7 +217,9 @@ public class TrenesSA {
         boolean exito = false;
         //Si existen las estaciones
         if (estaciones.existeClave(unaEstacion) && estaciones.existeClave(otraEstacion)) {
-            exito = rieles.insertarArco(unaEstacion, otraEstacion, km);
+            if (!existeRiel(unaEstacion, otraEstacion)) {
+                exito = rieles.insertarArco(unaEstacion, otraEstacion, km);
+            }
         }
         return exito;
     }
@@ -243,30 +246,35 @@ public class TrenesSA {
     public LinkedList verificarEstacionBorradaYLineas(String nombreEstacion) {
         //Cuando se borra una estación, se elimina una línea que lo contenía (se debe redefinir el recorrido)
         LinkedList lineasBorradas = new LinkedList();
-        Iterator valores = this.lineas.values().iterator();
-        while (valores.hasNext()) {
-            LinkedList recorridoAux = (LinkedList) valores.next();
-            if (recorridoAux.contains(nombreEstacion)) {
+        Iterator<Map.Entry<String,LinkedList>> iterator=this.lineas.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<String,LinkedList> entry=iterator.next();
+            LinkedList recorridoAux = (LinkedList) entry.getValue();
+            if (recorridoAux.contains(nombreEstacion)){
                 String nombreLinea = (String) recorridoAux.getFirst();
-                lineasBorradas.addFirst(nombreLinea);
-                this.lineas.remove(nombreLinea);
+                lineasBorradas.addFirst(nombreLinea);                
             }
+        }
+        //Borrar líneas con la estación borrada
+        int long1=lineasBorradas.size();
+        for (int i = 0; i < long1; i++) {            
+            this.lineas.remove(lineasBorradas.get(i));
         }
         return lineasBorradas;
     }
 
     public LinkedList<Integer> verificarLineaBorradaYTrenes(String linea) {
         //Cuando se borra una línea, se actualiza la línea del tren como "no asignado"
-        LinkedList<Tren> listaTrenes = this.trenes.listarDatos();
+        LinkedList<Tren> listaTrenes = this.trenes.listarDatos();                
         int longitud = listaTrenes.size();
-        LinkedList trenesModificados = new LinkedList();
+        LinkedList trenesModificados = new LinkedList();        
         for (int i = 0; i < longitud; i++) {
             Tren unTren = listaTrenes.get(i);
             if (unTren.getLinea().equals(linea)) {
                 unTren.setLinea("no asignado");
                 trenesModificados.add(unTren.getIdTren());
             }
-        }
+        }        
         return trenesModificados;
     }
 
