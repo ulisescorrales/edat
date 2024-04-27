@@ -121,7 +121,7 @@ public class TPFinal {
                     + "2-Agregar información\n"
                     + "3-Eliminar información\n"
                     + "4-Modificar información\n"
-                    + "-1-Salir");
+                    + "-1-Terminar");
 
             opcion = in.nextByte();
             switch (opcion) {
@@ -140,10 +140,16 @@ public class TPFinal {
             }
 
         } while (opcion != -1);
-
+        try {
+            lg.write(getSistema(sist) + "FIN DEL PROGRAMA");
+            lg.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void modificarInformacion(Scanner input, TrenesSA sistema, FileWriter logs) {
+
         //Mostrar submenú para modificar información
         System.out.println("------------------------------------");
         System.out.println("Seleccione qué quiere modificar: ");
@@ -169,6 +175,25 @@ public class TPFinal {
                 modificarRiel(sistema, input, logs);
                 break;
         }
+    }
+
+    public static String getSistema(TrenesSA sistema) {
+        //Método que retorna en formato String todas las estructuras del sistema cargadas
+        String retornar = "";
+        retornar += "ESTADO DEL SISTEMA:\n";
+        retornar+="------------------------------\n";
+        retornar += "Árbol AVL para estaciones (clave + altura)\n";
+        retornar += sistema.getEstacionesEstructura();
+        retornar+="------------------------------\n";
+        retornar += "Árbol AVL para trenes (clave + altura)\n";
+        retornar += sistema.getTrenesEstructura();
+        retornar+="------------------------------\n";
+        retornar += "Grafo para rieles\n";
+        retornar += sistema.getRielesEstructura();
+        retornar+="------------------------------\n";
+        retornar += "Tabla Hash para líneas\n";
+        retornar += sistema.getLineasEstructura();
+        return retornar;
     }
 
     public static void modificarRiel(TrenesSA sist, Scanner in, FileWriter lg) {
@@ -211,7 +236,7 @@ public class TPFinal {
         System.out.println("Ingrese el número de línea, -1 para salir");
         String nombreLinea = in.next().toUpperCase();
         LinkedList<String> linea = sist.getLinea(nombreLinea);
-        while (linea==null && !nombreLinea.equals("-1")) {
+        while (linea == null && !nombreLinea.equals("-1")) {
             System.out.println("No existe la línea, intente nuevamente o ingrese -1 para salir");
             nombreLinea = in.next().toUpperCase();
             linea = sist.getLinea(nombreLinea);
@@ -1071,11 +1096,12 @@ public class TPFinal {
             case 4:
                 //viajes
                 System.out.println("-------------------------------");
-                System.out.println("Eliga que quiere consultar sobre viajes:");
+                System.out.println("Eliga qué quiere consultar sobre viajes:");
                 System.out.println("1-Camino A a B con menos estaciones");
                 System.out.println("2-Camino A a B con menos km");
                 System.out.println("3-Caminos posibles de A a B sin pasar por C");
                 System.out.println("4-Verificar si existe camino de A a B con máxima cantidad de km");
+                System.out.println("-1-Salir");
                 opcionElegida = input.nextByte();
                 String[] estaciones;
                 switch (opcionElegida) {
@@ -1125,11 +1151,13 @@ public class TPFinal {
                 break;
             case 5:
                 //Métodos para get estructura
-                System.out.println("Qué estructura quisiera visualizar");
+                System.out.println("--------------------------------------------");
+                System.out.println("Eliga qué estructura quisiera visualizar:");
                 System.out.println("1-Estaciones");
                 System.out.println("2-Trenes");
                 System.out.println("3-Líneas");
                 System.out.println("4-Rieles");
+                System.out.println("-1-Salir");
                 opcionElegida = input.nextByte();
                 switch (opcionElegida) {
                     case 1:
@@ -1142,7 +1170,7 @@ public class TPFinal {
                         System.out.println(sist.getLineasEstructura());
                         break;
                     case 4:
-                        System.out.println("NodoVert --> NodoAdy(etiqueta) - ....");
+                        System.out.println("[NodoVert --> NodoAdy(etiqueta) - ....]");
                         System.out.println(sist.getRielesEstructura());
                         break;
 

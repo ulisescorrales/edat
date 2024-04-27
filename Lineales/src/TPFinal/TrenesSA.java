@@ -4,7 +4,6 @@
  */
 package TPFinal;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -42,22 +41,25 @@ public class TrenesSA {
     }
 
     public String getLineasEstructura() {
+        //Método para obtener la estructura de la tabla hash de líneas
         String retornar = "Tabla HashMap para líneas:\n";
         Iterator lineas = this.lineas.values().iterator();
         LinkedList recorrido;
         while (lineas.hasNext()) {
             recorrido = (LinkedList) lineas.next();
             retornar += "Clave: " + recorrido.get(0) + ", recorrido: " + getStringLista(recorrido) + "\n";
-        }
+        }        
         return retornar;
     }
 
     private String getStringLista(LinkedList lista) {
+        //Método auxiliar para obtener el string de una lista
         String list = "";
         int longitud = lista.size();
         for (int i = 0; i < longitud; i++) {
-            list += lista.get(i) + " ";
+            list += lista.get(i) + "-";
         }
+        list+=" FIN";
         return list;
     }
 

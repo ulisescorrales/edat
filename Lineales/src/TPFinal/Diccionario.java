@@ -38,14 +38,15 @@ public class Diccionario {
             if (n.getIzquierdo() != null) {//Si no es nulo,  bajar por la izquierda
                 exito = insertarAux(n.getIzquierdo(), id, dato);
                 if (exito) {
+                    n.setIzquierdo(reacomodar(n.getIzquierdo()));
                     if (n.getDerecho() != null) {
                         n.setAltura(Math.max(n.getIzquierdo().getAltura(), n.getDerecho().getAltura()) + 1);
                     } else {
                         n.setAltura(n.getIzquierdo().getAltura() + 1);//Evitar el getDerecho() de null
                     }
-                    //-------------Recomodar el hijo izquierdo y recalcular la altura (por si se quita un nivel)
-                    n.setIzquierdo(reacomodar(n.getIzquierdo()));
-                    n.setAltura(n.getIzquierdo().getAltura() + 1);
+                    //-------------Recomodar el hijo izquierdo y recalcular la altura (por si se quita un nivel del máximo)
+
+                    //n.setAltura(n.getIzquierdo().getAltura() + 1);
                     //--------------
                 }
             } else {//Si es nulo, crear el hijo izquierdo                
@@ -60,14 +61,15 @@ public class Diccionario {
         } else if (n.getDerecho() != null) {//Si elemento es mayor a n.getElem(), bajar por la derecha
             exito = insertarAux(n.getDerecho(), id, dato);
             if (exito) {
+                n.setDerecho(reacomodar(n.getDerecho()));
                 if (n.getIzquierdo() != null) {
                     n.setAltura(Math.max(n.getIzquierdo().getAltura(), n.getDerecho().getAltura()) + 1);
                 } else {
                     n.setAltura(n.getDerecho().getAltura() + 1);
                 }
                 //-------------Recomodar el hijo derecho y recalcular la altura (por si se quita un nivel)                                     
-                n.setDerecho(reacomodar(n.getDerecho()));
-                n.setAltura(n.getDerecho().getAltura() + 1);
+
+                //n.setAltura(n.getDerecho().getAltura() + 1);
                 //--------------
             }
         } else {//Si HD es nulo, crear el hijo derecho nuevo
@@ -99,7 +101,7 @@ public class Diccionario {
                 balanceHI = 0;
             }
             //Realizar rotaciones
-            if (balanceHI == 0 || balanceHI == 1) {//Mismo signo
+            if (balanceHI == 1 || balanceHI == 0) {//Mismo signo
                 retornar = rotarDerecha(pivote);
             } else if (balanceHI == -1) {//Distinto signo                
                 pivote.setIzquierdo(rotarIzquierda(pivote.getIzquierdo()));
@@ -112,9 +114,9 @@ public class Diccionario {
             } else {
                 balanceHD = 0;
             }
-            if (balanceHD == -1) {//Mismo signo
+            if (balanceHD == -1 || balanceHD == 0) {//Mismo signo
                 retornar = rotarIzquierda(pivote);
-            } else if (balanceHD == 0 || balanceHD == 1) {//Distinto signo
+            } else if (balanceHD == 1) {//Distinto signo
                 pivote.setDerecho(rotarDerecha(pivote.getDerecho()));
                 retornar = rotarIzquierda(pivote);
             }
@@ -155,8 +157,10 @@ public class Diccionario {
         if (this.raiz == r) {
             this.raiz = h;
         }
-        //actualizar altura de r, el resto queda igual
-        if (r.getDerecho() != null) {//Si el pivote quedó con algún hijo
+        //Actualizar altura del privote
+        if (r.getDerecho() != null && r.getIzquierdo() != null) {
+            r.setAltura(Math.max(r.getDerecho().getAltura(), r.getIzquierdo().getAltura()) + 1);
+        } else if (r.getDerecho() != null) {
             r.setAltura(r.getDerecho().getAltura() + 1);
         } else if (r.getIzquierdo() != null) {
             r.setAltura(r.getIzquierdo().getAltura() + 1);
@@ -164,10 +168,13 @@ public class Diccionario {
             r.setAltura(0);
         }
 
-        h.setAltura(r.getAltura() + 1);
-        if (h.getDerecho() != null || h.getIzquierdo() != null) {
+        //Actualizar altura de h
+        if (h.getDerecho() != null) {
+            h.setAltura(Math.max(r.getAltura(), h.getDerecho().getAltura()) + 1);
+        } else {
             h.setAltura(r.getAltura() + 1);
         }
+
         return h;
     }
 
@@ -175,23 +182,29 @@ public class Diccionario {
         //Método que realiza una rotación hacia la derecha
         NodoAVLDicc h = r.getIzquierdo();
         NodoAVLDicc temp = h.getDerecho();
-
         h.setDerecho(r);
         r.setIzquierdo(temp);
         if (this.raiz == r) {
             this.raiz = h;
         }
-        //actualizar alturas            
-        if (r.getDerecho() != null || r.getIzquierdo() != null) {//Si el pivote quedó con algún hijo
+        //Actualizar altura del privote
+        if (r.getDerecho() != null && r.getIzquierdo() != null) {
+            r.setAltura(Math.max(r.getDerecho().getAltura(), r.getIzquierdo().getAltura()) + 1);
+        } else if (r.getDerecho() != null) {
             r.setAltura(r.getDerecho().getAltura() + 1);
+        } else if (r.getIzquierdo() != null) {
+            r.setAltura(r.getIzquierdo().getAltura() + 1);
         } else {
             r.setAltura(0);
         }
 
-        h.setAltura(r.getAltura() + 1);
-        if (h.getDerecho() != null || h.getIzquierdo() != null) {
+        //Actualizar altura de h
+        if (h.getIzquierdo() != null) {
+            h.setAltura(Math.max(r.getAltura(), h.getIzquierdo().getAltura()) + 1);
+        } else {
             h.setAltura(r.getAltura() + 1);
         }
+
         return h;
     }
 
@@ -258,17 +271,17 @@ public class Diccionario {
 
                 } else if (n.getDerecho() == null && n.getIzquierdo() != null) {//CASO: HD es nulo, HI no es nulo
                     setPadre(n, n.getIzquierdo(), padre);
-                } else {//CASO: Es hoja entonces se elimina directamente      
+                } else {//CASO: Es hoja entonces se elimina directamente                          
                     setPadre(n, null, padre);
                 }
                 //Si el elemento no se encontró entonces, buscar por la derecha o la izquierda según corresponda
-            } else if (elem.compareTo(n.getClave()) < 0) {//Si elemento del nodo es mayor al elemento a eliminar
+            } else if (elem.compareTo(n.getClave()) < 0) {//Si elemento del nodo es mayor al elemento a eliminar                
                 exito = eliminar(elem, n.getIzquierdo(), n);//Ir por la izquierda
                 if (exito) {
                     n.setIzquierdo(reacomodar(n.getIzquierdo()));
                     actualizarAltura(n);
                 }
-            } else {//Si elemento del nodo es menor a elem
+            } else {//Si elemento del nodo es menor a elem               
                 exito = eliminar(elem, n.getDerecho(), n);//Ir por la derecha
                 if (exito) {
                     n.setDerecho(reacomodar(n.getDerecho()));
@@ -482,7 +495,7 @@ public class Diccionario {
 
         }
 
-        //Conseguir los strings de los otros niveles
+        //Conseguir los strings de los otros niveles        
         int medioI = getEstructura(this.raiz.getIzquierdo(), retornar,
                 false, alturaMax - 1, 0);
         getEstructura(this.raiz.getDerecho(), retornar,
@@ -494,7 +507,7 @@ public class Diccionario {
         for (int i = 0; i < medioI; i++) {
             agregarEspacio += " ";
         }
-        retornar[alturaMax] += agregarEspacio + this.raiz.getClave();
+        retornar[alturaMax] += agregarEspacio + this.raiz.getClave() + " (" + this.raiz.getAltura() + ")";
 
         //Recopilar la estructura
         String estructura = "";
@@ -509,24 +522,31 @@ public class Diccionario {
         //Método auxiliar para imprimir la estructura del árbol avl
         //Recorrido inorden
         //alturaAbs es la altura del nodo en relación al último nivel
-        //Retorna la cantidad de dígitos de la clave que servirá para agregar separador a la izquierda o a la derecha
+        //Retorna la posición de ┴ en el renglón para que el padre pueda posicionarse correctamente
         int medio = 0;
         if (n != null) {
-            //System.out.println(n.getClave()+" - "+alturaAbs);
             int cantSeparador = separador(alturaAbs);
             String separador = "";
             String agregar = "";
             String separadorVacio = "";
             int primeraLetraN;
             int agregarAux = 0;
+            int longitudCadena = cadenas[alturaAbs].length();
             for (int i = 0; i < cantSeparador; i++) {
                 separador += "─";
                 separadorVacio += " ";
             }
             if (esDerecho) {
-                agregar = ("┴" + separador + n.getClave() + " (" + n.getAltura() + ")" + separadorVacio + " ");//el último espacio es el que separa dos separadores vacíos
-                agregarAux = ("┴" + separador).length() + 1;
-                medio = (cadenas[alturaAbs]).length() + 1;
+                String offset = "";
+                if (longitudCadena > 0 && cadenas[alturaAbs].charAt(longitudCadena - 1) == '┴') {
+                    int dif = primeraLetraPadre - longitudCadena - 1;
+                    for (int i = 0; i < dif; i++) {
+                        offset += " ";
+                    }
+                }
+                agregar += (offset + "┴" + separador + n.getClave() + " (" + n.getAltura() + ")" + separadorVacio + " ");//el último espacio es el que separa dos separadores vacíos
+                agregarAux = (offset + "┴" + separador).length() + 1;
+                medio = longitudCadena + 1;
                 primeraLetraN = (cadenas[alturaAbs] + "┴" + separador).length();
             } else {
                 agregar = (separadorVacio + n.getClave() + " (" + n.getAltura() + ")" + separador);
@@ -534,10 +554,9 @@ public class Diccionario {
                 medio = cadenas[alturaAbs].length() + agregar.length() + 1;
                 primeraLetraN = cadenas[alturaAbs].length() + separadorVacio.length() + 1;
             }
-            int posIn = (cadenas[alturaAbs]).length() + agregarAux;
+            int posIn = longitudCadena + agregarAux;
             int medioI = getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1, posIn);
 
-            //-----
             StringBuilder st = new StringBuilder(agregar);
             //Se debe agregar a partir de la segunda posición
             if (esDerecho) {
@@ -547,11 +566,11 @@ public class Diccionario {
                     String sepAux = "";
                     for (int i = 0; i < dif2; i++) {
                         sepAux += "─";
-                    }
+                    }                    
                     st.insert(1, sepAux);
                 }
                 //Agregando
-                if (cadenas[alturaAbs].charAt(cadenas[alturaAbs].length() - 1) == ' ') {
+                if (longitudCadena == 0 || cadenas[alturaAbs].charAt(longitudCadena - 1) == ' ') {
                     int dif = primeraLetraPadre - medio;
                     String sepAux = "";
                     for (int i = 0; i < dif; i++) {
@@ -563,8 +582,7 @@ public class Diccionario {
             } else {
                 if (medioI > primeraLetraN) {
                     //agrega los espacios izquierdos para que la primera letra encaje con la división de abajo
-                    int dif = medioI - primeraLetraN;
-                    //System.out.println(n.getClave() + " dif:" + dif + " medioI:" + medioI + " primeraLetra:" + primeraLetraN);
+                    int dif = medioI - primeraLetraN;                    
                     String sepAux = "";
                     for (int i = 0; i < dif; i++) {
                         sepAux += " ";
@@ -576,8 +594,9 @@ public class Diccionario {
                     //Agrega los espacios para que la división encaje con la primer letra del padre
                     int dif = primeraLetraPadre - medio;
                     String sepAux = "";
+                    System.out.println(n.getClave()+" letraPadre:" +primeraLetraPadre);
                     for (int i = 0; i < dif; i++) {
-                        sepAux += " ";
+                        sepAux += "-";
                     }
                     st.insert(0, sepAux);
                     medio += dif;
@@ -585,7 +604,7 @@ public class Diccionario {
             }
             cadenas[alturaAbs] += st.toString();
             getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1, posIn);
-        } else if (alturaAbs == 0 && cadenas[alturaAbs].length() > 0) {
+        } else if (alturaAbs > -1 && cadenas[alturaAbs].length() > 0) {
             //Agregar la unión que falta desde el lado derecho
             int longitud = cadenas[alturaAbs].length();
             if (cadenas[alturaAbs].charAt(longitud - 1) == '─') {
@@ -616,32 +635,40 @@ public class Diccionario {
 
     public static void main(String[] args) {
         Diccionario dic = new Diccionario();
-        /*dic.insertar("Hola", "");
-        dic.insertar("Mar Del Plata", "");
-        dic.insertar("San Luis", "");
-        dic.insertar("San Clemente", "");
-        dic.insertar("Bahía Blanca", "");
-        dic.insertar("Villa María", "");
-        dic.insertar("Neuquén", "");
-        dic.insertar("Colón de Santa Fe", "");
-        dic.insertar("Rosario", "");
-        dic.insertar("River Plate", "");
-        dic.insertar("Comahue", "");
-        dic.insertar("Arrufó", "");
-         */
-
-        dic.insertar(11, "");
-        dic.insertar(22, "");
-        dic.insertar(23, "");
-        dic.insertar(44, "");
-        dic.insertar(55, "");
-        dic.insertar(66, "");
-        dic.insertar(77, "");
-        dic.insertar(88, "");
-        dic.insertar(99, "");
-        dic.insertar(10, "");
-        //System.out.println(dic.obtenerClave(8).getAltura());        
+        dic.insertar("RAWSON", " ");
+        dic.insertar("PINAMAR", " ");
+        dic.insertar("MITRE", " ");
+        dic.insertar("VILLA MARÍA", " ");
+        dic.insertar("ROSARIO NORTE", " ");
+        dic.insertar("RAFAELA", " ");
+        dic.insertar("COLONIA DORA", " ");
+        dic.insertar("NEUQUÉN", " ");
+        dic.insertar("CÓRDOBA", " ");
+        dic.insertar("BARILOCHE", " ");
+        dic.insertar("ALLEN", " ");
+        dic.insertar("ROCA", " ");
+        dic.insertar("PALMIRA", " ");
+        dic.insertar("LAS HERAS", " ");
+        dic.insertar("SANTA ROSA", " ");
+        dic.insertar("GODOY CRUZ", " ");
+        dic.insertar("TRELEW", " ");
+        dic.insertar("MISIONES", " ");
+        dic.insertar("ARRUFÓ", " ");
+        dic.insertar("CALEUFÚ", " ");
+        dic.insertar("PIGUE", " ");
+        dic.insertar("SUD", " ");
+        dic.insertar("TUCUMÁN", " ");
+        dic.insertar("MUSTERS", " ");
+        dic.insertar("BEAZLEY", " ");
+        dic.insertar("PEHUAJÓ", " ");
+        dic.insertar("RETIRO", " ");
+        dic.insertar("MAR DEL PLATA", " ");
+        dic.insertar("CAÑUELAS", " ");
+        dic.insertar("CAMPANA", " ");
+        dic.insertar("RÍO GALLEGOS", " ");
+        dic.insertar("GRAL. GUIDO", " ");
+        dic.insertar("TRENQUE LAUQUÉN", " ");
+        dic.insertar("ARMSTRONG", " ");
         System.out.println(dic.getEstructura());
-
     }
 }
