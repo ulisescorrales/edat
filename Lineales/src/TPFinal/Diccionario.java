@@ -19,7 +19,7 @@ public class Diccionario {
     public boolean insertar(Comparable id, Object dato) {
         boolean exito = true;
         if (this.raiz == null) {//Si el árbol es vacío
-            this.raiz = new NodoAVLDicc(id, null, null, dato); //Setear la raíz
+            this.raiz = new NodoAVLDicc(id, 0, null, null, dato); //Setear la raíz
         } else {
             exito = insertarAux(this.raiz, id, dato);//Recorrer recursivamente
         }
@@ -43,7 +43,7 @@ public class Diccionario {
                     } else {
                         n.setAltura(n.getIzquierdo().getAltura() + 1);//Evitar el getDerecho() de null
                     }
-                    //-------------                                         
+                    //-------------Recomodar el hijo izquierdo y recalcular la altura (por si se quita un nivel)
                     n.setIzquierdo(reacomodar(n.getIzquierdo()));
                     n.setAltura(n.getIzquierdo().getAltura() + 1);
                     //--------------
@@ -51,7 +51,7 @@ public class Diccionario {
             } else {//Si es nulo, crear el hijo izquierdo                
                 n.setIzquierdo(new NodoAVLDicc(id, 0, null, null, dato));
                 if (n.getDerecho() != null) {
-                    //Como ya se asume altura cero en HD, se consulta el del HI
+                    //Como ya se asume altura cero en HI, se consulta el del HD
                     n.setAltura(n.getDerecho().getAltura() + 1);
                 } else {
                     n.setAltura(1);
@@ -65,7 +65,7 @@ public class Diccionario {
                 } else {
                     n.setAltura(n.getDerecho().getAltura() + 1);
                 }
-                //-------------                                         
+                //-------------Recomodar el hijo derecho y recalcular la altura (por si se quita un nivel)                                     
                 n.setDerecho(reacomodar(n.getDerecho()));
                 n.setAltura(n.getDerecho().getAltura() + 1);
                 //--------------
@@ -83,6 +83,7 @@ public class Diccionario {
     }
 
     private NodoAVLDicc reacomodar(NodoAVLDicc pivote) {
+        //Método auxiliar para reordenar el árbol AVL, retorna el nuevo nodo superior si existe rotación
         int balanceRaiz = calcularBalance(pivote);//Obtener el balance        
         int balanceHI;
         int balanceHD;
@@ -473,7 +474,6 @@ public class Diccionario {
     public String getEstructura() {
         //Método que retorna en un String la estructura del árbol avl
         int alturaMax = this.raiz.getAltura();
-        System.out.println("Altura max "+alturaMax +" raíz: "+this.raiz.getClave());
         int filas = alturaMax + 1;
         //Filas a imprimir (uno por nivel)
         String[] retornar = new String[this.raiz.getAltura() + 1];
@@ -481,19 +481,22 @@ public class Diccionario {
             retornar[i] = "";
 
         }
-        //conseguir el string del nivel 0
-        int cantSeparador = separador(this.raiz.getAltura());
-        String separadorVacio = "";
-        for (int i = 0; i < cantSeparador; i++) {
-            separadorVacio += " ";
-        }
-        retornar[alturaMax] += (separadorVacio + this.raiz.getClave());
 
         //Conseguir los strings de los otros niveles
-        getEstructura(this.raiz.getIzquierdo(), retornar,
+        int medioI = getEstructura(this.raiz.getIzquierdo(), retornar,
                 false, alturaMax - 1, 0);
         getEstructura(this.raiz.getDerecho(), retornar,
                 true, alturaMax - 1, 0);
+
+        //conseguir el string del nivel 0     
+        String agregarEspacio = "";
+        medioI--;
+        for (int i = 0; i < medioI; i++) {
+            agregarEspacio += " ";
+        }
+        retornar[alturaMax] += agregarEspacio + this.raiz.getClave();
+
+        //Recopilar la estructura
         String estructura = "";
         for (int i = filas - 1;
                 i > -1; i--) {
@@ -509,43 +512,36 @@ public class Diccionario {
         //Retorna la cantidad de dígitos de la clave que servirá para agregar separador a la izquierda o a la derecha
         int medio = 0;
         if (n != null) {
-            System.out.println(n.getClave()+" - "+alturaAbs);
+            //System.out.println(n.getClave()+" - "+alturaAbs);
             int cantSeparador = separador(alturaAbs);
             String separador = "";
             String agregar = "";
             String separadorVacio = "";
+            int primeraLetraN;
             int agregarAux = 0;
             for (int i = 0; i < cantSeparador; i++) {
                 separador += "─";
                 separadorVacio += " ";
             }
             if (esDerecho) {
-                agregar = ("┴" + separador + n.getClave() + separadorVacio + " ");//el último espacio es el que separa dos separadores vacíos
+                agregar = ("┴" + separador + n.getClave() + " (" + n.getAltura() + ")" + separadorVacio + " ");//el último espacio es el que separa dos separadores vacíos
                 agregarAux = ("┴" + separador).length() + 1;
                 medio = (cadenas[alturaAbs]).length() + 1;
+                primeraLetraN = (cadenas[alturaAbs] + "┴" + separador).length();
             } else {
-                agregar = (separadorVacio + n.getClave() + separador);
+                agregar = (separadorVacio + n.getClave() + " (" + n.getAltura() + ")" + separador);
                 agregarAux = (separadorVacio).length() + 1;
                 medio = cadenas[alturaAbs].length() + agregar.length() + 1;
+                primeraLetraN = cadenas[alturaAbs].length() + separadorVacio.length() + 1;
             }
-            //System.out.println(n.getClave()+" medio: "+medio);
             int posIn = (cadenas[alturaAbs]).length() + agregarAux;
-            //System.out.println(n.getClave()+" posIn:"+posIn);
             int medioI = getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1, posIn);
 
-            if (medio < primeraLetraPadre) {
-                //System.out.println("letraPadre: "+ primeraLetraPadre);                    
-                int dif = primeraLetraPadre - medio;
-                System.out.println(n.getClave() + " dif:" + dif);
-                String sepAux = "";
-                for (int i = 0; i < dif; i++) {
-                    sepAux += " ";
-                }
-                agregar = sepAux + agregar;
-            }
-            StringBuilder st=new StringBuilder(agregar);            
+            //-----
+            StringBuilder st = new StringBuilder(agregar);
             //Se debe agregar a partir de la segunda posición
             if (esDerecho) {
+                //Agrega las líneas - para que la primera letra encaje con la división de abajo
                 if (medioI > posIn) {
                     int dif2 = medioI - posIn;
                     String sepAux = "";
@@ -554,34 +550,41 @@ public class Diccionario {
                     }
                     st.insert(1, sepAux);
                 }
+                //Agregando
+                if (cadenas[alturaAbs].charAt(cadenas[alturaAbs].length() - 1) == ' ') {
+                    int dif = primeraLetraPadre - medio;
+                    String sepAux = "";
+                    for (int i = 0; i < dif; i++) {
+                        sepAux += " ";
+                    }
+                    st.insert(0, sepAux);
+                    medio += dif;
+                }
+            } else {
+                if (medioI > primeraLetraN) {
+                    //agrega los espacios izquierdos para que la primera letra encaje con la división de abajo
+                    int dif = medioI - primeraLetraN;
+                    //System.out.println(n.getClave() + " dif:" + dif + " medioI:" + medioI + " primeraLetra:" + primeraLetraN);
+                    String sepAux = "";
+                    for (int i = 0; i < dif; i++) {
+                        sepAux += " ";
+                    }
+                    medio += dif;
+                    st.insert(0, sepAux);
+                }
+                if (medio < primeraLetraPadre) {
+                    //Agrega los espacios para que la división encaje con la primer letra del padre
+                    int dif = primeraLetraPadre - medio;
+                    String sepAux = "";
+                    for (int i = 0; i < dif; i++) {
+                        sepAux += " ";
+                    }
+                    st.insert(0, sepAux);
+                    medio += dif;
+                }
             }
             cadenas[alturaAbs] += st.toString();
-//            System.out.println(n.getClave()+" medioHijoIzq:" +medioHijo);            
-            //Siendo hijo
-            /*if(esDerecho){
-                
-            }else{
-                int medioPropio=(cadenas[alturaAbs]+agregar).length()+1;
-                System.out.println(n.getClave()+ "medioPropio:"+medioPropio);
-                if(medioPropio<medioHijo){                    
-                    int dif=medioHijo-medioPropio;
-                    System.out.println(n.getClave()+" "+dif);
-                    String sepAux="";
-                    for (int i = 0; i < dif; i++) {
-                        sepAux+=" ";                        
-                    }
-                    agregar=sepAux+agregar;
-                }
-            }*/
-            int medioDer = getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1, posIn);
-            /*if (medioDer > posIn) {
-                int dif2 = primeraLetraPadre - medio;                
-                String sepAux = "";
-                for (int i = 0; i < dif2; i++) {
-                    sepAux += "─";
-                }
-                agregar = sepAux + agregar;
-            }*/
+            getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1, posIn);
         } else if (alturaAbs == 0 && cadenas[alturaAbs].length() > 0) {
             //Agregar la unión que falta desde el lado derecho
             int longitud = cadenas[alturaAbs].length();
@@ -596,10 +599,10 @@ public class Diccionario {
     private int separador(int altura) {
         //Método auxiliar para conseguir la cantidad de espacios en blanco que necesita
         //de separación una clave en getEstructura() (suponiendo un dígito, para luego seguir agregando)
-        int retornar=0;
+        int retornar = 0;
         if (altura == 0) {
-            retornar = 1;            
-        } else if(altura>0){
+            retornar = 1;
+        } else if (altura > 0) {
             retornar = separador(altura - 1) * 2 + 1;
         }
         return retornar;
@@ -626,19 +629,18 @@ public class Diccionario {
         dic.insertar("Comahue", "");
         dic.insertar("Arrufó", "");
          */
-        
+
         dic.insertar(11, "");
-        dic.insertar(2, "");
+        dic.insertar(22, "");
         dic.insertar(23, "");
-        dic.insertar(4, "");
-        dic.insertar(5, "");
-        dic.insertar(6, "");
+        dic.insertar(44, "");
+        dic.insertar(55, "");
+        dic.insertar(66, "");
         dic.insertar(77, "");
-        dic.insertar(8, "");
-        dic.insertar(9, "");
-        dic.insertar(10, ""); 
-        //System.out.println(dic.obtenerClave(8).getAltura());
-        System.out.println(dic.obtenerClave(8).getIzquierdo().getIzquierdo().getIzquierdo().getClave());
+        dic.insertar(88, "");
+        dic.insertar(99, "");
+        dic.insertar(10, "");
+        //System.out.println(dic.obtenerClave(8).getAltura());        
         System.out.println(dic.getEstructura());
 
     }
