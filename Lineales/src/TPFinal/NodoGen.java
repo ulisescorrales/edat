@@ -7,7 +7,7 @@ package TPFinal;
 
 /**
  *
- 
+ * @author Corrales Ulises
  */
 public class NodoGen {
     private Object elem;

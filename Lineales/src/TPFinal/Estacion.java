@@ -6,7 +6,7 @@ package TPFinal;
 
 /**
  *
- * @author ulises
+ * @author Corrales Ulises
  */
 public class Estacion {
     //Identificador 

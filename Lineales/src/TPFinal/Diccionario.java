@@ -9,7 +9,7 @@ import java.util.Queue;
 
 /**
  *
- * @author ulise
+ * @author Corrales Ulises
  */
 public class Diccionario {
 //Clase Diccionario implementado con un árbol AVL
@@ -44,10 +44,7 @@ public class Diccionario {
                     } else {
                         n.setAltura(n.getIzquierdo().getAltura() + 1);//Evitar el getDerecho() de null
                     }
-                    //-------------Recomodar el hijo izquierdo y recalcular la altura (por si se quita un nivel del máximo)
-
-                    //n.setAltura(n.getIzquierdo().getAltura() + 1);
-                    //--------------
+                    //
                 }
             } else {//Si es nulo, crear el hijo izquierdo                
                 n.setIzquierdo(new NodoAVLDicc(id, 0, null, null, dato));
@@ -66,11 +63,7 @@ public class Diccionario {
                     n.setAltura(Math.max(n.getIzquierdo().getAltura(), n.getDerecho().getAltura()) + 1);
                 } else {
                     n.setAltura(n.getDerecho().getAltura() + 1);
-                }
-                //-------------Recomodar el hijo derecho y recalcular la altura (por si se quita un nivel)                                     
-
-                //n.setAltura(n.getDerecho().getAltura() + 1);
-                //--------------
+                }                
             }
         } else {//Si HD es nulo, crear el hijo derecho nuevo
             n.setDerecho(new NodoAVLDicc(id, 0, null, null, dato));
@@ -251,17 +244,17 @@ public class Diccionario {
                 exito = true;//Si elemento existe, la operación será exitosa
                 if (n.getIzquierdo() != null && n.getDerecho() != null) {//CASO: Si posee ambos hijos                    
 
-                    NodoAVLDicc aux = buscarCandidatoA(n.getIzquierdo());//Usar el candidato A (aux): el elemento mayor del subárbol izquierdo 
+                    NodoAVLDicc candidato = buscarCandidatoA(n.getIzquierdo());//Usar el candidato A (aux): el elemento mayor del subárbol izquierdo 
 
                     //Setear los hijos del nuevo padre
-                    aux.setDerecho(n.getDerecho());
-                    if (n.getIzquierdo() != aux) {//Si aux itera aunque sea una vez hacia la derecha, se setea el HI
-                        aux.setIzquierdo(n.getIzquierdo());
+                    candidato.setDerecho(n.getDerecho());
+                    if (n.getIzquierdo() != candidato) {//Si aux itera aunque sea una vez hacia la derecha, se setea el HI
+                        candidato.setIzquierdo(n.getIzquierdo());
                     }
                     //Setear la altura del candidato A en su posición nueva
-                    actualizarAltura(aux);
+                    actualizarAltura(candidato);
                     //setear el padre del padre
-                    setPadre(n, aux, padre);
+                    setPadre(n, candidato, padre);
                     //Setear la nueva altura del padre
                     if (padre != null) {
                         actualizarAltura(n);
@@ -555,9 +548,20 @@ public class Diccionario {
                 primeraLetraN = cadenas[alturaAbs].length() + separadorVacio.length() + 1;
             }
             int posIn = longitudCadena + agregarAux;
-            int medioI = getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1, posIn);
-
+            
             StringBuilder st = new StringBuilder(agregar);
+            if (!esDerecho && medio < primeraLetraPadre) {
+                    //Agrega los espacios para que la división encaje con la primer letra del padre
+                    int dif = primeraLetraPadre - medio;
+                    String sepAux = "";                    
+                    for (int i = 0; i < dif; i++) {
+                        sepAux += " ";
+                    }
+                    st.insert(0, sepAux);
+                    posIn += dif;                    
+                }
+            int medioI = getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1, posIn);
+            
             //Se debe agregar a partir de la segunda posición
             if (esDerecho) {
                 //Agrega las líneas - para que la primera letra encaje con la división de abajo
@@ -589,18 +593,7 @@ public class Diccionario {
                     }
                     medio += dif;
                     st.insert(0, sepAux);
-                }
-                if (medio < primeraLetraPadre) {
-                    //Agrega los espacios para que la división encaje con la primer letra del padre
-                    int dif = primeraLetraPadre - medio;
-                    String sepAux = "";
-                    System.out.println(n.getClave()+" letraPadre:" +primeraLetraPadre);
-                    for (int i = 0; i < dif; i++) {
-                        sepAux += "-";
-                    }
-                    st.insert(0, sepAux);
-                    medio += dif;
-                }
+                }                
             }
             cadenas[alturaAbs] += st.toString();
             getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1, posIn);
@@ -668,7 +661,11 @@ public class Diccionario {
         dic.insertar("RÍO GALLEGOS", " ");
         dic.insertar("GRAL. GUIDO", " ");
         dic.insertar("TRENQUE LAUQUÉN", " ");
-        dic.insertar("ARMSTRONG", " ");
+        dic.insertar("ARMSTRONG", " ");        
+        System.out.println(dic.getEstructura());
+        dic.eliminar("LAS HERAS");
+        dic.eliminar("NEUQUÉN");
+        dic.eliminar("RAWSON");
         System.out.println(dic.getEstructura());
     }
 }

@@ -9,7 +9,7 @@ import java.util.Queue;
 
 /**
  *
- * @author ulise
+ * @author Corrales Ulises
  */
 public class Grafo {
 

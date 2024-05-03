@@ -7,7 +7,7 @@ package TPFinal;
 
 /**
  *
- * @author ulise
+ * @author Corrales Ulises
  */
 public class NodoAVLDicc {
     private Comparable clave;    

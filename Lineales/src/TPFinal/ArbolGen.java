@@ -4,13 +4,13 @@
  */
 package TPFinal;
 
+import TPFinal.Lineales.Dinamicas.Cola;
+import TPFinal.Lineales.Dinamicas.Lista;
 import java.util.LinkedList;
-import lineales.dinamicas.Lista;
-import lineales.dinamicas.Cola;
 
 /**
  *
- 
+ * @author Corrales Ulises
  */
 public class ArbolGen {
 

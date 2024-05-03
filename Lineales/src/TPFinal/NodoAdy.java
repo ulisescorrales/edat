@@ -4,11 +4,10 @@
  */
 package TPFinal;
 
-import grafos.*;
 
 /**
  *
- * @author ulise
+ * @author Corrales Ulises
  */
 public class NodoAdy {
     private NodoVert vertice;

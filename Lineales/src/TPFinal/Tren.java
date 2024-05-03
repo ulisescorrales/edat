@@ -6,7 +6,7 @@ package TPFinal;
 
 /**
  *
- * @author ulise
+ * @author Corrales Ulises
  */
 public class Tren {
     

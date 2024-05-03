@@ -7,7 +7,7 @@ package TPFinal;
 
 /**
  *
- * @author ulise
+ * @author Corrales Ulises
  */
 public class NodoVert {
     private Object elem;

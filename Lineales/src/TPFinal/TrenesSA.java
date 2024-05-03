@@ -42,7 +42,7 @@ public class TrenesSA {
 
     public String getLineasEstructura() {
         //Método para obtener la estructura de la tabla hash de líneas
-        String retornar = "Tabla HashMap para líneas:\n";
+        String retornar = "";
         Iterator lineas = this.lineas.values().iterator();
         LinkedList recorrido;
         while (lineas.hasNext()) {

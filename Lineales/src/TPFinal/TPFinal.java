@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author ulisescorrales
+ * @author Corrales Ulises
  */
 public class TPFinal {
 
@@ -189,6 +189,7 @@ public class TPFinal {
         retornar += sistema.getTrenesEstructura();
         retornar+="------------------------------\n";
         retornar += "Grafo para rieles\n";
+        retornar += "[NodoVert1]-> [NodoAdy1 (etiqueta2)] - [NodoAdy2 (etiqueta2)] ... ";
         retornar += sistema.getRielesEstructura();
         retornar+="------------------------------\n";
         retornar += "Tabla Hash para líneas\n";
