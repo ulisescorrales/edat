@@ -53,15 +53,9 @@ public class TPFinal {
         String datosString = datos.toString();
 
         //Separar los tokens por líneas
-        StringTokenizer datosTok = new StringTokenizer(datosString, "\n");
-        StringTokenizer objetoTok;
-        String cabecera;
-        //Contador de tokens usados para poder identificar errores        
-
-        LinkedList<StringTokenizer> estacionesList = new LinkedList();
-        LinkedList<StringTokenizer> trenesList = new LinkedList();
-        LinkedList<StringTokenizer> rielesList = new LinkedList();
-        Queue<StringTokenizer> lineasCola = new LinkedList();
+        StringTokenizer lineasTok = new StringTokenizer(datosString, "\n");
+        StringTokenizer atributosTok;
+        String cabecera;        
 
         TrenesSA sistema = new TrenesSA();
 
@@ -70,32 +64,37 @@ public class TPFinal {
         } catch (IOException ex) {
             Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //Analizar cada token
-        while (datosTok.hasMoreTokens()) {
-            objetoTok = new StringTokenizer(datosTok.nextToken(), ";");
-            cabecera = objetoTok.nextToken();
+        //Separar cada línea de token y colocarlo en la lista correspondiente
+        LinkedList<StringTokenizer> estacionesList = new LinkedList();
+        LinkedList<StringTokenizer> trenesList = new LinkedList();
+        LinkedList<StringTokenizer> rielesList = new LinkedList();
+        LinkedList<StringTokenizer> lineasList = new LinkedList();
+        while (lineasTok.hasMoreTokens()) {
+            //Separar por ; y leer la cabecera
+            atributosTok = new StringTokenizer(lineasTok.nextToken(), ";");
+            cabecera = atributosTok.nextToken();
             //La cabecera indica: 'E' para estación, 'L' para línea, 'T' para tren y 'R' para riel
             switch (cabecera) {
                 case "E":
-                    estacionesList.add(objetoTok);
+                    estacionesList.add(atributosTok);
                     break;
                 case "L":
 
-                    lineasCola.add(objetoTok);
+                    lineasList.add(atributosTok);
                     break;
                 case "T":
-                    trenesList.addFirst(objetoTok);
+                    trenesList.addFirst(atributosTok);
                     break;
                 case "R":
                     //Almacenar los rieles en una lista para que se carguen después de las estaciones
-                    rielesList.add(objetoTok);
+                    rielesList.add(atributosTok);
             }
         }
 
         /*Primero se cargaron las estaciones y trenes en una lista y luego aquí se cargan por orden aleatorio en
         el diccionario implementado con árbol AVL */
         cargarEstaciones(sistema, estacionesList, logs);
-        cargarLineas(sistema, lineasCola, logs);
+        cargarLineas(sistema, lineasList, logs);
         cargarTrenes(sistema, trenesList, logs);
         cargarRieles(sistema, rielesList, logs);
 
@@ -179,7 +178,7 @@ public class TPFinal {
 
     public static String getSistema(TrenesSA sistema) {
         //Método que retorna en formato String todas las estructuras del sistema cargadas
-        String retornar = "";
+        String retornar = "<--------------FIN DEL PROGRAMA-------------->\n";
         retornar += "ESTADO DEL SISTEMA:\n";
         retornar+="------------------------------\n";
         retornar += "Árbol AVL para estaciones (clave + altura)\n";
@@ -189,7 +188,7 @@ public class TPFinal {
         retornar += sistema.getTrenesEstructura();
         retornar+="------------------------------\n";
         retornar += "Grafo para rieles\n";
-        retornar += "[NodoVert1]-> [NodoAdy1 (etiqueta2)] - [NodoAdy2 (etiqueta2)] ... ";
+        retornar += "[NodoVert1]-> [NodoAdy1 (etiqueta2)] - [NodoAdy2 (etiqueta2)] ... \n";
         retornar += sistema.getRielesEstructura();
         retornar+="------------------------------\n";
         retornar += "Tabla Hash para líneas\n";
@@ -617,6 +616,8 @@ public class TPFinal {
             //Cargar aleatoriamente las estaciones sobre el diccionario
             pos = ran.nextInt(listEst.size());
             StringTokenizer estTok = listEst.get(pos);
+            
+            //Descomponer estTok
             String nombre = estTok.nextToken().toUpperCase();
             String calle = estTok.nextToken().toUpperCase();
             int numCalle = Integer.parseInt(estTok.nextToken());
@@ -1249,7 +1250,7 @@ public class TPFinal {
         id = in.next().toUpperCase();
         existeClave = elSistema.getEstaciones().existeClave(id);
         while (existeClave && !id.equals("-1")) {
-            System.out.println("Nombre ya existe, ingrese otro nombre");
+            System.out.println("Nombre ya existe, ingrese otro nombre o -1 para salir");
             id = in.next().toUpperCase();
             existeClave = elSistema.getEstaciones().existeClave(id);
         }

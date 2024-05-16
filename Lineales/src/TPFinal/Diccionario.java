@@ -457,8 +457,12 @@ public class Diccionario {
 
     private void getSubstring(NodoAVLDicc n, String subs, LinkedList resultado) {
         //Método auxiliar para getSubstringList
+        int longitudSubstring=subs.length();
+        String substr;
         if (n != null) {
-            if (n.getClave().toString().contains(subs)) {
+            //Comparar la parte inicial de la clave con subs
+            substr=n.getClave().toString().substring(0, longitudSubstring);            
+            if (substr.equals(subs)) {
                 //Si contiene el substring, recorre en preorden 
                 getSubstring(n.getIzquierdo(), subs, resultado);
                 resultado.add(n.getClave());
@@ -625,47 +629,5 @@ public class Diccionario {
         retornar = obtenerClave(this.raiz, id);
         return retornar;
     }
-
-    public static void main(String[] args) {
-        Diccionario dic = new Diccionario();
-        dic.insertar("RAWSON", " ");
-        dic.insertar("PINAMAR", " ");
-        dic.insertar("MITRE", " ");
-        dic.insertar("VILLA MARÍA", " ");
-        dic.insertar("ROSARIO NORTE", " ");
-        dic.insertar("RAFAELA", " ");
-        dic.insertar("COLONIA DORA", " ");
-        dic.insertar("NEUQUÉN", " ");
-        dic.insertar("CÓRDOBA", " ");
-        dic.insertar("BARILOCHE", " ");
-        dic.insertar("ALLEN", " ");
-        dic.insertar("ROCA", " ");
-        dic.insertar("PALMIRA", " ");
-        dic.insertar("LAS HERAS", " ");
-        dic.insertar("SANTA ROSA", " ");
-        dic.insertar("GODOY CRUZ", " ");
-        dic.insertar("TRELEW", " ");
-        dic.insertar("MISIONES", " ");
-        dic.insertar("ARRUFÓ", " ");
-        dic.insertar("CALEUFÚ", " ");
-        dic.insertar("PIGUE", " ");
-        dic.insertar("SUD", " ");
-        dic.insertar("TUCUMÁN", " ");
-        dic.insertar("MUSTERS", " ");
-        dic.insertar("BEAZLEY", " ");
-        dic.insertar("PEHUAJÓ", " ");
-        dic.insertar("RETIRO", " ");
-        dic.insertar("MAR DEL PLATA", " ");
-        dic.insertar("CAÑUELAS", " ");
-        dic.insertar("CAMPANA", " ");
-        dic.insertar("RÍO GALLEGOS", " ");
-        dic.insertar("GRAL. GUIDO", " ");
-        dic.insertar("TRENQUE LAUQUÉN", " ");
-        dic.insertar("ARMSTRONG", " ");        
-        System.out.println(dic.getEstructura());
-        dic.eliminar("LAS HERAS");
-        dic.eliminar("NEUQUÉN");
-        dic.eliminar("RAWSON");
-        System.out.println(dic.getEstructura());
-    }
+   
 }

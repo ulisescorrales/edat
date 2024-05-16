@@ -15,10 +15,10 @@ import java.util.Map;
  */
 public class TrenesSA {
 
-    private Diccionario estaciones;
-    private Grafo rieles;
-    private Diccionario trenes;
-    private HashMap lineas;
+    private final Diccionario estaciones;
+    private final Grafo rieles;
+    private final Diccionario trenes;
+    private final HashMap lineas;
 
     public TrenesSA() {
         this.estaciones = new Diccionario();
@@ -226,9 +226,9 @@ public class TrenesSA {
         return exito;
     }
 
-    public LinkedList<String> getEstacionesConSubstring(String substring) {
+    /*public LinkedList<String> getEstacionesConSubstring(String substring) {
         return this.estaciones.getSubstringList(substring);
-    }
+    }*/
 
     public LinkedList<String> verificarLineaAsignada(int idTren) {
         Tren tren = (Tren) trenes.obtenerDato(idTren);
@@ -266,14 +266,14 @@ public class TrenesSA {
     }
 
     public LinkedList<Integer> verificarLineaBorradaYTrenes(String linea) {
-        //Cuando se borra una línea, se actualiza la línea del tren como "no asignado"
+        //Cuando se borra una línea, se actualiza la línea del tren como "SIN ASIGNAR"
         LinkedList<Tren> listaTrenes = this.trenes.listarDatos();                
         int longitud = listaTrenes.size();
         LinkedList trenesModificados = new LinkedList();        
         for (int i = 0; i < longitud; i++) {
             Tren unTren = listaTrenes.get(i);
             if (unTren.getLinea().equals(linea)) {
-                unTren.setLinea("no asignado");
+                unTren.setLinea("SIN ASIGNAR");
                 trenesModificados.add(unTren.getIdTren());
             }
         }        
