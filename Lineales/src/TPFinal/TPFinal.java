@@ -4,9 +4,11 @@
  */
 package TPFinal;
 
+import TPFinal.Dominio.TrenesSA;
+import TPFinal.Dominio.Estacion;
+import TPFinal.Dominio.Tren;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -32,38 +34,31 @@ public class TPFinal {
         //Leer el archivo DatosTPFinal.txt y realizar la carga inicial del sistema
         StringBuilder datos = new StringBuilder();
         try {
-            FileReader txt = new FileReader("src/TPFinal/DatosTPFINAL.txt");
+            FileReader txt = new FileReader("src/TPFinal/Datos/DatosTPFINAL.txt");
             int i;
             i = txt.read();
             while (i != -1) {
                 datos.append((char) i);
                 i = txt.read();
             }
+            txt.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        FileWriter logs = null;
-        try {
-            logs = new FileWriter("./src/TPFinal/logs.log");
-        } catch (IOException ex) {
-            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String datosString = datos.toString();
+
+        Log logs = new Log("./src/TPFinal/logs.log");
 
         //Separar los tokens por líneas
         StringTokenizer lineasTok = new StringTokenizer(datosString, "\n");
         StringTokenizer atributosTok;
-        String cabecera;        
+        String cabecera;
 
         TrenesSA sistema = new TrenesSA();
 
-        try {
-            logs.write("---EMPIEZA CARGA INICIAL---\n");
-        } catch (IOException ex) {
-            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        logs.escribir("---EMPIEZA CARGA INICIAL---\n");
         //Separar cada línea de token y colocarlo en la lista correspondiente
         LinkedList<StringTokenizer> estacionesList = new LinkedList();
         LinkedList<StringTokenizer> trenesList = new LinkedList();
@@ -98,17 +93,12 @@ public class TPFinal {
         cargarTrenes(sistema, trenesList, logs);
         cargarRieles(sistema, rielesList, logs);
 
-        try {
-            logs.write("---FIN CARGA INICIAL---\n");
-            logs.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        logs.escribir("---FIN CARGA INICIAL---\n");
         //Interactuar con el menú hasta salir                          
         mostrarMenuPrincipal(input, sistema, logs);
     }
 
-    public static void mostrarMenuPrincipal(Scanner in, TrenesSA sist, FileWriter lg) {
+    public static void mostrarMenuPrincipal(Scanner in, TrenesSA sist, Log lg) {
         //Entrada al menú principal
         byte opcion;
         System.out.println("Bienvenidos al sistema de TrenesSA");
@@ -139,15 +129,10 @@ public class TPFinal {
             }
 
         } while (opcion != -1);
-        try {
-            lg.write(getSistema(sist) + "FIN DEL PROGRAMA");
-            lg.flush();
-        } catch (IOException ex) {
-            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        lg.escribir(getSistema(sist) + "FIN DEL PROGRAMA");
     }
 
-    public static void modificarInformacion(Scanner input, TrenesSA sistema, FileWriter logs) {
+    public static void modificarInformacion(Scanner input, TrenesSA sistema, Log logs) {
 
         //Mostrar submenú para modificar información
         System.out.println("------------------------------------");
@@ -180,23 +165,23 @@ public class TPFinal {
         //Método que retorna en formato String todas las estructuras del sistema cargadas
         String retornar = "<--------------FIN DEL PROGRAMA-------------->\n";
         retornar += "ESTADO DEL SISTEMA:\n";
-        retornar+="------------------------------\n";
+        retornar += "------------------------------\n";
         retornar += "Árbol AVL para estaciones (clave + altura)\n";
         retornar += sistema.getEstacionesEstructura();
-        retornar+="------------------------------\n";
+        retornar += "------------------------------\n";
         retornar += "Árbol AVL para trenes (clave + altura)\n";
         retornar += sistema.getTrenesEstructura();
-        retornar+="------------------------------\n";
+        retornar += "------------------------------\n";
         retornar += "Grafo para rieles\n";
         retornar += "[NodoVert1]-> [NodoAdy1 (etiqueta2)] - [NodoAdy2 (etiqueta2)] ... \n";
         retornar += sistema.getRielesEstructura();
-        retornar+="------------------------------\n";
+        retornar += "------------------------------\n";
         retornar += "Tabla Hash para líneas\n";
         retornar += sistema.getLineasEstructura();
         return retornar;
     }
 
-    public static void modificarRiel(TrenesSA sist, Scanner in, FileWriter lg) {
+    public static void modificarRiel(TrenesSA sist, Scanner in, Log lg) {
         //Método para modificar un riel desde el menú interactivo
         System.out.println("Ingrese el nombre de una estación, -1 para salir");
         String estacion1 = in.next().toUpperCase();
@@ -217,12 +202,7 @@ public class TPFinal {
                     System.out.println("Ingrese una nueva distancia entre rieles");
                     int nuevaDistancia = in.nextInt();
                     if (sist.modificarDistancia(estacion1, estacion2, nuevaDistancia)) {
-                        try {
-                            lg.write("Modificado riel " + estacion1 + " -" + estacion2 + ": " + distanciaAnterior + "->" + nuevaDistancia);
-                            lg.flush();
-                        } catch (IOException ex) {
-                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        lg.escribir("Modificado riel " + estacion1 + " -" + estacion2 + ": " + distanciaAnterior + "->" + nuevaDistancia);
                     }
                 } else {
                     System.out.println("No existe riel entre las estaciones");
@@ -231,7 +211,7 @@ public class TPFinal {
         }
     }
 
-    public static void modificarLinea(TrenesSA sist, Scanner in, FileWriter lg) {
+    public static void modificarLinea(TrenesSA sist, Scanner in, Log lg) {
         //Método para modificar una línea, dado un nombre de línea
         System.out.println("Ingrese el número de línea, -1 para salir");
         String nombreLinea = in.next().toUpperCase();
@@ -272,17 +252,12 @@ public class TPFinal {
                 }
             }
             System.out.println("Estación modificada: " + lineasString);
-            //Escribir en el archivo log
-            try {
-                lg.write("Modificada línea " + nombreLinea + ": " + lineasString);
-                lg.flush();
-            } catch (IOException ex) {
-                Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            //Escribir en el archivo log            
+            lg.escribir("Modificada línea " + nombreLinea + ": " + lineasString);
         }
     }
 
-    public static void modificarTren(TrenesSA sist, Scanner in, FileWriter lg) {
+    public static void modificarTren(TrenesSA sist, Scanner in, Log lg) {
         //Método para modificar un tren, dado un ID ingresado
         System.out.println("Ingrese el número de id del tren a modificar, -1 para salir");
         int idTren = in.nextInt();
@@ -314,12 +289,7 @@ public class TPFinal {
                         String propulsionAnterior = tren.getPropulsion();
                         tren.setPropulsion(propulsion);
                         System.out.println("Propulsión cambiada");
-                        try {
-                            lg.write("Modificado propulsión de TREN " + idTren + ": " + propulsionAnterior + "->" + propulsion);
-                            lg.flush();
-                        } catch (IOException ex) {
-                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        lg.escribir("Modificado propulsión de TREN " + idTren + ": " + propulsionAnterior + "->" + propulsion);
                     }
                     break;
                 case 2:
@@ -331,12 +301,7 @@ public class TPFinal {
                     }
                     if (cantVagones != -1) {
                         int cantAnterior = tren.getCantVagonesPasaj();
-                        try {
-                            lg.write("Modificado cant. pasajeros de TREN " + idTren + ": " + cantAnterior + "->" + cantVagones);
-                            lg.flush();
-                        } catch (IOException ex) {
-                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        lg.escribir("Modificado cant. pasajeros de TREN " + idTren + ": " + cantAnterior + "->" + cantVagones);
                     }
                     break;
                 case 3:
@@ -348,12 +313,7 @@ public class TPFinal {
                     }
                     if (cantVagonesCarga != -1) {
                         int cantAnterior = tren.getCantVagonesPasaj();
-                        try {
-                            lg.write("Modificado cant. vagones de carga de TREN " + idTren + ": " + cantAnterior + "->" + cantVagonesCarga);
-                            lg.flush();
-                        } catch (IOException ex) {
-                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        lg.escribir("Modificado cant. vagones de carga de TREN " + idTren + ": " + cantAnterior + "->" + cantVagonesCarga);
                     }
                     break;
                 case 4:
@@ -364,12 +324,7 @@ public class TPFinal {
                     }
                     if (!linea.equals("-1")) {
                         String lineaAnterior = tren.getLinea();
-                        try {
-                            lg.write("Modificado línea de TREN " + idTren + ": " + lineaAnterior + "->" + linea);
-                            lg.flush();
-                        } catch (IOException ex) {
-                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        lg.escribir("Modificado línea de TREN " + idTren + ": " + lineaAnterior + "->" + linea);
                     }
 
             }
@@ -377,7 +332,7 @@ public class TPFinal {
         }
     }
 
-    public static void modificarEstacion(TrenesSA sist, Scanner in, FileWriter lg) {
+    public static void modificarEstacion(TrenesSA sist, Scanner in, Log lg) {
         //Submenú para modificar una estación dada
         System.out.println("Ingrese el nombre de la estación a modificar, -1 para salir");
         String est = in.next().toUpperCase();
@@ -408,12 +363,7 @@ public class TPFinal {
                     String calle = in.next().toUpperCase();
                     estacion.setCalle(calle);
                      {
-                        try {
-                            lg.write("Modificado calle de ESTACIÓN " + est + ":" + calleAnterior + "->" + calle);
-                            lg.flush();
-                        } catch (IOException ex) {
-                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        lg.escribir("Modificado calle de ESTACIÓN " + est + ":" + calleAnterior + "->" + calle);
                     }
                     break;
                 case 2:
@@ -421,66 +371,42 @@ public class TPFinal {
                     int numCalleAnterior = estacion.getNumCalle();
                     int numCalle = in.nextInt();
                     estacion.setNumCalle(numCalle);
-                    try {
-                        lg.write("Modificado núm. calle de ESTACIÓN " + est + ":" + numCalleAnterior + "->" + numCalle);
-                        lg.flush();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    lg.escribir("Modificado núm. calle de ESTACIÓN " + est + ":" + numCalleAnterior + "->" + numCalle);
                     break;
                 case 3:
                     System.out.println("Ingrese Ciudad");
                     String ciudadAnterior = estacion.getCiudad();
                     String ciudad = in.next().toUpperCase();
                     estacion.setCiudad(ciudad);
-                    try {
-                        lg.write("Modificado ciudad de ESTACIÓN " + est + ":" + ciudadAnterior + "->" + ciudad);
-                        lg.flush();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    lg.escribir("Modificado ciudad de ESTACIÓN " + est + ":" + ciudadAnterior + "->" + ciudad);
                     break;
                 case 4:
                     System.out.println("Ingrese nuevo CP");
                     String cpAnterior = estacion.getCp();
                     String nuevoCP = in.next().toUpperCase();
                     estacion.setCp(est);
-                    try {
-                        lg.write("Modificado CP de ESTACIÓN " + est + ":" + cpAnterior + "->" + nuevoCP);
-                        lg.flush();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    lg.escribir("Modificado CP de ESTACIÓN " + est + ":" + cpAnterior + "->" + nuevoCP);
                     break;
                 case 5:
                     System.out.println("Ingrese cant. plataformas");
                     int cantAnterior = estacion.getCantPlataformas();
                     int nuevaCant = in.nextInt();
                     estacion.setCantPlataformas(nuevaCant);
-                    try {
-                        lg.write("Modificado cant. plataformas de ESTACIÓN " + est + ":" + cantAnterior + "->" + nuevaCant);
-                        lg.flush();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    lg.escribir("Modificado cant. plataformas de ESTACIÓN " + est + ":" + cantAnterior + "->" + nuevaCant);
+
                     break;
                 case 6:
                     System.out.println("Ingrese cant. vías");
                     int cantViasAnt = estacion.getCantPlataformas();
                     int nuevaCantVias = in.nextInt();
                     estacion.setCantPlataformas(nuevaCantVias);
-                    try {
-                        lg.write("Modificado cant. plataformas de ESTACIÓN " + est + ":" + cantViasAnt + "->" + nuevaCantVias);
-                        lg.flush();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    lg.escribir("Modificado cant. plataformas de ESTACIÓN " + est + ":" + cantViasAnt + "->" + nuevaCantVias);
                     break;
             }
         }
     }
 
-    public static void cargarLineas(TrenesSA sist, Queue<StringTokenizer> tokensQueue, FileWriter lg) {
+    public static void cargarLineas(TrenesSA sist, Queue<StringTokenizer> tokensQueue, Log lg) {
         //Método que carga las líneas desde la carga inicial al sistema
         while (!tokensQueue.isEmpty()) {
             StringTokenizer linea = tokensQueue.poll();
@@ -494,24 +420,14 @@ public class TPFinal {
             //El recorrido está construido como una secuencia de strings (los id de las estaciones)
             //Si todas las estaciones existen, se carga
             if (sist.agregarLinea(listaRecorrido)) {
-                try {
-                    lg.write("Agregada LÍNEA: " + getStringLista(listaRecorrido) + "\n");
-                    lg.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lg.escribir("Agregada LÍNEA: " + getStringLista(listaRecorrido) + "\n");
             } else {
-                try {
-                    lg.write("Error al agregar LÍNEA: " + getStringLista(listaRecorrido) + "\n");
-                    lg.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lg.escribir("Error al agregar LÍNEA: " + getStringLista(listaRecorrido) + "\n");
             }
         }
     }
 
-    public static void cargarRieles(TrenesSA sist, LinkedList<StringTokenizer> tokens, FileWriter lg) {
+    public static void cargarRieles(TrenesSA sist, LinkedList<StringTokenizer> tokens, Log lg) {
         //Método para cargar rieles desde la carga inicial
         while (!tokens.isEmpty()) {
             cargarRiel(sist, tokens.getFirst(), lg);
@@ -519,7 +435,7 @@ public class TPFinal {
         }
     }
 
-    public static void cargarTrenes(TrenesSA sist, LinkedList<StringTokenizer> listaTrenes, FileWriter lg) {
+    public static void cargarTrenes(TrenesSA sist, LinkedList<StringTokenizer> listaTrenes, Log lg) {
         //Método para ingresar los objetos Tren en el sistema
         Random ran = new Random();
         int num;
@@ -541,34 +457,24 @@ public class TPFinal {
             }
 
             if (sist.agregarTren(idTren, propulsion, cantVagonesPasaj, cantVagonesCarga, linea)) {
-                try {
-                    lg.write("Agregado TREN:" + idTren + "\n"
-                            + "   propulsión: " + propulsion + "\n"
-                            + "   cant. vagones pasajeros :" + cantVagonesPasaj + "\n"
-                            + "   cant. vagones carga: " + cantVagonesCarga + "\n"
-                            + "   linea: " + linea + "\n");
-                    lg.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lg.escribir("Agregado TREN:" + idTren + "\n"
+                        + "   propulsión: " + propulsion + "\n"
+                        + "   cant. vagones pasajeros :" + cantVagonesPasaj + "\n"
+                        + "   cant. vagones carga: " + cantVagonesCarga + "\n"
+                        + "   linea: " + linea + "\n");
             } else {
-                try {
-                    lg.write("Error cargando TREN:" + idTren + "\n"
-                            + "   propulsión: " + propulsion + "\n"
-                            + "   cant. vagones pasajeros :" + cantVagonesPasaj + "\n"
-                            + "   cant. vagones carga: " + cantVagonesCarga + "\n"
-                            + "   linea: " + linea + "\n");
-                    lg.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lg.escribir("Error cargando TREN:" + idTren + "\n"
+                        + "   propulsión: " + propulsion + "\n"
+                        + "   cant. vagones pasajeros :" + cantVagonesPasaj + "\n"
+                        + "   cant. vagones carga: " + cantVagonesCarga + "\n"
+                        + "   linea: " + linea + "\n");
             }
 
             listaTrenes.remove(num);
         }
     }
 
-    public static void cargarRiel(TrenesSA sist, StringTokenizer ot, FileWriter l) {
+    public static void cargarRiel(TrenesSA sist, StringTokenizer ot, Log lg) {
         //Método para agregar un riel desde la carga inicial
         String rielToken;
         byte paso = 0;
@@ -592,23 +498,13 @@ public class TPFinal {
             }
         }
         if (!sist.agregarRiel(estacion1, estacion2, distancia)) {
-            try {
-                l.write("Error cargando RIEL:" + estacion1 + "-" + estacion2 + "-" + distancia + "\n");
-                l.flush();
-            } catch (IOException ex) {
-                Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            lg.escribir("Error cargando RIEL:" + estacion1 + "-" + estacion2 + "-" + distancia + "\n");
         } else {
-            try {
-                l.write("Agregado RIEL: " + estacion1 + "-" + estacion2 + " - " + distancia + "Km" + "\n");
-                l.flush();
-            } catch (IOException ex) {
-                Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            lg.escribir("Agregado RIEL: " + estacion1 + "-" + estacion2 + " - " + distancia + "Km" + "\n");
         }
     }
 
-    public static void cargarEstaciones(TrenesSA sist, LinkedList<StringTokenizer> listEst, FileWriter lg) {
+    public static void cargarEstaciones(TrenesSA sist, LinkedList<StringTokenizer> listEst, Log lg) {
         //Método para cargar estaciones de forma aleatoria desde la carga inicial a partir de la lista armada
         Random ran = new Random();
         int pos;
@@ -616,7 +512,7 @@ public class TPFinal {
             //Cargar aleatoriamente las estaciones sobre el diccionario
             pos = ran.nextInt(listEst.size());
             StringTokenizer estTok = listEst.get(pos);
-            
+
             //Descomponer estTok
             String nombre = estTok.nextToken().toUpperCase();
             String calle = estTok.nextToken().toUpperCase();
@@ -628,38 +524,28 @@ public class TPFinal {
             if (sist.agregarEstacion(nombre, calle, numCalle, ciudad, cp, cantVias, cantPlataformas)) {
                 //Agregar al grafo de rieles y escribir en el archivo .log
                 sist.getRieles().insertarVertice(nombre);
-                try {
-                    lg.write("Agregado ESTACIÓN: " + nombre + "\n"
-                            + "   calle: " + calle + "\n"
-                            + "   Nº calle: " + numCalle + "\n"
-                            + "   ciudad: " + ciudad + "\n"
-                            + "   cód. postal: " + cp + "\n"
-                            + "   cantidad de vías: " + cantVias + "\n"
-                            + "   cantidad de plataformas:" + cantPlataformas + "\n");
-                    lg.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lg.escribir("Agregado ESTACIÓN: " + nombre + "\n"
+                        + "   calle: " + calle + "\n"
+                        + "   Nº calle: " + numCalle + "\n"
+                        + "   ciudad: " + ciudad + "\n"
+                        + "   cód. postal: " + cp + "\n"
+                        + "   cantidad de vías: " + cantVias + "\n"
+                        + "   cantidad de plataformas:" + cantPlataformas + "\n");
             } else {
-                try {
-                    lg.write("Error agregado ESTACIÓN: " + nombre + "\n"
-                            + "   calle: " + calle + "\n"
-                            + "   Nº calle: " + numCalle + "\n"
-                            + "   ciudad: " + ciudad + "\n"
-                            + "   cód. postal: " + cp + "\n"
-                            + "   cantidad de vías: " + cantVias + "\n"
-                            + "   cantidad de plataformas:" + cantPlataformas + "\n");
-                    lg.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lg.escribir("Error agregado ESTACIÓN: " + nombre + "\n"
+                        + "   calle: " + calle + "\n"
+                        + "   Nº calle: " + numCalle + "\n"
+                        + "   ciudad: " + ciudad + "\n"
+                        + "   cód. postal: " + cp + "\n"
+                        + "   cantidad de vías: " + cantVias + "\n"
+                        + "   cantidad de plataformas:" + cantPlataformas + "\n");
             }
             //            
             listEst.remove(pos);
         }
     }
 
-    public static void eliminarInformacion(Scanner input, TrenesSA sistema, FileWriter logs) {
+    public static void eliminarInformacion(Scanner input, TrenesSA sistema, Log logs) {
         //Método que muestra el submenú para eliminar información
         boolean exito;
 
@@ -675,26 +561,22 @@ public class TPFinal {
             case 1:
                 String[] estacion = ingresarEstaciones(1, input, sistema);
                 if (sistema.eliminarEstacion(estacion[0])) {
-                    try {
-                        System.out.println("Estación eliminada");
-                        logs.write("Eliminado ESTACIÓN: " + estacion[0] + "\n");
-                        LinkedList<String> lineasBorradas = sistema.verificarEstacionBorradaYLineas(estacion[0]);
-                        int longitud = lineasBorradas.size();
-                        //Eliminar las líneas que contenián la estación eliminada (deben redefinirse)
-                        for (int i = 0; i < longitud; i++) {
-                            String nombreLinea = lineasBorradas.get(i);
-                            logs.write("    Eliminado LINEA: " + nombreLinea + "\n");
-                            //Modificar los trenes con la línea borrada
-                            LinkedList<Integer> listaTrenesMod = sistema.verificarLineaBorradaYTrenes(nombreLinea);
-                            int longitud2 = listaTrenesMod.size();
-                            for (int j = 0; j < longitud2; j++) {
-                                logs.write("    Modificado línea de TREN " + listaTrenesMod.get(j) + ": no asignado" + "\n");
-                            }
+                    System.out.println("Estación eliminada");
+                    logs.escribir("Eliminado ESTACIÓN: " + estacion[0] + "\n");
+                    LinkedList<String> lineasBorradas = sistema.verificarEstacionBorradaYLineas(estacion[0]);
+                    int longitud = lineasBorradas.size();
+                    //Eliminar las líneas que contenián la estación eliminada (deben redefinirse)
+                    for (int i = 0; i < longitud; i++) {
+                        String nombreLinea = lineasBorradas.get(i);
+                        logs.escribir("    Eliminado LINEA: " + nombreLinea + "\n");
+                        //Modificar los trenes con la línea borrada
+                        LinkedList<Integer> listaTrenesMod = sistema.verificarLineaBorradaYTrenes(nombreLinea);
+                        int longitud2 = listaTrenesMod.size();
+                        for (int j = 0; j < longitud2; j++) {
+                            logs.escribir("    Modificado línea de TREN " + listaTrenesMod.get(j) + ": no asignado" + "\n");
                         }
-                        logs.flush();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
                 } else {
                     System.out.println("Error eliminando estación");
                 }
@@ -711,20 +593,15 @@ public class TPFinal {
                 }
                 //Registrar en el archivo .log
                 if (exito) {
-                    try {
-                        System.out.println("Línea eliminada");
-                        logs.write("Eliminado LÍNEA " + nombreLinea + "\n");
-                        //Modificar los trenes que tenían asignado la línea borrada
-                        LinkedList listaTrenesMod = sistema.verificarLineaBorradaYTrenes(nombreLinea);
-                        int longitud = listaTrenesMod.size();
-                        int id;
-                        for (int i = 0; i < longitud; i++) {
-                            id = (int) listaTrenesMod.get(i);
-                            logs.write("    Modificado línea de TREN " + id + ": no asignado" + "\n");
-                        }
-                        logs.flush();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("Línea eliminada");
+                    logs.escribir("Eliminado LÍNEA " + nombreLinea + "\n");
+                    //Modificar los trenes que tenían asignado la línea borrada
+                    LinkedList listaTrenesMod = sistema.verificarLineaBorradaYTrenes(nombreLinea);
+                    int longitud = listaTrenesMod.size();
+                    int id;
+                    for (int i = 0; i < longitud; i++) {
+                        id = (int) listaTrenesMod.get(i);
+                        logs.escribir("    Modificado línea de TREN " + id + ": no asignado" + "\n");
                     }
                 } else {
                     System.out.println("Error eliminando línea");
@@ -742,13 +619,9 @@ public class TPFinal {
                 }
                 //Registrar en el archivo .log
                 if (exito) {
-                    try {
-                        System.out.println("Tren Eliminado");
-                        logs.write("Eliminado TREN: " + idTren);
-                        logs.flush();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    System.out.println("Tren Eliminado");
+                    logs.escribir("Eliminado TREN: " + idTren);
+
                 } else {
                     System.out.println("Error eliminando tren");
                 }
@@ -759,23 +632,18 @@ public class TPFinal {
                 if (estaciones != null) {
                     if (sistema.eliminarRiel(estaciones[0], estaciones[1])) {
                         System.out.println("Riel eliminado");
-                        try {
-                            logs.write("Eliminado RIEL: " + estaciones[0] + " <-> " + estaciones[1] + "\n");
-                            //Verificar si existen líneas con estaciones conectadas
-                            LinkedList lineasBorradas = sistema.verificarLineaRiel(estaciones[0], estaciones[1]);
-                            int longitud = lineasBorradas.size();
-                            for (int i = 0; i < longitud; i++) {
-                                String lineaB = (String) lineasBorradas.get(i);
-                                logs.write("    Eliminado LINEA " + lineaB + "\n");
-                                LinkedList<Integer> trenesModificados = sistema.verificarLineaBorradaYTrenes(lineaB);
-                                int longitud2 = trenesModificados.size();
-                                for (int j = 0; j < longitud2; j++) {
-                                    logs.write("    Modificado línea de TREN " + trenesModificados.get(j) + ": no asignado" + "\n");
-                                }
+                        logs.escribir("Eliminado RIEL: " + estaciones[0] + " <-> " + estaciones[1] + "\n");
+                        //Verificar si existen líneas con estaciones conectadas
+                        LinkedList lineasBorradas = sistema.verificarLineaRiel(estaciones[0], estaciones[1]);
+                        int longitud = lineasBorradas.size();
+                        for (int i = 0; i < longitud; i++) {
+                            String lineaB = (String) lineasBorradas.get(i);
+                            logs.escribir("    Eliminado LINEA " + lineaB + "\n");
+                            LinkedList<Integer> trenesModificados = sistema.verificarLineaBorradaYTrenes(lineaB);
+                            int longitud2 = trenesModificados.size();
+                            for (int j = 0; j < longitud2; j++) {
+                                logs.escribir("    Modificado línea de TREN " + trenesModificados.get(j) + ": no asignado" + "\n");
                             }
-                            logs.flush();
-                        } catch (IOException ex) {
-                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
                         System.out.println("Error. Las estaciones no están directamente unidas.");
@@ -786,7 +654,7 @@ public class TPFinal {
 
     }
 
-    public static void mostrarSubMenuAgregar(Scanner input, TrenesSA sist, FileWriter logs) {
+    public static void mostrarSubMenuAgregar(Scanner input, TrenesSA sist, Log logs) {
         //Método que muestra el submenú para agregar información
         System.out.println("-------------------------------");
         System.out.println("Eliga qué quiere agregar:");
@@ -838,7 +706,7 @@ public class TPFinal {
         return retornar;
     }
 
-    public static void agregarRiel(Scanner in, TrenesSA sistema, FileWriter lg) {
+    public static void agregarRiel(Scanner in, TrenesSA sistema, Log lg) {
         //Método para agregar rieles a través de la terminal
         System.out.println("Ingrese el nombre de una estación o -1 para cancelar");
         String estacion1 = in.next().toUpperCase();
@@ -862,12 +730,7 @@ public class TPFinal {
                         distancia = in.nextInt();
                     }
                     if (sistema.agregarRiel(estacion1, estacion2, distancia)) {
-                        try {
-                            lg.write("Agregado RIEL: " + estacion1 + " <-> " + estacion2 + " - " + distancia + " km");
-                            lg.flush();
-                        } catch (IOException ex) {
-                            Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        lg.escribir("Agregado RIEL: " + estacion1 + " <-> " + estacion2 + " - " + distancia + " km");
                     } else {
                         System.out.println("Error cargando riel");
                     }
@@ -878,7 +741,7 @@ public class TPFinal {
         }
     }
 
-    public static void agregarTren(Scanner in, TrenesSA sistema, FileWriter lg) {
+    public static void agregarTren(Scanner in, TrenesSA sistema, Log lg) {
         //Método para agregar los trenes desde el menú interactivo
         System.out.println("Ingrese idTren o ingrese -1 para salir");
         int id = in.nextInt();
@@ -923,24 +786,20 @@ public class TPFinal {
                 }
                 //Agregar los datos al sistema
                 if (sistema.agregarTren(id, propulsion, cantVagonesP, cantVagonesC, linea)) {
-                    try {
-                        //Registrar en el archivo .log en caso de éxito
-                        lg.write("Agregado TREN:\n"
-                                + "   Id: " + id + "\n"
-                                + "   Propulsión: " + propulsion + "\n"
-                                + "   Cantidad vagones pasajeros: " + cantVagonesP + "\n"
-                                + "   Cantidad vagones carga: " + cantVagonesC + "\n"
-                                + "   Línea: " + linea);
-                        lg.flush();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    //Registrar en el archivo .log en caso de éxito
+                    lg.escribir("Agregado TREN:\n"
+                            + "   Id: " + id + "\n"
+                            + "   Propulsión: " + propulsion + "\n"
+                            + "   Cantidad vagones pasajeros: " + cantVagonesP + "\n"
+                            + "   Cantidad vagones carga: " + cantVagonesC + "\n"
+                            + "   Línea: " + linea);
+
                 }
             }
         }
     }
 
-    public static void agregarLinea(Scanner in, TrenesSA sistema, FileWriter lg) {
+    public static void agregarLinea(Scanner in, TrenesSA sistema, Log lg) {
         //Método para agregar una línea desde el menú interactivo
         //El nombre del a línea es la primera estación del recorrido
         boolean existeEst = false;
@@ -984,19 +843,10 @@ public class TPFinal {
             }
             //Agregar línea y escribir en el archivo log           
             if (sistema.agregarLinea(recorrido)) {
-                try {
-                    lg.write("agregado LíNEA: " + lineasString + "\n");
-                    lg.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lg.escribir("agregado LíNEA: " + lineasString + "\n");
+
             } else {
-                try {
-                    lg.write("Error agregando LíNEA: " + lineasString + "\n");
-                    lg.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lg.escribir("Error agregando LíNEA: " + lineasString + "\n");
             }
         }
     }
@@ -1233,7 +1083,7 @@ public class TPFinal {
         System.out.println("---------------");
     }
 
-    public static void agregarEstacion(Scanner in, TrenesSA elSistema, FileWriter lg) {
+    public static void agregarEstacion(Scanner in, TrenesSA elSistema, Log lg) {
         //Método para agregar una estación al sistema
         //Atributos para crear la estación
         String id;
@@ -1270,19 +1120,15 @@ public class TPFinal {
 
             boolean exito = elSistema.agregarEstacion(id, calle, numCalle, ciudad, cp, cantVias, cantPlataformas);
             if (exito) {
-                try {
-                    lg.write("Agregado ESTACIÓN:\n"
-                            + "   nombre: " + id + "\n"
-                            + "   calle: " + calle + "\n"
-                            + "   Nº calle: " + numCalle + "\n"
-                            + "   ciudad: " + ciudad + "\n"
-                            + "   cód. postal: " + cp + "\n"
-                            + "   cantidad de vías: " + cantVias + "\n"
-                            + "   cantidad de plataformas:" + cantPlataformas + "\n");
-                    lg.flush();
-                } catch (IOException ex) {
-                    Logger.getLogger(TPFinal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lg.escribir("Agregado ESTACIÓN:\n"
+                        + "   nombre: " + id + "\n"
+                        + "   calle: " + calle + "\n"
+                        + "   Nº calle: " + numCalle + "\n"
+                        + "   ciudad: " + ciudad + "\n"
+                        + "   cód. postal: " + cp + "\n"
+                        + "   cantidad de vías: " + cantVias + "\n"
+                        + "   cantidad de plataformas:" + cantPlataformas + "\n");
+
             } else {
                 System.out.println("Error cargando estación");
             }

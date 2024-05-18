@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package TPFinal;
+package TPFinal.Grafo;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -402,7 +402,7 @@ public class Grafo {
     }
 
     public LinkedList caminoMasCortoPorCantNodos(Object origen, Object destino) {
-        //verifica si ambos vértices existen
+       /* //verifica si ambos vértices existen
         NodoVert auxO = null;
         NodoVert auxD = null;
         NodoVert aux = this.inicio;
@@ -422,11 +422,11 @@ public class Grafo {
             //si ambos vertices existen, se busca el camino más corto
             //si no existe camino retorna null
             lis = caminoMasCortoPorCantNodos2(auxO, auxD);
-        }
-        return lis;
+        }*/
+        return new LinkedList();
     }
 
-    private LinkedList caminoMasCortoPorCantNodos2(NodoVert origen, NodoVert destino) {
+    /*private LinkedList caminoMasCortoPorCantNodos2(NodoVert origen, NodoVert destino) {
         //Los recorridos se van almacenando en el árbol, como no se vuelven a visitar nodos ya visitados y el algoritmo para cuando se encuentra
         //destino entonces los elementos sólo existen una sola vez en el árbol genérico
         ArbolGen recorridos = new ArbolGen();
@@ -478,7 +478,7 @@ public class Grafo {
             }
         }
         return exito;
-    }
+    }*/
 
     /*public LinkedList caminoMasCortoPorCantNodos(Object origen, Object destino) {
         //Método que encuentra el camino entre dos nodos con la menor cantidad de nodos posibles        
