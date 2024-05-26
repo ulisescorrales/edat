@@ -89,7 +89,7 @@ public class TPFinal {
 
         /*Primero se cargaron las estaciones y trenes en una lista y luego aquí se cargan por orden aleatorio en
         el diccionario implementado con árbol AVL */
-        cargarEstaciones(sistema, estacionesList, logs);
+        cargarEstaciones(sistema, estacionesList, logs,false);
         cargarLineas(sistema, lineasList, logs);
         cargarTrenes(sistema, trenesList, logs);
         cargarRieles(sistema, rielesList, logs);
@@ -505,14 +505,22 @@ public class TPFinal {
         }
     }
 
-    public static void cargarEstaciones(TrenesSA sist, LinkedList<StringTokenizer> listEst, Log lg) {
+    public static void cargarEstaciones(TrenesSA sist, LinkedList<StringTokenizer> listEst, Log lg,boolean random) {
         //Método para cargar estaciones de forma aleatoria desde la carga inicial a partir de la lista armada
+        //La variable random es para hacer que los elementos se carguen en orden aleatorio o no
         Random ran = new Random();
         int pos;
         while (!listEst.isEmpty()) {
+            StringTokenizer estTok;
             //Cargar aleatoriamente las estaciones sobre el diccionario
-            pos = ran.nextInt(listEst.size());
-            StringTokenizer estTok = listEst.get(pos);
+            if(random){
+                pos = ran.nextInt(listEst.size());
+                estTok = listEst.get(pos);
+                listEst.remove(pos);
+            }else{
+                estTok=listEst.getFirst();
+                listEst.removeFirst();
+            }                     
 
             //Descomponer estTok
             String nombre = estTok.nextToken().toUpperCase();
@@ -540,9 +548,7 @@ public class TPFinal {
                         + "   cód. postal: " + cp + "\n"
                         + "   cantidad de vías: " + cantVias + "\n"
                         + "   cantidad de plataformas:" + cantPlataformas + "\n");
-            }
-            //            
-            listEst.remove(pos);
+            }                        
         }
     }
 
