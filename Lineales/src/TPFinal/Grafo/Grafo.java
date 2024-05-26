@@ -400,167 +400,8 @@ public class Grafo {
         }
         return exito;
     }
+    
 
-    public LinkedList caminoMasCortoPorCantNodos(Object origen, Object destino) {
-       /* //verifica si ambos vértices existen
-        NodoVert auxO = null;
-        NodoVert auxD = null;
-        NodoVert aux = this.inicio;
-        LinkedList lis = new LinkedList();
-
-        //Comprobar que ambos nodos existan
-        while ((auxO == null || auxD == null) && aux != null) {
-            if (aux.getElem().equals(origen)) {
-                auxO = aux;
-            }
-            if (aux.getElem().equals(destino)) {
-                auxD = aux;
-            }
-            aux = aux.getSigVertice();
-        }
-        if (auxO != null && auxD != null) {
-            //si ambos vertices existen, se busca el camino más corto
-            //si no existe camino retorna null
-            lis = caminoMasCortoPorCantNodos2(auxO, auxD);
-        }*/
-        return new LinkedList();
-    }
-
-    /*private LinkedList caminoMasCortoPorCantNodos2(NodoVert origen, NodoVert destino) {
-        //Los recorridos se van almacenando en el árbol, como no se vuelven a visitar nodos ya visitados y el algoritmo para cuando se encuentra
-        //destino entonces los elementos sólo existen una sola vez en el árbol genérico
-        ArbolGen recorridos = new ArbolGen();
-        LinkedList caminoMasCorto = new LinkedList();
-        LinkedList visitados = new LinkedList();
-        boolean exito;
-
-        //La raíz del ábol es el origen
-        recorridos.insertar(origen.getElem(), null);
-        //Si desde origen no se llega a destino es porque no están unidos por ningún arco, no es necesario seguir recorriendo nodos inalcanzables        
-        exito = caminoMasCortoPorCantNodos3(origen, visitados, recorridos, destino);
-
-        if (exito) {
-            //Recuperar el recorrido a partir del árbol
-            caminoMasCorto = recorridos.ancestros(destino.getElem());
-            caminoMasCorto.add(destino.getElem());
-        }
-
-        return caminoMasCorto;
-    }
-
-    private boolean caminoMasCortoPorCantNodos3(NodoVert vertice, LinkedList vis, ArbolGen arbol, NodoVert dest) {
-        //Método auxiliar para caminoMasCortoPorCantNodos2
-        //Inicia el recorrido en anchura hasta llegar al destino
-        Queue cola = new LinkedList();
-        vis.addFirst(vertice);
-        cola.add(vertice);
-        NodoVert u;
-        NodoAdy auxAdy;
-        NodoVert ultimoPadre;
-        boolean exito = false;
-        while (!cola.isEmpty() && !exito) {
-            u = (NodoVert) cola.poll();
-            auxAdy = u.getPrimerAdy();
-            ultimoPadre = u;
-            while (auxAdy != null && !exito) {
-                //Si el adyacente no está en visitados
-                if (vis.indexOf(auxAdy.getVertice()) == -1) {
-                    vis.add(auxAdy.getVertice());
-                    cola.add(auxAdy.getVertice());
-
-                    arbol.insertar(auxAdy.getVertice().getElem(), ultimoPadre.getElem());                    
-                    if (auxAdy.getVertice().getElem().equals(dest.getElem())) {
-                        //Encuentra el destino y frena el bucle                        
-                        exito = true;
-                    }
-                }
-                auxAdy = auxAdy.getSigAdyacente();
-            }
-        }
-        return exito;
-    }*/
-
-    /*public LinkedList caminoMasCortoPorCantNodos(Object origen, Object destino) {
-        //Método que encuentra el camino entre dos nodos con la menor cantidad de nodos posibles        
-        NodoVert auxO = null;
-        NodoVert auxD = null;
-        NodoVert aux = this.inicio;
-        LinkedList lis = new LinkedList();
-
-        //Comprobar que ambos nodos existan
-        while ((auxO == null || auxD == null) && aux != null) {
-            if (aux.getElem().equals(origen)) {
-                auxO = aux;
-            }
-            if (aux.getElem().equals(destino)) {
-                auxD = aux;
-            }
-            aux = aux.getSigVertice();
-        }
-        if (auxO != null && auxD != null) {
-            //si ambos vertices existen, se busca el camino más corto
-            //
-            lis = caminoMasCorto(auxO, destino, lis);
-            lis.addFirst(origen);
-        }
-        return lis;
-    }
-
-    private LinkedList caminoMasCorto(NodoVert or, Object dest, LinkedList recorrido) {
-        //Método auxiliar para caminoMasCortoPorCantNodos
-        //Usa el recorrido en anchura hasta encontrar el destino para luego construir la lista
-        LinkedList auxCola = new LinkedList();
-        LinkedList saltos = new LinkedList();
-        int posCola = 0;
-        int contSalto = 0;
-        int puntero;
-
-        int posSalto = 1;//Para recuperar el recorrido anterior
-        saltos.addFirst(1);
-
-        boolean encontrado = false;
-        //
-        auxCola.addFirst(or);
-        int longCola = 1;
-        //
-        NodoVert auxV;
-        NodoAdy auxA;
-
-        while (posCola <= longCola && !encontrado) {
-            auxV = (NodoVert) auxCola.get(posCola);
-            //Colocar en la cola
-            auxA = auxV.getPrimerAdy();
-            while (auxA != null && !encontrado) {
-                posSalto++;
-                if (auxCola.indexOf(auxA.getVertice()) < 0) {//Si el nodo no fue visitado anteriormente
-                    if (auxA.getVertice().getElem().equals(dest)) {//Si se encuentra el destino
-                        //insertar el destino en la lista a retornar (no se inserta en auxCola
-                        recorrido.addFirst(auxA.getVertice().getElem());
-                        encontrado = true;
-                    } else {
-                        contSalto++;
-                        //
-                        longCola++;
-                        auxCola.add(auxA.getVertice());
-                        //
-                        saltos.add(contSalto);
-                    }
-                }
-                auxA = auxA.getSigAdyacente();
-            }
-            posCola++;
-            contSalto--;
-        }
-        //Crear la lista de recorrido más corto según la lista de saltos
-        puntero = posCola - 1;
-        NodoVert auxRecuperar;
-        while (puntero != 0) {
-            auxRecuperar = (NodoVert) auxCola.get(puntero);
-            recorrido.addFirst(auxRecuperar.getElem());
-            puntero = puntero - (int) saltos.get(puntero);
-        }
-        return recorrido;
-    }*/
     public LinkedList listarEnProfundidad() {
         //Método para listar en profundidad con el algoritmo definido para grafo
         LinkedList visitados = new LinkedList();
@@ -627,77 +468,71 @@ public class Grafo {
 
     }
 
-    @Override
-    public Grafo clone() {
-        //Método para clonar el grafo retornando un nuevo objeto
-        Grafo nuevoGrafo = new Grafo();
-        NodoVert vertOrigen = this.inicio;
-        NodoVert vertNuevo;
-        NodoAdy adyOrigen;
-        NodoAdy adyNuevo;
-        int pos;
+    
+    public LinkedList caminoMasCortoPorCantNodos(Object origen, Object destino) {
+        //verifica si ambos vértices existen
+        NodoVert auxO = null;
+        NodoVert auxD = null;
+        NodoVert aux = this.inicio;
+        LinkedList<NodoVert> caminoMasCorto = new LinkedList();
+        LinkedList<Object> retornar = new LinkedList();
 
-        //Clonar el primer vértice
-        nuevoGrafo.inicio = new NodoVert(vertOrigen.getElem(), null, null);
-        vertNuevo = nuevoGrafo.inicio;
-        vertOrigen = vertOrigen.getSigVertice();
-        //Clonar los siguientes vértices
-        while (vertOrigen != null) {
-            vertNuevo.setSigVertice(new NodoVert(vertOrigen.getElem(), null, null));
-            vertNuevo = vertNuevo.getSigVertice();
-            vertOrigen = vertOrigen.getSigVertice();
-        }
-        //Clonar los nodos adyacentes, como no se puede clonar las direcciones a memoria, se hace referencia a su posicion en la lista
-        vertOrigen = this.inicio;
-        vertNuevo = nuevoGrafo.inicio;
-
-        while (vertOrigen != null) {
-            //primer adyacente
-            adyOrigen = vertOrigen.getPrimerAdy();
-            pos = posLista(adyOrigen.getVertice());
-            vertNuevo.setPrimerAdy(new NodoAdy(buscarPos(pos, nuevoGrafo), null, adyOrigen.getEtiqueta()));
-            //punteros sobre el primer adyacente
-            adyNuevo = vertNuevo.getPrimerAdy();
-            adyOrigen = adyOrigen.getSigAdyacente();
-            //Siguientes adyacentes
-            while (adyOrigen != null) {
-                pos = posLista(adyOrigen.getVertice());
-                adyNuevo.setSigAdyacente(new NodoAdy(buscarPos(pos, nuevoGrafo), null, adyOrigen.getEtiqueta()));
-                adyNuevo = adyNuevo.getSigAdyacente();
-                adyOrigen = adyOrigen.getSigAdyacente();
+        //Comprobar que ambos nodos existan
+        while ((auxO == null || auxD == null) && aux != null) {
+            if (aux.getElem().equals(origen)) {
+                auxO = aux;
             }
-        }
-        return nuevoGrafo;
-    }
-
-    private int posLista(NodoVert buscado) {
-        //Método auxiliar para clone() ,retorna el índice del nodo buscado en la lista de adyacentes
-        int pos = 0;
-        NodoVert vertice = this.inicio;
-        boolean encontrado = false;
-
-        while (vertice != null && !encontrado) {
-            pos++;
-            if (buscado == vertice) {
-                encontrado = true;
-
-            } else {
-                vertice = vertice.getSigVertice();
+            if (aux.getElem().equals(destino)) {
+                auxD = aux;
             }
-        }
-        return pos;
-    }
-
-    private NodoVert buscarPos(int pos, Grafo g) {
-        //Método auxiliar para clone() donde retorna el vértice de la lista de vértices que se encuentra en la posición indicada
-        NodoVert aux = g.inicio;
-        int i = 0;
-
-        while (aux != null && i <= pos) {
-            i++;
             aux = aux.getSigVertice();
         }
-        return aux;
+        if (auxO != null && auxD != null) {
+            //si ambos vertices existen, se busca el camino más corto
+            //si no existe camino retorna null            
+            LinkedList visitados = new LinkedList();
+            LinkedList listaActual = new LinkedList();
+            int tamanio = getPosibleCaminoMasCortoPorCantNodos(auxO, auxD, listaActual, visitados, caminoMasCorto, 0, -1)+1;
+
+            //Por cada NodoVert, conseguir su elemento y colocarlo en la lista a retornar            
+            if (tamanio > 0) {
+                for (int i = 0; i < tamanio; i++) {
+                    retornar.add(caminoMasCorto.get(i).getElem());
+                }
+                retornar.add(destino);
+            }
+        }
+
+        return retornar;
+    }
+
+    private int getPosibleCaminoMasCortoPorCantNodos(NodoVert n, NodoVert dest, LinkedList<NodoVert> listaActual, LinkedList visitados, LinkedList caminoMasCortoTemp, int cantNodosAcumulados, int cantNodosMenor) {
+        /*Método auxiliar para la recursión de getCaminoMasCortoPorCantNodos. Retorna la mínima cantidad de nodos encontrado
+        durante la recursión*/
+        if (n == dest) {
+            //Aquí se clona solo cuando se llega a destino y termina la llamada recursiva                        
+            caminoMasCortoTemp.clear();
+            caminoMasCortoTemp.addAll((LinkedList) listaActual.clone());
+            //Retorna la cantidad de nodos antes de llegar al destino            
+            cantNodosMenor = cantNodosAcumulados - 1; 
+            System.out.println(caminoMasCortoTemp);
+        } else if (cantNodosAcumulados < cantNodosMenor || cantNodosMenor == -1) {
+            //visitados.add(n);            
+            listaActual.add(n);
+            System.out.println(n.getElem());
+            //Recorrer los nodos adyacentes
+            NodoAdy ady = n.getPrimerAdy();
+            while (ady != null) {
+                NodoVert auxVert = ady.getVertice();
+                //Si el nodo vértice del adyacente no fue visitado
+                if (listaActual.indexOf(auxVert) == -1) {
+                    cantNodosMenor = getPosibleCaminoMasCortoPorCantNodos(auxVert, dest, listaActual, visitados, caminoMasCortoTemp, cantNodosAcumulados + 1, cantNodosMenor);
+                }
+                ady = ady.getSigAdyacente();
+            }
+            listaActual.removeLast();
+        }
+        return cantNodosMenor;
     }
 
     public LinkedList<NodoVert> caminoMasCortoPorEtiqueta(Object origen, Object destino) {
@@ -744,38 +579,6 @@ public class Grafo {
             retornar.add(caminoMasCorto.get(i).getVertice().getElem());
         }
 
-        return retornar;
-    }
-
-    public String toString() {
-        //Método para debugging
-        //Formato:
-        //Vertice1---> Adyacente11 (etiqueta11) - Adyacente12 (etiqueta12)...
-        //Vertice2---> Adyacente21 (etiqueta21) - Adyacente22 (etiqueta22)...
-        //...
-        String cadena = "";
-        NodoVert auxV = this.inicio;
-        NodoAdy auxA;
-
-        while (auxV != null) {
-            cadena = cadena + auxV.getElem() + "--->";
-
-            auxA = auxV.getPrimerAdy();
-            if (auxA != null) {
-                cadena += auxA.getVertice().getElem() + " (" + auxA.getEtiqueta() + ")" + toString(auxA.getSigAdyacente());
-            }
-            cadena = cadena + "\n";
-            auxV = auxV.getSigVertice();
-        }
-        return cadena;
-    }
-
-    private String toString(NodoAdy a) {
-        //Método auxiliar para toString() para la llamada recursiva
-        String retornar = "";
-        if (a != null) {
-            retornar = "-" + a.getVertice().getElem() + " (" + a.getEtiqueta() + ")" + toString(a.getSigAdyacente());
-        }
         return retornar;
     }
 
@@ -870,8 +673,8 @@ public class Grafo {
     }
 
     private void getPosiblesCaminos(NodoVert n, NodoVert dest, LinkedList<NodoAdy> listaActual, LinkedList visitados, LinkedList listaDeListas) {
-        /*Método auxiliar para la recursión de getPosiblesCaminos. En el camino no se pueden repetir nodos
-        y si el camino no conduce al nodo buscado, en ningún momento se incorpora a listaDeListas*/
+        //Método auxiliar para la recursión de getPosiblesCaminos. En el camino no se pueden repetir nodos
+        //y si el camino no conduce al nodo buscado, en ningún momento se incorpora a listaDeListas*/
         if (n == dest) {
             //Aquí se clona solo cuando se llega a destino y termina la llamada recursiva
             listaDeListas.addFirst(listaActual.clone());
@@ -1022,4 +825,108 @@ public class Grafo {
         return existeCaminoConMaxKm;
     }
 
+    public String toString() {
+        //Método para debugging
+        //Formato:
+        //Vertice1---> Adyacente11 (etiqueta11) - Adyacente12 (etiqueta12)...
+        //Vertice2---> Adyacente21 (etiqueta21) - Adyacente22 (etiqueta22)...
+        //...
+        String cadena = "";
+        NodoVert auxV = this.inicio;
+        NodoAdy auxA;
+
+        while (auxV != null) {
+            cadena = cadena + auxV.getElem() + "--->";
+
+            auxA = auxV.getPrimerAdy();
+            if (auxA != null) {
+                cadena += auxA.getVertice().getElem() + " (" + auxA.getEtiqueta() + ")" + toString(auxA.getSigAdyacente());
+            }
+            cadena = cadena + "\n";
+            auxV = auxV.getSigVertice();
+        }
+        return cadena;
+    }
+
+    @Override
+    public Grafo clone() {
+        //Método para clonar el grafo retornando un nuevo objeto
+        Grafo nuevoGrafo = new Grafo();
+        NodoVert vertOrigen = this.inicio;
+        NodoVert vertNuevo;
+        NodoAdy adyOrigen;
+        NodoAdy adyNuevo;
+        int pos;
+
+        //Clonar el primer vértice
+        nuevoGrafo.inicio = new NodoVert(vertOrigen.getElem(), null, null);
+        vertNuevo = nuevoGrafo.inicio;
+        vertOrigen = vertOrigen.getSigVertice();
+        //Clonar los siguientes vértices
+        while (vertOrigen != null) {
+            vertNuevo.setSigVertice(new NodoVert(vertOrigen.getElem(), null, null));
+            vertNuevo = vertNuevo.getSigVertice();
+            vertOrigen = vertOrigen.getSigVertice();
+        }
+        //Clonar los nodos adyacentes, como no se puede clonar las direcciones a memoria, se hace referencia a su posicion en la lista
+        vertOrigen = this.inicio;
+        vertNuevo = nuevoGrafo.inicio;
+
+        while (vertOrigen != null) {
+            //primer adyacente
+            adyOrigen = vertOrigen.getPrimerAdy();
+            pos = posLista(adyOrigen.getVertice());
+            vertNuevo.setPrimerAdy(new NodoAdy(buscarPos(pos, nuevoGrafo), null, adyOrigen.getEtiqueta()));
+            //punteros sobre el primer adyacente
+            adyNuevo = vertNuevo.getPrimerAdy();
+            adyOrigen = adyOrigen.getSigAdyacente();
+            //Siguientes adyacentes
+            while (adyOrigen != null) {
+                pos = posLista(adyOrigen.getVertice());
+                adyNuevo.setSigAdyacente(new NodoAdy(buscarPos(pos, nuevoGrafo), null, adyOrigen.getEtiqueta()));
+                adyNuevo = adyNuevo.getSigAdyacente();
+                adyOrigen = adyOrigen.getSigAdyacente();
+            }
+        }
+        return nuevoGrafo;
+    }
+
+    private int posLista(NodoVert buscado) {
+        //Método auxiliar para clone() ,retorna el índice del nodo buscado en la lista de adyacentes
+        int pos = 0;
+        NodoVert vertice = this.inicio;
+        boolean encontrado = false;
+
+        while (vertice != null && !encontrado) {
+            pos++;
+            if (buscado == vertice) {
+                encontrado = true;
+
+            } else {
+                vertice = vertice.getSigVertice();
+            }
+        }
+        return pos;
+    }
+
+    private NodoVert buscarPos(int pos, Grafo g) {
+        //Método auxiliar para clone() donde retorna el vértice de la lista de vértices que se encuentra en la posición indicada
+        NodoVert aux = g.inicio;
+        int i = 0;
+
+        while (aux != null && i <= pos) {
+            i++;
+            aux = aux.getSigVertice();
+        }
+        return aux;
+    }
+    
+    private String toString(NodoAdy a) {
+        //Método auxiliar para toString() para la llamada recursiva
+        String retornar = "";
+        if (a != null) {
+            retornar = "-" + a.getVertice().getElem() + " (" + a.getEtiqueta() + ")" + toString(a.getSigAdyacente());
+        }
+        return retornar;
+    }
 }

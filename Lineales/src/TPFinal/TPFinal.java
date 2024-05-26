@@ -28,7 +28,7 @@ public class TPFinal {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws  IOException {
         Scanner input = new Scanner(System.in);
         input.useDelimiter("\n");
 
@@ -95,7 +95,7 @@ public class TPFinal {
         cargarRieles(sistema, rielesList, logs);
 
         logs.escribir("---FIN CARGA INICIAL---\n");
-        //Interactuar con el menú hasta salir                          
+        //Interactuar con el menú hasta salir                                  
         mostrarMenuPrincipal(input, sistema, logs);
     }
 

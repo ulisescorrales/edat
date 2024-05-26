@@ -17,8 +17,12 @@ public class Log {
     //Clase que escribe sobre un archivo .log
     private final String path;
 
-    public Log(String path){
+    public Log(String path) throws IOException{
         this.path = path;
+        FileWriter file = new FileWriter(this.path);
+        //Vaciar el archivo log
+        file.write("");
+        file.close();
     }        
     
     

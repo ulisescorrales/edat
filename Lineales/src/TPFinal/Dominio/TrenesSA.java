@@ -79,8 +79,8 @@ public class TrenesSA {
         return this.estaciones.listarRango(subcadena,subcadena+" ZZZZZZ");
     }
 
-    public LinkedList getCaminoMasCortoPorEstaciones(String estacion1, String estacion2) {
-        return this.rieles.caminoMasCortoPorCantNodos(estacion1, estacion2);
+    public LinkedList<String> getCaminoMasCortoPorEstaciones(String estacion1, String estacion2) {        
+        return this.rieles.caminoMasCortoPorCantNodos(estacion1.toUpperCase(), estacion2.toUpperCase());
     }
 
     public LinkedList getCaminosPosiblesSinPasarPor(String estacion1, String estacion2, String estacion3) {
