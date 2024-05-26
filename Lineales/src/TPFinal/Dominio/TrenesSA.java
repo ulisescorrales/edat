@@ -76,7 +76,7 @@ public class TrenesSA {
     }
 
     public LinkedList getEstacionesSubcadena(String subcadena) {
-        return this.estaciones.getSubstringList(subcadena);
+        return this.estaciones.listarRango(subcadena,subcadena+" ZZZZZZ");
     }
 
     public LinkedList getCaminoMasCortoPorEstaciones(String estacion1, String estacion2) {

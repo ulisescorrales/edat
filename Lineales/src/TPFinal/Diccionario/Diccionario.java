@@ -63,7 +63,7 @@ public class Diccionario {
                     n.setAltura(Math.max(n.getIzquierdo().getAltura(), n.getDerecho().getAltura()) + 1);
                 } else {
                     n.setAltura(n.getDerecho().getAltura() + 1);
-                }                
+                }
             }
         } else {//Si HD es nulo, crear el hijo derecho nuevo
             n.setDerecho(new NodoAVLDicc(id, 0, null, null, dato));
@@ -449,34 +449,33 @@ public class Diccionario {
         return retornar;
     }
 
-    public LinkedList<String> getSubstringList(String substring) {
+    public LinkedList listarRango(Comparable min, Comparable max) {
         LinkedList<String> retornar = new LinkedList();
-        getSubstring(this.raiz, substring, retornar);
+        if (max.compareTo(min) >= 0) {
+            listarRango(this.raiz, min,max, retornar);
+        }
         return retornar;
     }
 
-    private void getSubstring(NodoAVLDicc n, String subs, LinkedList resultado) {
-        //Método auxiliar para getSubstringList
-        int longitudSubstring=subs.length();
-        String substr;
+    private void listarRango(NodoAVLDicc n, Comparable min, Comparable max, LinkedList resultado) {
+        //Método auxiliar para listarRango        
         if (n != null) {
-            //Comparar la parte inicial de la clave con subs
-            substr=n.getClave().toString().substring(0, longitudSubstring);            
-            if (substr.equals(subs)) {
-                //Si contiene el substring, recorre en preorden 
-                getSubstring(n.getIzquierdo(), subs, resultado);
-                resultado.add(n.getClave());
-                getSubstring(n.getDerecho(), subs, resultado);
-            } else {
-                int comparacion = subs.compareTo(n.getClave().toString());
-                if (comparacion < 0) {
-                    //Sino baja por la izquierda
-                    getSubstring(n.getIzquierdo(), subs, resultado);
-
-                } else {
-                    //Sino baja por la derecha
-                    getSubstring(n.getDerecho(), subs, resultado);
+            Comparable clave = n.getClave();
+            if (clave.compareTo(min) > 0) {
+                //Si es mayor a mínimo, seguir buscando por la izquierda
+                listarRango(n.getIzquierdo(), min, max, resultado);
+                if (clave.compareTo(max) < 0) {
+                    //Si es menor a máximo (está dentro del rango), seguir buscando por la derecha
+                    resultado.add(clave);
+                    listarRango(n.getDerecho(), min, max, resultado);
+                }else if(clave.compareTo(max)==0){
+                    resultado.add(clave);
                 }
+            }else if(clave.compareTo(min)==0){
+                resultado.add(clave);
+                listarRango(n.getDerecho(),min,max,resultado);
+            }else{
+                listarRango(n.getDerecho(),min,max,resultado);
             }
         }
     }
@@ -552,20 +551,20 @@ public class Diccionario {
                 primeraLetraN = cadenas[alturaAbs].length() + separadorVacio.length() + 1;
             }
             int posIn = longitudCadena + agregarAux;
-            
+
             StringBuilder st = new StringBuilder(agregar);
             if (!esDerecho && medio < primeraLetraPadre) {
-                    //Agrega los espacios para que la división encaje con la primer letra del padre
-                    int dif = primeraLetraPadre - medio;
-                    String sepAux = "";                    
-                    for (int i = 0; i < dif; i++) {
-                        sepAux += " ";
-                    }
-                    st.insert(0, sepAux);
-                    posIn += dif;                    
+                //Agrega los espacios para que la división encaje con la primer letra del padre
+                int dif = primeraLetraPadre - medio;
+                String sepAux = "";
+                for (int i = 0; i < dif; i++) {
+                    sepAux += " ";
                 }
+                st.insert(0, sepAux);
+                posIn += dif;
+            }
             int medioI = getEstructura(n.getIzquierdo(), cadenas, false, alturaAbs - 1, posIn);
-            
+
             //Se debe agregar a partir de la segunda posición
             if (esDerecho) {
                 //Agrega las líneas - para que la primera letra encaje con la división de abajo
@@ -574,7 +573,7 @@ public class Diccionario {
                     String sepAux = "";
                     for (int i = 0; i < dif2; i++) {
                         sepAux += "─";
-                    }                    
+                    }
                     st.insert(1, sepAux);
                 }
                 //Agregando
@@ -590,14 +589,14 @@ public class Diccionario {
             } else {
                 if (medioI > primeraLetraN) {
                     //agrega los espacios izquierdos para que la primera letra encaje con la división de abajo
-                    int dif = medioI - primeraLetraN;                    
+                    int dif = medioI - primeraLetraN;
                     String sepAux = "";
                     for (int i = 0; i < dif; i++) {
                         sepAux += " ";
                     }
                     medio += dif;
                     st.insert(0, sepAux);
-                }                
+                }
             }
             cadenas[alturaAbs] += st.toString();
             getEstructura(n.getDerecho(), cadenas, true, alturaAbs - 1, posIn);
@@ -629,5 +628,17 @@ public class Diccionario {
         retornar = obtenerClave(this.raiz, id);
         return retornar;
     }
-   
+    public static void main(String[] args) {
+        Diccionario numeros=new Diccionario();
+        for (int i = 0; i < 50; i++) {
+            numeros.insertar(i, "h");            
+        }
+        
+        LinkedList consulta=numeros.listarRango(49, 49);
+        
+        while(!consulta.isEmpty()){
+            System.out.println(consulta.get(0).toString());
+            consulta.remove(0);
+        }
+    }
 }

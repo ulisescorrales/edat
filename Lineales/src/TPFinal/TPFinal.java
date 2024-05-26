@@ -4,6 +4,7 @@
  */
 package TPFinal;
 
+import TPFinal.Log.Log;
 import TPFinal.Dominio.TrenesSA;
 import TPFinal.Dominio.Estacion;
 import TPFinal.Dominio.Tren;
