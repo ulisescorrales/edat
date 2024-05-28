@@ -5,9 +5,9 @@
 package TPFinal;
 
 import TPFinal.Log.Log;
-import TPFinal.Dominio.TrenesSA;
-import TPFinal.Dominio.Estacion;
-import TPFinal.Dominio.Tren;
+import TPFinal.Trenes.TrenesSA;
+import TPFinal.Trenes.Estacion;
+import TPFinal.Trenes.Tren;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;

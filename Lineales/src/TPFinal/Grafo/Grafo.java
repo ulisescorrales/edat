@@ -122,7 +122,7 @@ public class Grafo {
                         encontrado2 = true;
                         auxAdy.setEtiqueta(nuevaEtiqueta);
                         exito = true;
-                    }
+                    }                                       
                     auxAdy = auxAdy.getSigAdyacente();
                 }
                 //Si se encuentra primero el nodo2
@@ -599,8 +599,7 @@ public class Grafo {
 
     public LinkedList getPosiblesCaminosSinPasarPor(Object origen, Object destino, Object claveAEvitar) {
         //Método que retorna los posibles caminos de un nodo a otro sin pasar por uno indicado
-        LinkedList<NodoVert> listaActual = new LinkedList();//Va acumulando los arcos cuando avanza y se borran los nodos cuando se retrocede, si llega a destino se clona y se suma a listaDeListas
-        //Se almacenan los nodos adyacentes para tener luego acceso a su etiqueta
+        LinkedList<NodoVert> listaActual = new LinkedList();//Va acumulando los nodos cuando avanza y se borran los nodos cuando se retrocede, si llega a destino se clona y se suma a listaDeListas        
         LinkedList<NodoVert> visitados = new LinkedList();//Misma función que en listarEnProfundidad
         LinkedList<LinkedList> listaDeListas = new LinkedList();//Contiene todos los posibles caminos        
 
@@ -641,29 +640,28 @@ public class Grafo {
             long3 = listaAux.size();
             for (int j = 0; j < long3; j++) {
                 listaInterna.add(listaAux.get(j).getElem());
-            }
-            listaInterna.addFirst(origen);
+            }            
             retornar.add(listaInterna);
         }
         return retornar;
     }
 
     private void getPosiblesCaminoSinPasarPor(NodoVert n, NodoVert dest, NodoVert nodoEvitar, LinkedList<NodoVert> listaActual, LinkedList visitados, LinkedList listaDeListas) {
-        //Es el mismo método que getPosiblesCaminos pero con una verificación extra para nodoEvitar
+        //Método auxiliar para getPosiblesCaminosSinPasarPor
         if (n == dest) {
-            listaDeListas.addFirst(listaActual.clone());
+            visitados.add(n);
+            listaDeListas.addFirst(visitados.clone());
+            visitados.removeLast();
         } else {
             NodoAdy ady = n.getPrimerAdy();
             visitados.add(n);
+            //Recorrer los hijos
             while (ady != null) {
                 NodoVert auxVert = ady.getVertice();
-                //Aquí se agrega la verificación extra al detectarse el nodo a evitar, no se realiza ninguna llamada
-                //recursiva sobre el mismo
-
-                if (visitados.indexOf(auxVert) == -1 && ady.getVertice() != nodoEvitar) {
-                    listaActual.add(ady.getVertice());
-                    getPosiblesCaminoSinPasarPor(auxVert, dest, nodoEvitar, listaActual, visitados, listaDeListas);
-                    listaActual.removeLast();
+                /*Aquí se agrega la verificación extra al detectarse el nodo a evitar, así no se realiza ninguna llamada 
+                recursiva sobre el mismo*/
+                if (visitados.indexOf(auxVert) == -1 && ady.getVertice() != nodoEvitar) {                    
+                    getPosiblesCaminoSinPasarPor(auxVert, dest, nodoEvitar, listaActual, visitados, listaDeListas);                    
                 }
                 ady = ady.getSigAdyacente();
             }

@@ -122,3 +122,8 @@ R;Rafaela;Misiones;150
 R;Rafaela;Arrufó;100
 R;Arrufó;Colonia Dora;100
 R;Colonia Dora;Tucumán;100
+R;Palmira;Córdoba;200
+R;Córdoba;Tucumán;300
+R;Pehuajó;Armstrong;100
+R;Trenque Lauquén;Beazley;150
+R;Villa María;Arrufó;200
