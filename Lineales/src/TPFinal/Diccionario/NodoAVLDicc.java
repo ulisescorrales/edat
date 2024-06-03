@@ -4,17 +4,17 @@
  */
 package TPFinal.Diccionario;
 
-
 /**
  *
  * @author Corrales Ulises
  */
 public class NodoAVLDicc {
-    private Comparable clave;    
+
+    private Comparable clave;
     private int altura;
     private NodoAVLDicc hijoIzquierdo;
     private NodoAVLDicc hijoDerecho;
-    
+
     private Object dato;
 
     //Constructor con altura
@@ -25,22 +25,25 @@ public class NodoAVLDicc {
         this.hijoDerecho = hijoDerecho;
         this.dato = dato;
     }
+
     //Constructor sin altura
     public NodoAVLDicc(Comparable clave, NodoAVLDicc hijoIzquierdo, NodoAVLDicc hijoDerecho, Object dato) {
         this.clave = clave;
         this.hijoIzquierdo = hijoIzquierdo;
         this.hijoDerecho = hijoDerecho;
-        this.dato = dato;        
+        this.dato = dato;
     }
-    
+
     public Comparable getClave() {
         return this.clave;
-    }   
-    public Object getDato(){
+    }
+
+    public Object getDato() {
         return this.dato;
     }
-    public boolean setDato(Object unDato){
-        this.dato=unDato;
+
+    public boolean setDato(Object unDato) {
+        this.dato = unDato;
         return true;
     }
 
@@ -66,5 +69,20 @@ public class NodoAVLDicc {
 
     public void setAltura(int altura) {
         this.altura = altura;
+    }
+
+    //Método para actualizar la altura
+    public void actualizarAltura() {
+        if (this.hijoDerecho != null) {
+            if (this.hijoIzquierdo != null) {
+                this.altura = Math.max(this.hijoIzquierdo.getAltura(), this.hijoDerecho.getAltura()) + 1;
+            } else {
+                this.altura = this.hijoDerecho.getAltura() + 1;
+            }
+        } else if (this.hijoIzquierdo != null) {
+            this.altura = this.hijoIzquierdo.getAltura() + 1;
+        } else {
+            this.altura = 0;
+        }
     }
 }
