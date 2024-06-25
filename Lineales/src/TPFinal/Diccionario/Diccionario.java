@@ -24,7 +24,7 @@ public class Diccionario {
             exito = insertarAux(this.raiz, id, dato);//Recorrer recursivamente
         }
         //        
-        this.raiz = reacomodar(this.raiz);//Comprobar balance
+        this.raiz = rebalancear(this.raiz);//Comprobar balance
         //
         return exito;
     }
@@ -40,7 +40,7 @@ public class Diccionario {
                 exito = insertarAux(n.getIzquierdo(), id, dato);
                 if (exito) {
                     //Reacomodar retorna el padre, nuevo si hubo rotación o el mismo si no hubo rotación
-                    n.setIzquierdo(reacomodar(n.getIzquierdo()));
+                    n.setIzquierdo(rebalancear(n.getIzquierdo()));
                     n.actualizarAltura();
                     //
                 }
@@ -51,7 +51,7 @@ public class Diccionario {
         } else if (n.getDerecho() != null) {//Si elemento es mayor a n.getElem(), bajar por la derecha
             exito = insertarAux(n.getDerecho(), id, dato);
             if (exito) {
-                n.setDerecho(reacomodar(n.getDerecho()));
+                n.setDerecho(rebalancear(n.getDerecho()));
                 n.actualizarAltura();
             }
         } else {//Si HD es nulo, crear el hijo derecho nuevo
@@ -61,7 +61,7 @@ public class Diccionario {
         return exito;
     }
 
-    private NodoAVLDicc reacomodar(NodoAVLDicc pivote) {
+    private NodoAVLDicc rebalancear(NodoAVLDicc pivote) {
         //Método auxiliar para reordenar el árbol AVL, retorna el nuevo nodo superior si existe rotación
         NodoAVLDicc retornar = pivote;//En caso de rotación, se retorna el nodo superior para enlazarlo en el nivel superior        
         if (pivote != null) {
@@ -137,23 +137,9 @@ public class Diccionario {
         }
         //Actualizar altura del privote
         r.actualizarAltura();
-        /*if (r.getDerecho() != null && r.getIzquierdo() != null) {
-            r.setAltura(Math.max(r.getDerecho().getAltura(), r.getIzquierdo().getAltura()) + 1);
-        } else if (r.getDerecho() != null) {
-            r.setAltura(r.getDerecho().getAltura() + 1);
-        } else if (r.getIzquierdo() != null) {
-            r.setAltura(r.getIzquierdo().getAltura() + 1);
-        } else {
-            r.setAltura(0);
-        }*/
 
         //Actualizar altura de h
         h.actualizarAltura();
-        /*if (h.getDerecho() != null) {
-            h.setAltura(Math.max(r.getAltura(), h.getDerecho().getAltura()) + 1);
-        } else {
-            h.setAltura(r.getAltura() + 1);
-        }*/
 
         return h;
     }
@@ -222,7 +208,7 @@ public class Diccionario {
         //Método que busca el elimento a eliminar y reacomoda los nodos según el orden, retorna éxito si el elemento existe        
         boolean exito = eliminar(elem, this.raiz, null);
         if (exito) {
-            this.raiz = reacomodar(this.raiz);//Comprobar balance
+            this.raiz = rebalancear(this.raiz);//Comprobar balance
         }
         return exito;
     }
@@ -230,7 +216,7 @@ public class Diccionario {
     private boolean eliminar(Comparable elem, NodoAVLDicc n, NodoAVLDicc padre) {
         //Método auxiliar de eliminar que se invoca de forma recursiva
         boolean exito = false;
-        if (n != null) {//Si el elemento no es nulo
+        if (n != null) {
             if (n.getClave().equals(elem)) {
                 exito = true;//Si elemento existe, la operación será exitosa
                 if (n.getIzquierdo() != null && n.getDerecho() != null) {//CASO: posee ambos hijos                    
@@ -247,7 +233,7 @@ public class Diccionario {
                     setPadre(n, candidato, padre);
                     
                     //
-                    candidato.setIzquierdo(reacomodar(candidato.getIzquierdo()));
+                    candidato.setIzquierdo(rebalancear(candidato.getIzquierdo()));
                 } else if (n.getIzquierdo() == null && n.getDerecho() != null) {//CASO: HD no es nulo, HI es nulo
                     setPadre(n, n.getDerecho(), padre);
 
@@ -260,13 +246,13 @@ public class Diccionario {
             } else if (elem.compareTo(n.getClave()) < 0) {//Si elemento del nodo es mayor al elemento a eliminar                
                 exito = eliminar(elem, n.getIzquierdo(), n);//Ir por la izquierda
                 if (exito) {
-                    n.setIzquierdo(reacomodar(n.getIzquierdo()));
+                    n.setIzquierdo(rebalancear(n.getIzquierdo()));
                     n.actualizarAltura();
                 }
             } else {//Si elemento del nodo es menor a elem               
                 exito = eliminar(elem, n.getDerecho(), n);//Ir por la derecha
                 if (exito) {
-                    n.setDerecho(reacomodar(n.getDerecho()));
+                    n.setDerecho(rebalancear(n.getDerecho()));
                     n.actualizarAltura();
                 }
             }
@@ -287,7 +273,7 @@ public class Diccionario {
             }
         } else {
             candidato = buscarCandidatoA(n.getDerecho(), n);
-            reacomodar(n.getDerecho());
+            rebalancear(n.getDerecho());
             n.actualizarAltura();
         }
         return candidato;
@@ -408,7 +394,7 @@ public class Diccionario {
     }
 
     public LinkedList listarRango(Comparable min, Comparable max) {
-        LinkedList<String> retornar = new LinkedList();
+        LinkedList retornar = new LinkedList();
         if (max.compareTo(min) >= 0) {
             listarRango(this.raiz, min, max, retornar);
         }
@@ -418,12 +404,14 @@ public class Diccionario {
     private void listarRango(NodoAVLDicc n, Comparable min, Comparable max, LinkedList resultado) {
         //Método auxiliar para listarRango        
         if (n != null) {
-            Comparable clave = n.getClave();
+            Comparable clave = n.getClave();            
             if (clave.compareTo(min) > 0) {
+                
                 //Si es mayor a mínimo, seguir buscando por la izquierda
                 listarRango(n.getIzquierdo(), min, max, resultado);
+                //System.out.println(clave+" <"+max+" : "+(clave.compareTo(max) < 0));
                 if (clave.compareTo(max) < 0) {
-                    //Si es menor a máximo (está dentro del rango), seguir buscando por la derecha
+                    //Si es menor a máximo (está dentro del rango), seguir buscando por la derecha                    
                     resultado.add(clave);
                     listarRango(n.getDerecho(), min, max, resultado);
                 } else if (clave.compareTo(max) == 0) {
@@ -585,83 +573,5 @@ public class Diccionario {
         NodoAVLDicc retornar = null;
         retornar = obtenerClave(this.raiz, id);
         return retornar;
-    }
-
-    public static void main(String[] args) {
-        Diccionario numeros = new Diccionario();
-        /*numeros.insertar(10, "");
-        numeros.insertar(8, "");
-        numeros.insertar(15, "");
-        numeros.insertar(7, "");
-        numeros.insertar(9, "");
-        numeros.insertar(13, "");
-        numeros.insertar(17, "");
-        numeros.insertar(6, "");
-        numeros.insertar(12, "");
-        numeros.insertar(14, "");
-        numeros.insertar(16, "");
-        numeros.insertar(18, "");
-        numeros.insertar(11, "");*/
-               
-        
-        numeros.insertar(20, "");
-        
-        numeros.insertar(10, "");
-        numeros.insertar(35, "");
-                
-        numeros.insertar(8, "");
-        numeros.insertar(15, "");
-        numeros.insertar(28, "");
-        numeros.insertar(40, "");
-        
-        numeros.insertar(7, "");
-        numeros.insertar(9, "");
-        numeros.insertar(13, "");
-        numeros.insertar(17, "");
-        
-        numeros.insertar(25, "");
-        numeros.insertar(32, "");
-        numeros.insertar(38, "");
-        numeros.insertar(43, "");
-        
-        numeros.insertar(6, "");
-        numeros.insertar(12, "");
-        numeros.insertar(14, "");        
-        numeros.insertar(18, "");
-        numeros.insertar(23, "");
-        numeros.insertar(27, "");
-        numeros.insertar(30, "");
-        numeros.insertar(34, "");
-        numeros.insertar(37, "");
-        numeros.insertar(39, "");
-        numeros.insertar(41, "");
-        
-        numeros.insertar(11, "");
-        numeros.insertar(22, "");
-        numeros.insertar(24, "");
-        numeros.insertar(26, "");
-        numeros.insertar(29, "");
-        numeros.insertar(31, "");
-        numeros.insertar(33, "");
-        numeros.insertar(36, "");
-        
-        numeros.insertar(41, "");
-        numeros.insertar(45, "");
-        
-        numeros.insertar(42, "");
-        numeros.insertar(44, "");
-        numeros.insertar(46, "");
-        
-        numeros.insertar(47, "");
-        
-        //numeros.insertar(21, "");
-
-        System.out.println(numeros.getEstructura());
-        System.out.println("--------------");
-        System.out.println("Eliminar el 9");
-        System.out.println("--------------");
-        numeros.eliminar(9);
-        System.out.println(numeros.getEstructura());
-        
-    }
+    }   
 }

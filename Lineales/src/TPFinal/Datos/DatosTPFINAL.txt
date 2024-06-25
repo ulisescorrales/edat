@@ -123,7 +123,11 @@ R;Rafaela;Arrufó;100
 R;Arrufó;Colonia Dora;100
 R;Colonia Dora;Tucumán;100
 R;Palmira;Córdoba;200
-R;Córdoba;Tucumán;300
+R;Córdoba;Tucumán;550
 R;Pehuajó;Armstrong;100
 R;Trenque Lauquén;Beazley;150
 R;Villa María;Arrufó;200
+R;Trelew;Santa Rosa;300
+R;Beazley;Las Heras;50
+R;Río Gallegos;Rawson;200
+R;Rafaela;Armstrong;50

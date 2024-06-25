@@ -28,7 +28,7 @@ public class TPFinal {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws  IOException {
+    public static void main(String[] args) throws IOException {
         Scanner input = new Scanner(System.in);
         input.useDelimiter("\n");
 
@@ -50,7 +50,7 @@ public class TPFinal {
         }
         String datosString = datos.toString();
 
-        Log logs = new Log("./src/TPFinal/logs.log");
+        Log logs = new Log("./src/TPFinal/Log/logs.log");
 
         //Separar los tokens por líneas
         StringTokenizer lineasTok = new StringTokenizer(datosString, "\n");
@@ -89,7 +89,7 @@ public class TPFinal {
 
         /*Primero se cargaron las estaciones y trenes en una lista y luego aquí se cargan por orden aleatorio en
         el diccionario implementado con árbol AVL */
-        cargarEstaciones(sistema, estacionesList, logs,false);
+        cargarEstaciones(sistema, estacionesList, logs, false);
         cargarLineas(sistema, lineasList, logs);
         cargarTrenes(sistema, trenesList, logs);
         cargarRieles(sistema, rielesList, logs);
@@ -505,7 +505,7 @@ public class TPFinal {
         }
     }
 
-    public static void cargarEstaciones(TrenesSA sist, LinkedList<StringTokenizer> listEst, Log lg,boolean random) {
+    public static void cargarEstaciones(TrenesSA sist, LinkedList<StringTokenizer> listEst, Log lg, boolean random) {
         //Método para cargar estaciones de forma aleatoria desde la carga inicial a partir de la lista armada
         //La variable random es para hacer que los elementos se carguen en orden aleatorio o no
         Random ran = new Random();
@@ -513,14 +513,14 @@ public class TPFinal {
         while (!listEst.isEmpty()) {
             StringTokenizer estTok;
             //Cargar aleatoriamente las estaciones sobre el diccionario
-            if(random){
+            if (random) {
                 pos = ran.nextInt(listEst.size());
                 estTok = listEst.get(pos);
                 listEst.remove(pos);
-            }else{
-                estTok=listEst.getFirst();
+            } else {
+                estTok = listEst.getFirst();
                 listEst.removeFirst();
-            }                     
+            }
 
             //Descomponer estTok
             String nombre = estTok.nextToken().toUpperCase();
@@ -548,7 +548,7 @@ public class TPFinal {
                         + "   cód. postal: " + cp + "\n"
                         + "   cantidad de vías: " + cantVias + "\n"
                         + "   cantidad de plataformas:" + cantPlataformas + "\n");
-            }                        
+            }
         }
     }
 
@@ -561,31 +561,34 @@ public class TPFinal {
         System.out.println("2-Líneas");
         System.out.println("3-Trenes");
         System.out.println("4-Riel");
+        System.out.println("-1-Salir");
 
         int opcion = input.nextInt();
 
         switch (opcion) {
             case 1:
                 String[] estacion = ingresarEstaciones(1, input, sistema);
-                if (sistema.eliminarEstacion(estacion[0])) {
-                    System.out.println("Estación eliminada");
-                    logs.escribir("Eliminado ESTACIÓN: " + estacion[0] + "\n");
-                    LinkedList<String> lineasBorradas = sistema.verificarEstacionBorradaYLineas(estacion[0]);
-                    int longitud = lineasBorradas.size();
-                    //Eliminar las líneas que contenián la estación eliminada (deben redefinirse)
-                    for (int i = 0; i < longitud; i++) {
-                        String nombreLinea = lineasBorradas.get(i);
-                        logs.escribir("    Eliminado LINEA: " + nombreLinea + "\n");
-                        //Modificar los trenes con la línea borrada
-                        LinkedList<Integer> listaTrenesMod = sistema.verificarLineaBorradaYTrenes(nombreLinea);
-                        int longitud2 = listaTrenesMod.size();
-                        for (int j = 0; j < longitud2; j++) {
-                            logs.escribir("    Modificado línea de TREN " + listaTrenesMod.get(j) + ": no asignado" + "\n");
+                if (estacion != null) {
+                    if (sistema.eliminarEstacion(estacion[0])) {
+                        System.out.println("Estación eliminada");
+                        logs.escribir("Eliminado ESTACIÓN: " + estacion[0] + "\n");
+                        LinkedList<String> lineasBorradas = sistema.verificarEstacionBorradaYLineas(estacion[0]);
+                        int longitud = lineasBorradas.size();
+                        //Eliminar la slíneas que contenián la estación eliminada (deben redefinirse)
+                        for (int i = 0; i < longitud; i++) {
+                            String nombreLinea = lineasBorradas.get(i);
+                            logs.escribir("    Eliminado LINEA: " + nombreLinea + "\n");
+                            //Modificar los trenes con la línea borrada
+                            LinkedList<Integer> listaTrenesMod = sistema.verificarLineaBorradaYTrenes(nombreLinea);
+                            int longitud2 = listaTrenesMod.size();
+                            for (int j = 0; j < longitud2; j++) {
+                                logs.escribir("    Modificado línea de TREN " + listaTrenesMod.get(j) + ": no asignado" + "\n");
+                          }
                         }
-                    }
 
-                } else {
-                    System.out.println("Error eliminando estación");
+                    } else {
+                        System.out.println("Error eliminando estación");
+                    }
                 }
                 break;
             case 2:

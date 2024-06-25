@@ -20,7 +20,7 @@ public class Log {
     public Log(String path) throws IOException{
         this.path = path;
         FileWriter file = new FileWriter(this.path);
-        //Vaciar el archivo log
+        //Vaciar el archivo log anterior
         file.write("");
         file.close();
     }        
