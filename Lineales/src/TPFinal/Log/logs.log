@@ -256,141 +256,86 @@ Agregada LÍNEA: ROCA - RETIRO - ROSARIO NORTE - ARMSTRONG - VILLA MARÍA - CÓR
 Agregada LÍNEA: SANTA ROSA - CALEUFÚ - BEAZLEY - PALMIRA - GODOY CRUZ - NEUQUÉN - ALLEN - SANTA ROSA
 Agregada LÍNEA: ALLEN - SANTA ROSA - MUSTERS - SUD - CALEUFÚ
 Agregada LÍNEA: PALMIRA - GODOY CRUZ - NEUQUÉN
-Agregado TREN:2
-   propulsión: fuel oil
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: CÓRDOBA
-Agregado TREN:1
-   propulsión: electricidad
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: RETIRO
-Agregado TREN:19
-   propulsión: híbrido
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: RÍO GALLEGOS
-Agregado TREN:18
-   propulsión: fuel oil
-   cant. vagones pasajeros :4
-   cant. vagones carga: 4
-   linea: no asignado
-Agregado TREN:7
-   propulsión: electricidad
-   cant. vagones pasajeros :4
-   cant. vagones carga: 4
-   linea: PINAMAR
-Agregado TREN:21
-   propulsión: electricidad
-   cant. vagones pasajeros :2
-   cant. vagones carga: 2
-   linea: ALLEN
-Agregado TREN:15
-   propulsión: electricidad
-   cant. vagones pasajeros :2
-   cant. vagones carga: 2
-   linea: MISIONES
-Agregado TREN:12
-   propulsión: electricidad
-   cant. vagones pasajeros :4
-   cant. vagones carga: 4
-   linea: MISIONES
-Agregado TREN:25
-   propulsión: electricidad
-   cant. vagones pasajeros :4
-   cant. vagones carga: 4
-   linea: no asignado
-Agregado TREN:26
-   propulsión: fuel oil
-   cant. vagones pasajeros :2
-   cant. vagones carga: 2
-   linea: MITRE
-Agregado TREN:6
-   propulsión: fuel oil
-   cant. vagones pasajeros :1
-   cant. vagones carga: 1
-   linea: no asignado
-Agregado TREN:31
-   propulsión: fuel oil
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: MISIONES
-Agregado TREN:28
-   propulsión: electricidad
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: LAS HERAS
-Agregado TREN:23
-   propulsión: electricidad
-   cant. vagones pasajeros :2
-   cant. vagones carga: 2
-   linea: no asignado
-Agregado TREN:5
-   propulsión: gasolina
-   cant. vagones pasajeros :2
-   cant. vagones carga: 2
-   linea: MAR DEL PLATA
-Agregado TREN:24
-   propulsión: fuel oil
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: ROCA
-Agregado TREN:13
-   propulsión: gasolina
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: ROCA
-Agregado TREN:9
-   propulsión: electricidad
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: NEUQUÉN
-Agregado TREN:30
-   propulsión: gasolina
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: TUCUMÁN
-Agregado TREN:27
-   propulsión: híbrido
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: NEUQUÉN
-Agregado TREN:4
-   propulsión: híbrido
-   cant. vagones pasajeros :5
-   cant. vagones carga: 5
-   linea: no asignado
-Agregado TREN:17
-   propulsión: electricidad
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: RETIRO
-Agregado TREN:16
-   propulsión: gasolina
-   cant. vagones pasajeros :3
-   cant. vagones carga: 3
-   linea: SANTA ROSA
-Agregado TREN:3
-   propulsión: gasolina
-   cant. vagones pasajeros :4
-   cant. vagones carga: 4
-   linea: RÍO GALLEGOS
 Agregado TREN:11
    propulsión: fuel oil
    cant. vagones pasajeros :3
    cant. vagones carga: 3
    linea: LAS HERAS
+Agregado TREN:12
+   propulsión: electricidad
+   cant. vagones pasajeros :4
+   cant. vagones carga: 4
+   linea: MISIONES
+Agregado TREN:31
+   propulsión: fuel oil
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: MISIONES
+Agregado TREN:17
+   propulsión: electricidad
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: RETIRO
+Agregado TREN:14
+   propulsión: fuel oil
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: CÓRDOBA
+Agregado TREN:25
+   propulsión: electricidad
+   cant. vagones pasajeros :4
+   cant. vagones carga: 4
+   linea: no asignado
+Agregado TREN:13
+   propulsión: gasolina
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: ROCA
+Agregado TREN:30
+   propulsión: gasolina
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: TUCUMÁN
+Agregado TREN:16
+   propulsión: gasolina
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: SANTA ROSA
+Agregado TREN:27
+   propulsión: híbrido
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: NEUQUÉN
+Agregado TREN:24
+   propulsión: fuel oil
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: ROCA
 Agregado TREN:29
    propulsión: híbrido
    cant. vagones pasajeros :3
    cant. vagones carga: 3
    linea: MISIONES
-Agregado TREN:22
-   propulsión: gasolina
+Agregado TREN:23
+   propulsión: electricidad
+   cant. vagones pasajeros :2
+   cant. vagones carga: 2
+   linea: no asignado
+Agregado TREN:21
+   propulsión: electricidad
+   cant. vagones pasajeros :2
+   cant. vagones carga: 2
+   linea: ALLEN
+Agregado TREN:6
+   propulsión: fuel oil
+   cant. vagones pasajeros :1
+   cant. vagones carga: 1
+   linea: no asignado
+Agregado TREN:28
+   propulsión: electricidad
    cant. vagones pasajeros :3
    cant. vagones carga: 3
-   linea: RETIRO
+   linea: LAS HERAS
 Agregado TREN:20
    propulsión: gasolina
    cant. vagones pasajeros :3
@@ -401,16 +346,71 @@ Agregado TREN:10
    cant. vagones pasajeros :3
    cant. vagones carga: 3
    linea: MITRE
+Agregado TREN:1
+   propulsión: electricidad
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: RETIRO
+Agregado TREN:3
+   propulsión: gasolina
+   cant. vagones pasajeros :4
+   cant. vagones carga: 4
+   linea: RÍO GALLEGOS
+Agregado TREN:26
+   propulsión: fuel oil
+   cant. vagones pasajeros :2
+   cant. vagones carga: 2
+   linea: MITRE
+Agregado TREN:5
+   propulsión: gasolina
+   cant. vagones pasajeros :2
+   cant. vagones carga: 2
+   linea: MAR DEL PLATA
+Agregado TREN:2
+   propulsión: fuel oil
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: CÓRDOBA
+Agregado TREN:15
+   propulsión: electricidad
+   cant. vagones pasajeros :2
+   cant. vagones carga: 2
+   linea: MISIONES
+Agregado TREN:22
+   propulsión: gasolina
+   cant. vagones pasajeros :3
+   cant. vagones carga: 3
+   linea: RETIRO
+Agregado TREN:4
+   propulsión: híbrido
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: no asignado
+Agregado TREN:18
+   propulsión: fuel oil
+   cant. vagones pasajeros :4
+   cant. vagones carga: 4
+   linea: no asignado
 Agregado TREN:8
    propulsión: híbrido
    cant. vagones pasajeros :4
    cant. vagones carga: 4
    linea: no asignado
-Agregado TREN:14
-   propulsión: fuel oil
+Agregado TREN:9
+   propulsión: electricidad
    cant. vagones pasajeros :3
    cant. vagones carga: 3
-   linea: CÓRDOBA
+   linea: NEUQUÉN
+Agregado TREN:7
+   propulsión: electricidad
+   cant. vagones pasajeros :4
+   cant. vagones carga: 4
+   linea: PINAMAR
+Agregado TREN:19
+   propulsión: híbrido
+   cant. vagones pasajeros :5
+   cant. vagones carga: 5
+   linea: RÍO GALLEGOS
 Agregado RIEL: RÍO GALLEGOS-TRELEW - 100Km
 Agregado RIEL: TRELEW-BARILOCHE - 100Km
 Agregado RIEL: TRELEW-RAWSON - 50Km

@@ -474,7 +474,7 @@ public class Grafo {
         NodoVert auxO = null;
         NodoVert auxD = null;
         NodoVert aux = this.inicio;
-        LinkedList<NodoVert> caminoMasCorto = new LinkedList();
+        LinkedList caminoMasCorto = new LinkedList();
         LinkedList<Object> retornar = new LinkedList();
 
         //Comprobar que ambos nodos existan
@@ -492,39 +492,35 @@ public class Grafo {
             //si no existe camino retorna null            
             LinkedList visitados = new LinkedList();            
             //Empieza llamada recursiva, retorna lista de NodoVert
-            int tamanio = getPosibleCaminoMasCortoPorCantNodos(auxO, auxD, visitados, caminoMasCorto, 0, -1)+1;
-
-            //Por cada NodoVert, conseguir su elemento y colocarlo en la lista a retornar            
-            if (tamanio > 0) {                
-                for (int i = 0; i < tamanio; i++) {
-                    retornar.add(caminoMasCorto.get(i).getElem());
-                }
-                retornar.add(destino);
+            getPosibleCaminoMasCortoPorCantNodos(auxO, auxD, visitados, caminoMasCorto, 0, -1);
+            if(!caminoMasCorto.isEmpty()){
+                caminoMasCorto.add(destino);
             }
         }
 
-        return retornar;
+        return caminoMasCorto;
     }
 
-    private int getPosibleCaminoMasCortoPorCantNodos(NodoVert n, NodoVert dest, LinkedList<NodoVert> visitados, LinkedList caminoMasCortoTemp, int cantNodosAcumulados, int cantNodosCaminoMasCorto) {
+    private int getPosibleCaminoMasCortoPorCantNodos(NodoVert n, NodoVert dest, LinkedList<Object> visitados, LinkedList caminoMasCortoTemp, int cantNodosAcumulados, int cantNodosCaminoMasCorto) {
         /*Método auxiliar para la recursión de getCaminoMasCortoPorCantNodos. Realiza un recorrido en profundidad hasta llegar a destn, con tope en 
         cantNodosAcumulados, retorna dicha variable que es la mínima cantidad de nodos encontrado para el camino mas corto
         durante la recursión*/
         if (n == dest) {
             //Aquí se clona solo cuando se llega a destino y termina la llamada recursiva                    
             caminoMasCortoTemp.clear();
-            caminoMasCortoTemp.addAll((LinkedList) visitados.clone());
+            caminoMasCortoTemp.addAll((LinkedList) visitados);
+            
             //Retorna la cantidad de nodos antes de llegar al destino            
             cantNodosCaminoMasCorto = cantNodosAcumulados - 1;             
         } else if (cantNodosAcumulados < cantNodosCaminoMasCorto || cantNodosCaminoMasCorto == -1) {
             //visitados.add(n);            
-            visitados.add(n);            
+            visitados.add(n.getElem());    
             //Recorrer los nodos adyacentes
             NodoAdy ady = n.getPrimerAdy();
             while (ady != null) {
                 NodoVert auxVert = ady.getVertice();
                 //Si el nodo vértice del adyacente no fue visitado
-                if (visitados.indexOf(auxVert) == -1) {
+                if (visitados.indexOf(auxVert.getElem()) == -1) {
                     cantNodosCaminoMasCorto = getPosibleCaminoMasCortoPorCantNodos(auxVert, dest, visitados, caminoMasCortoTemp, cantNodosAcumulados + 1, cantNodosCaminoMasCorto);
                 }
                 ady = ady.getSigAdyacente();
@@ -539,8 +535,7 @@ public class Grafo {
         NodoVert auxO = null;
         NodoVert auxD = null;
         NodoVert aux = this.inicio;
-        LinkedList<NodoVert> caminoMasCorto = new LinkedList();
-        LinkedList<Object> retornar = new LinkedList();
+        LinkedList caminoMasCorto = new LinkedList();        
 
         //Comprobar que ambos nodos existan
         while ((auxO == null || auxD == null) && aux != null) {
@@ -557,37 +552,33 @@ public class Grafo {
             //si no existe camino retorna null            
             LinkedList visitados = new LinkedList();            
             getCaminoMasCortoPorEtiqueta(auxO, auxD, visitados, caminoMasCorto, 0, -1);
-            int tamanio=caminoMasCorto.size();
-            //Por cada NodoVert, conseguir su elemento y colocarlo en la lista a retornar            
-            if (tamanio > 0) {
-                for (int i = 0; i < tamanio; i++) {
-                    retornar.add(caminoMasCorto.get(i).getElem());
-                }
-                retornar.add(destino);
+            if(!caminoMasCorto.isEmpty()){
+                caminoMasCorto.add(destino);
             }
         }
 
-        return retornar;
+        return caminoMasCorto;
     }
-    private int getCaminoMasCortoPorEtiqueta(NodoVert n, NodoVert dest, LinkedList<NodoVert> visitados, LinkedList caminoMasCortoTemp, int sumatoriaAcumulada, int sumatoriaMenor) {
+    
+    private int getCaminoMasCortoPorEtiqueta(NodoVert n, NodoVert dest, LinkedList visitados, LinkedList caminoMasCortoTemp, int sumatoriaAcumulada, int sumatoriaMenor) {
         /*Método auxiliar para la recursión de getCaminoMasCortoPorEtiqueta. Retorna la sumatoria de etiquetas del recorrido encontrado
         durante la llamada recursiva*/
-        //Sumatoria menor actuaría como tope ante sumatoria acumulada
+        //Sumatoria menor actuaría como tope ante sumatoria acumulada                
         if (n == dest && ((sumatoriaAcumulada < sumatoriaMenor)|| sumatoriaMenor==-1)) {
             //Se clona manteniendo la referencia
             caminoMasCortoTemp.clear();
-            caminoMasCortoTemp.addAll((LinkedList) visitados.clone());
+            caminoMasCortoTemp.addAll((LinkedList) visitados);
             //Retorna la cantidad de nodos antes de llegar al destino            
-            sumatoriaMenor = sumatoriaAcumulada;                 
+            sumatoriaMenor = sumatoriaAcumulada;                             
         } else if (sumatoriaAcumulada < sumatoriaMenor || sumatoriaMenor == -1) {
             //visitados.add(n);            
-            visitados.add(n);            
+            visitados.add(n.getElem());           
             //Recorrer los nodos adyacentes
             NodoAdy ady = n.getPrimerAdy();
             while (ady != null) {
                 NodoVert auxVert = ady.getVertice();
                 //Si el nodo vértice del adyacente no fue visitado
-                if (visitados.indexOf(auxVert) == -1) {
+                if (visitados.indexOf(auxVert.getElem()) == -1) {
                     sumatoriaMenor = getCaminoMasCortoPorEtiqueta(auxVert, dest, visitados, caminoMasCortoTemp, sumatoriaAcumulada +(int) ady.getEtiqueta(), sumatoriaMenor);
                 }
                 ady = ady.getSigAdyacente();

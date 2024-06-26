@@ -12,11 +12,11 @@ public class TestDiccionario {
 
     public static void main(String[] args) {
         //Prueba de borrar un elemento
-        prueba1();
-        
-       
+        prueba2();
+
     }
-    public static void prueba2(){
+
+    public static void prueba2() {
         Diccionario numeros = new Diccionario();
         numeros.insertar(20, "");
 
@@ -59,16 +59,12 @@ public class TestDiccionario {
         numeros.insertar(33, "");
         numeros.insertar(36, "");
 
-        
         //numeros.insertar(41, "");
         //numeros.insertar(45, "");
-
         //numeros.insertar(42, "");
         //numeros.insertar(44, "");
         //numeros.insertar(46, "");
-
         //numeros.insertar(47, "");
-      
         //numeros.insertar(21, "");
         System.out.println(numeros.getEstructura());
         System.out.println("--------------");
@@ -77,7 +73,8 @@ public class TestDiccionario {
         numeros.eliminar(9);
         System.out.println(numeros.getEstructura());
     }
-    public static void prueba1(){
+
+    public static void prueba1() {
         Diccionario numeros = new Diccionario();
         numeros.insertar(10, "");
         numeros.insertar(8, "");
@@ -92,11 +89,26 @@ public class TestDiccionario {
         numeros.insertar(16, "");
         numeros.insertar(18, "");
         numeros.insertar(11, "");
-        
+
         System.out.println(numeros.getEstructura());
         numeros.eliminar(10);
         System.out.println("--------------");
         System.out.println("Eliminar el 10");
+        System.out.println("--------------");
+        System.out.println(numeros.getEstructura());
+    }
+
+    public static void prueba3() {
+        Diccionario numeros = new Diccionario();
+        numeros.insertar(3, "");
+        numeros.insertar(2, "");
+        numeros.insertar(4, "");
+        numeros.insertar(1, "");
+        System.out.println(numeros.getEstructura());
+        
+        numeros.eliminar(3);
+        System.out.println("--------------");
+        System.out.println("Eliminar el 3");
         System.out.println("--------------");
         System.out.println(numeros.getEstructura());
     }

@@ -219,20 +219,22 @@ public class Diccionario {
         if (n != null) {
             if (n.getClave().equals(elem)) {
                 exito = true;//Si elemento existe, la operación será exitosa
-                if (n.getIzquierdo() != null && n.getDerecho() != null) {//CASO: posee ambos hijos                    
-
-                    NodoAVLDicc candidato = buscarCandidatoA(n.getIzquierdo(), n);//Usar el candidato A (aux): el elemento mayor del subárbol izquierdo                    
-                    //Setear los hijos del nuevo padre
-                    candidato.setDerecho(n.getDerecho());
-                    if (n.getIzquierdo() != candidato) {//Si aux itera aunque sea una vez hacia la derecha, se setea el HI
+                if (n.getIzquierdo() != null && n.getDerecho() != null) {//CASO: posee ambos hijos                                        
+                    NodoAVLDicc candidato=n.getIzquierdo().getDerecho();
+                    //Si el hijo izquierdo de n tiene al menos un hijo 
+                    if(candidato!=null){
+                        candidato = buscarCandidatoA(candidato, n.getIzquierdo());//Usar la llamada recursiva solo si el hijo izq. de n tiene al menos un hijo derecho
+                        //Setear los hijos del nuevo padre
+                        candidato.setDerecho(n.getDerecho());
                         candidato.setIzquierdo(n.getIzquierdo());
-                    }
+                    }else{
+                        candidato=n.getIzquierdo();
+                        candidato.setDerecho(n.getDerecho());
+                    }                    
                     //Setear la altura del candidato A en su posición nueva
                     candidato.actualizarAltura();
                     //setear el padre del candidato
                     setPadre(n, candidato, padre);
-                    
-                    //
                     candidato.setIzquierdo(rebalancear(candidato.getIzquierdo()));
                 } else if (n.getIzquierdo() == null && n.getDerecho() != null) {//CASO: HD no es nulo, HI es nulo
                     setPadre(n, n.getDerecho(), padre);
@@ -401,7 +403,7 @@ public class Diccionario {
         return retornar;
     }
 
-    private void listarRango(NodoAVLDicc n, Comparable min, Comparable max, LinkedList resultado) {
+    /*private void listarRango(NodoAVLDicc n, Comparable min, Comparable max, LinkedList resultado) {
         //Método auxiliar para listarRango        
         if (n != null) {
             Comparable clave = n.getClave();            
@@ -422,6 +424,22 @@ public class Diccionario {
                 listarRango(n.getDerecho(), min, max, resultado);
             } else {
                 listarRango(n.getDerecho(), min, max, resultado);
+            }
+        }
+    }*/
+      private void listarRango(NodoAVLDicc n, Comparable min, Comparable max, LinkedList resultado) {
+        //Método auxiliar para listarRango        
+        if (n != null) {
+            Comparable clave = n.getClave();            
+            if (clave.compareTo(min) >= 0 && clave.compareTo(max) <= 0) {                
+                //Si es mayor a mínimo, seguir buscando por la izquierda
+                resultado.add(clave);
+                listarRango(n.getIzquierdo(), min, max, resultado);
+                listarRango(n.getDerecho(), min, max, resultado);
+            } else if (clave.compareTo(min) < 0) {                
+                listarRango(n.getDerecho(), min, max, resultado);
+            } else if(clave.compareTo(max)>0){                          
+                listarRango(n.getIzquierdo(), min, max, resultado);                
             }
         }
     }
