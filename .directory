@@ -1,2 +1,6 @@
-[URL properties]
-ShowDotFiles=false
+[Dolphin]
+Timestamp=2024,7,15,12,5,40
+Version=4
+
+[Settings]
+HiddenFilesShown=true
