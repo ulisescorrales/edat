@@ -34,9 +34,7 @@ public class TPFinal {
         input.useDelimiter("\n");
 
         //Leer el archivo DatosTPFinal.txt y realizar la carga inicial del sistema
-        StringBuilder datos = new StringBuilder();
-        File f=new File("");
-        System.out.println(f.canRead());
+        StringBuilder datos = new StringBuilder();        
         try {
             FileReader txt = new FileReader("src/TPFinal/Datos/DatosTPFINAL.txt");
             int i;
