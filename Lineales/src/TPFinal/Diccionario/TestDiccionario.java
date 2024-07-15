@@ -11,9 +11,10 @@ package TPFinal.Diccionario;
 public class TestDiccionario {
 
     public static void main(String[] args) {
-        //Prueba de borrar un elemento
-        prueba2();
-
+        //Métodos para testear el método eliminar
+        prueba1();
+        //prueba2();
+        //prueba3();
     }
 
     public static void prueba2() {

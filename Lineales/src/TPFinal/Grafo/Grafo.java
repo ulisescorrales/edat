@@ -511,9 +511,10 @@ public class Grafo {
             caminoMasCortoTemp.addAll((LinkedList) visitados);
             
             //Retorna la cantidad de nodos antes de llegar al destino            
-            cantNodosCaminoMasCorto = cantNodosAcumulados - 1;             
+            cantNodosCaminoMasCorto = cantNodosAcumulados - 1;      
+            //System.out.println(visitados.toString()+dest.toString());
         } else if (cantNodosAcumulados < cantNodosCaminoMasCorto || cantNodosCaminoMasCorto == -1) {
-            //visitados.add(n);            
+            //System.out.println(visitados.toString());
             visitados.add(n.getElem());    
             //Recorrer los nodos adyacentes
             NodoAdy ady = n.getPrimerAdy();

@@ -8,6 +8,7 @@ import TPFinal.Log.Log;
 import TPFinal.Trenes.TrenesSA;
 import TPFinal.Trenes.Estacion;
 import TPFinal.Trenes.Tren;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -34,6 +35,8 @@ public class TPFinal {
 
         //Leer el archivo DatosTPFinal.txt y realizar la carga inicial del sistema
         StringBuilder datos = new StringBuilder();
+        File f=new File("");
+        System.out.println(f.canRead());
         try {
             FileReader txt = new FileReader("src/TPFinal/Datos/DatosTPFINAL.txt");
             int i;
@@ -353,7 +356,7 @@ public class TPFinal {
             System.out.println("4-Cód. Postal");
             System.out.println("5-Cantidad de plataformas");
             System.out.println("6-Cantidad de vías");
-            System.out.println("Cualquier otro número para salir");
+            System.out.println("-1- salir");
 
             opcion = in.nextByte();
             switch (opcion) {
@@ -870,7 +873,7 @@ public class TPFinal {
         System.out.println("3-Trenes");
         System.out.println("4-Viajes");
         System.out.println("5-Sistema");
-        System.out.println("Otro número-Salir");
+        System.out.println("-1-Salir");
         byte opcionElegida = input.nextByte();
         switch (opcionElegida) {
             case 1:
@@ -878,7 +881,7 @@ public class TPFinal {
                 System.out.println("Ingrese qué quiere consultar sobre estaciones:");
                 System.out.println("1-Información de una estación");
                 System.out.println("2-Ver estaciones que comienzan con una subcadena");
-                System.out.println("Otro número - salir");
+                System.out.println("-1 - salir");
 
                 opcionElegida = input.nextByte();
                 switch (opcionElegida) {
@@ -922,7 +925,7 @@ public class TPFinal {
                 System.out.println("Ingrese que quiere consultar:");
                 System.out.println("1-Información de un tren");
                 System.out.println("2-Consultar línea asignada");
-                System.out.println("Otro número-salir");
+                System.out.println("-1-salir");
 
                 opcionElegida = input.nextByte();
                 switch (opcionElegida) {
